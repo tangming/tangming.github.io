@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[PyTorch模型]]></title>
+    <url>%2F2019%2F10%2F09%2Fpytorch-model-introduction%2F</url>
+    <content type="text"><![CDATA[本文主要记录PyTorch模型搭建，参数初始化,模型的保存和加载以及模型Fintune的相关内容。 1. 模型的定义PyTorch中进行模型定义需要注意的主要有三个部分： 模型类要继承nn.Module，让PyTorch知道这个类是模型类 在__init__()函数中定义模型需要用到的组件(如conv,pool,fc等) 在forward()函数中将定义的组件组装成需要的模型]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[CVPR2019医学图像处理论文集]]></title>
+    <url>%2F2019%2F10%2F09%2Fpapers-about-medical-image-analysis-at-cvpr2019%2F</url>
+    <content type="text"><![CDATA[参考文献 &amp; 资源链接 CVPR2019医学影像分析文集]]></content>
+      <categories>
+        <category>论文笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[CUDA—内存模型]]></title>
+    <url>%2F2019%2F10%2F09%2Fcuda-memory-model%2F</url>
+    <content type="text"><![CDATA[现代计算机的内存结构主要有：寄存器(Registers)、缓存(Caches)、主存(Main Memory)和硬盘存储(Disk Memory)。速度最快的是寄存器，接着是缓存，然后是主存储器，常见的就是内存条，最后是硬盘。GPU和CPU的内存设计有着相似的准则和模型，CUDA编程模型将内存层次结构很好的呈现给开发者，让我们能显式的控制其行为。 GPU中内存设备有寄存器、共享内存、本地内存、常量内存、纹理内存、全局内存，各种内存都有自己的作用域、生命周期和缓存行为。 参考文章 &amp; 资源链接 CUDA内存模型概述]]></content>
+      <categories>
+        <category>CUDA编程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[CUDA—编程模型]]></title>
+    <url>%2F2019%2F10%2F08%2Fcuda-programming-model%2F</url>
+    <content type="text"><![CDATA[本文主要记录CUDA的内存分配、释放，主机与设备的数据传输，固定内存等内容 在标准的CUDA应用程序中，通常有以下几个步骤： 在Device上分配内存 将数据从Host复制到Device 在GPU上通过核函数对数据进行计算 将数据从Device复制到Host 释放分配的设备内存 其中，Device即GPU，Host即CPU，核函数即Kernel (the function that runs on GPU)。 1. 内存管理内存管理在串行程序中非常常见，寄存器和栈的内存由机器自己管理，堆空间由用户控制分配和释放。CUDA提供API可以分配管理Device上的内存，也可以管理Host上的内存。 标准C函数 CUDA C函数 说明 malloc cudaMalloc 内存分配 memcpy cudaMemcpy 内存复制 memset cudaMemset 内存设置 free cudaFree 内存释放 通常来讲，对于一维数组，在GPU中进行内存分配和数据拷贝使用的是cudaMalloc和cudaMemcpy函数，但是对于二维或者三维矩而言，使用cudaMalloc并不能得到最佳性能。原因是对于2D和3D内存，对齐是一个很重要的性质。cudaMallocPitch和cudaMalloc3D这两个函数能够保证分配的内存是合理对齐的，满足物理上的内存访问，可以确保对行进行访问的时候具有最优的效率。除此之外，对于数组内存的复制应当使用cudaMemcpy2D和cudaMemcpy3D来实现。 NOTE: cudaMallocPitch在分配行空间的时候会进行内存补齐，使得每一行的总的大小为128的整数倍，分配的总内存要大于实际所需的内存，我们在访问某一行的某个元素时，按照a[pitch*row+col]来访问。因此，在使用cudaMallocPitch的时候一定要返回pitch，只有这样才能访问二维数组的元素。当需要将这个二维数组从Device复制到Host的时候，如果使用cudaMemcpy不仅复制了数组的元素，也复制了补齐的内存，cudaMemcpy2D会跳过补齐的内存，只复制有效的数组元素。 2. Host/Device数据传输在CUDA应用的步骤中，数据的传输是必须的同时也是算法性能的瓶颈，相对于计算过程而言，数据的传输过程十分的耗费时间。优化数据传输的方式主要有三种： 尽量减少Host和Device之间数据的传输 使用CUDA内存优化技巧。比如Pinned Memory，Shared Memory，Constant Memory，使用流来掩盖内存延迟等【使用固定内存获得更高的数据传输带宽】 将多个小的数据传输合并为一次大的数据传输，这样可以消除每次传输的大部分开销 2.1 固定内存(Pinned Memory)在CPU与GPU协同计算过程中，主机内存默认时分页(pageable)内存，分页内存需要先转换为固定(Pinned)内存，然后进行主机与设备之间的内存拷贝。在CUDA C/C++中可以通过cudaMallocHost()或cudaHostAlloc()函数开辟固定内存并进行直接访问，从而提高Device和Host之间数据传输的效率。CUDA开辟的固定内存通过cudaFreeHost函数进行释放。 NOTE: 固定内存的分配有可能会失败，所以要进行错误检查。 12345cudaError_t status = cudaMallocHost((void**)&amp;h_PinnedMem, size);if(status != cudaSuccess)&#123; printf("Error in allocating pinned host memory");&#125; 2.2 合并小规模的数据传输因为每次传输都会产生额外的开销，所以最好将多个小规模的数据传输合并为单独的一次数据传输。可以使用临时的数组，然后将要传输的数据填充该数组，数组最好为固定内存的数组。 3. 核函数//TODO 参考文章 CUDA编程之快速入门 CUDA编程模型概述 Hands-On-GPU-Accelerated-Computer-Vision-with-OpenCV-and-CUDA]]></content>
+      <categories>
+        <category>CUDA编程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[医学图像处理资源汇总]]></title>
+    <url>%2F2019%2F10%2F03%2Fawsome-medical-image-processing%2F</url>
+    <content type="text"><![CDATA[汇总分类医学图像处理相关的数据、论文以及学习资源。 医学图像数据资源 Chest X-ray Dataset Open-Access Medical Image Repositories CVonline:Image Datebase–Biological/Medical CT-based Atlas of Head and Neck Cornell Vision and Image Analysis Group Public Databases Medical Imaging Datasets MICCAI2018 PET Radiomics Challenges TCIA Collections IXI Dataset OSSIS Data Mandibular CT Dataset Collection]]></content>
+      <categories>
+        <category>医学图像处理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[PyTorch简介]]></title>
+    <url>%2F2019%2F10%2F03%2Fpytorch-introduction%2F</url>
+    <content type="text"><![CDATA[PyTorch是基于torch的Python开源机器学习库，本文主要记录PyTorch的基本数据类型以及自动求导机制。 PyTorch是一个基于Python的科学计算包，主要提供以下两种服务： 作为NumPy的替代品，使用GPU的强大计算力（通过张量实现） 提供最大的灵活性和高速的深度学习研究平台（包含自动求导系统的深度神经网络） 1. 张量张量(Tensor)是PyTorch里面基础的运算单元，与NumPy的ndarry相同，都表示的是一个数据类型相同的多维矩阵。与ndarry的最大区别就是，Tensor可以在GPU上运行，ndarry只能在CPU上运行。张量本质上是一个矩阵，就存在着创建、索引、算数操作、逻辑操作以及维度操作等方法以及数据类型等属性。 2. 自动求导(Autograd)深度学习的算法本质是通过反向传播求导数，PyTorch的autograd的模块则实现了此功能。在Tensor上的所有操作，autograd都能为其自动提供微分，避免手动计算导数的复杂过程。 参考文章 PyTorch学习笔记]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>PyTorch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[PyTorch数据的加载和预处理]]></title>
+    <url>%2F2019%2F10%2F02%2Fpytorch-data-loader-and-preprocess%2F</url>
+    <content type="text"><![CDATA[PyTorch通过torch.utils.data对一般常用的数据加载进行了封装，可以很容易地实现多线程数据预读和批量加载。torchvision中包含了常用的图像数据集，可以通过torchvision.datasets进行调用。 Pytorch读取图片的基本流程： 通过定义Dataset的子类定义如何通过索引读取图片及其标签； 通过DataLoder触发Dataset的子类去读取图片及其标签。 1. DatasetPyTorch读取图片，主要是通过Dataset类。Dataset作为所有datasets的基类存在，所有的datasets子类都需要继承它，并且实现__len__和__getitem__这两个成员函数，前者返回数据集的大小，后者支持对数据集进行整数索引。构建一个Dataset子类的基本流程： 1. __init__:初始化，在初始化函数中将准备好的获取图片的路径和标签存储到list中，其一个元素对应一个样本的路径和标签。初始化中还会初始化transform，transform是一个Compose类型，里面有一个list，其中定义了各种对图像进行处理的操作。 2. __getitem__:从list中获取图片的路径和标签，然后对图片进行读取，对图像进行预处理之后返回。 1234567891011121314import torch.utils.data as Datasetimport pandasclass MyDataset(Datasets): def __init__(self,csv_file,transform,target_transform): self.files = pandas.read_cvs(csv_file) # 获取图片数据的索引 self.transform = transform self.target_transform = target_transform def __getitem__(self,idx): # get a sample: img, label 获取图像和标签 if self.transform is not None: img = self.transform(img) return img,label def __len__(self): return len(self.files) 2. DataLoderDataset的子类主要定义了如何通过索引读取图片及其标签，以及对图片的预处理操作。但是，触发Dataset的读取操作是通过DataLoder实现的。DataLoder的参数有： dataset(Dataset)：加载的数据集 batch_size(int,optional’)：每个batch加载多少个样本 shuffel(bool,optional)：设置为True时每个epoch会打乱数据 sampler(Sampler,optional)：定义从数据集中提取样本的策略 num_workers(int,optional)：用多少个子进程加载数据 collate_fn(callable,optional) pin_memory(bool,optional) drop_last(bool,optional)：如果数据集不能被batch_size整除，，设置为True会删除最后一个不完整的batch。 3. torchvisiontorchvision是PyTorch中专门处理图像的库，其中包含了目前流行的图像数据集、模型结构和常用的图片转换工具。 3.1 torchvision.datasetstorchvision.datasets中包含了以下数据集：MNIST,COCO,LSUN Classification,ImageFolder,Imagenet-12,CIFAR10 and CIFAR100以及STL10。我们可以直接使用其中的数据集，示例如下： 123456import torchvision.datasets as datasetstrainset = datasets.MNIST(root='./data', # 表示MNIST数据的加载目录 train=True, # 表示是否加载数据库的训练集，false的时候加载测试集 tranform=None， # 是否对数据进行预处理 target_transform=None, download=True) # 表示是否自动下载MNIST数据集，并把数据集放在root下 3.2 torchvision.modelstorchvision中不仅提供了常用的图片数据集，还提供了训练好的模型，可以在加载之后直接使用。torchvision.models中包含的模型结构有AlexNet,VGG,ResNet,SqueezeNet及DenseNet。可以使用随机初始化的权重来创建这些模型，也可以使用预训练的模型。示例如下： 12345import torchvision.models as models# 随机初始化权重创建模型alexnet = models.AlexNet()# 使用预训练模型resnet18 = models.ResNet18(pretrained=True) 3.3 torchvision.transformstorchvision.transforms中提供了一般的图像转换操作，用于数据处理和数据增强。transform的方法主要分为四大类： 裁剪(Crop) 中心裁剪：transforms.CenterCrop(size) 随机裁剪：transforms.RandomCrop(size,padding=0) 随机裁剪再Resize：transforms.RandomResizedCrop(size,interpolation=2) 翻转和旋转(Flip and Rotation) 随机水平翻转：transforms.RandomHorizontalFlip 图像变换 标准化：transforms.Normalize(mean,std) 填充：transforms.Pad(padding,fill=0) 对transform操作 组合多个transform：transforms.Compose(transforms) 参考文章 PyTorch中文文档 PyTorch Handbook]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>PyTorch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[深度学习资源汇总]]></title>
+    <url>%2F2019%2F10%2F01%2Fawsome-deep-learning%2F</url>
+    <content type="text"><![CDATA[汇总分类深度学习相关的数据、论文以及学习资源。 深度学习框架 Pytorch中文网 天池TIANCHI Awesome-PyTorch-Chinese Pytorch中文手册(pytorch-handbook) 论文及书籍资源数据资源代码资源]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[C程序的内存布局]]></title>
+    <url>%2F2019%2F10%2F01%2Fc-memory-layout%2F</url>
+    <content type="text"><![CDATA[C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——栈区、堆区、数据区和代码区(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。 一个可执行文件分为映像和运行两种状态。在编译链接后形成的映像中，只包含代码段(Code)、只读数据段(RO data)和读写数据段(RW data)。在程序运行前的加载过程中，将动态生成未初始化数据段(BSS)，在程序运行时将动态生成堆(Heap)和栈(Stack)区域。 1. 静态区域(全局区域)1.1 代码段代码段由程序中执行的机器代码组成。在C语言中，程序语言进行编译后，形成机器代码。在程序执行过程中，CPU的程序计数器指向代码段的每一条机器代码，并由处理器依次运行。 1.2 只读数据段(RO data，即常量区)只读数据区存储的是程序中使用的一些不会被更改的数据，如字符串常量。程序运行结束后由系统进行释放。 1.3 读写数据段(RW data)存放已初始化的全局变量和静态变量（在程序生命周期中地址不变），这些变量占用存储器的空间，在程序执行时要位于可读写区域且被初始化。 1.4 未初始化数据段(BSS-Block Started by Symbol)未初始化数据是在程序声明，但是没有初始化的变量，这些变量在程序运行之前不需要占用存储器的空间。BSS段的变量只有名称和大小，没有值。 2. 动态区域2.1 堆(Heap) 堆内存只在程序运行时出现，一般由程序员分配和释放（C语言中使用malloc/free，C++中使用new/delete），区别于数据结构中的堆。 操作系统中有一个记录内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请的空间的堆结点，然后将该结点从链表中移除，并将该结点的内存分配给程序，多余的部分重新放回空闲链表中。 在windows下，堆是由低地址向高地址扩展的结构，是不连续的内存区域。 2.1 栈(Stack) 栈内存只在程序运行时出现，由系统编译器自动分配和释放，存放函数的参数值、内部的局部变量以及返回值等。 只要栈的剩余空间大于所申请的空间，系统将为程序提供内存。在windows下，栈是由高地址向低地址扩展的结构，是一块连续的内存区域。 参考文章 C程序的内存布局 C语言内存分布图]]></content>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[计算机视觉资源汇总]]></title>
+    <url>%2F2019%2F09%2F30%2Fawsome-computer-vision%2F</url>
+    <content type="text"><![CDATA[汇总分类计算机视觉相关的数据、论文以及学习资源。 图像和视频数据资源 CVonline:Image Datebase]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[机器学习资源汇总]]></title>
+    <url>%2F2019%2F09%2F30%2Fawsome-machine-learning%2F</url>
+    <content type="text"><![CDATA[汇总分类机器学习相关的数据、论文以及学习资源。]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[C/C++资源汇总]]></title>
+    <url>%2F2019%2F09%2F30%2Fawsome-c-and-cpp%2F</url>
+    <content type="text"><![CDATA[汇总C/C++编程相关的数据、论文以及学习资源。]]></content>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Github+Hexo搭建个人网站]]></title>
+    <url>%2F2019%2F09%2F30%2Fhexo-building-personal-website%2F</url>
+    <content type="text"><![CDATA[Hexo+Github应该是目前搭建个人博客使用最广的方式，本文主要记录利用Hexo+Github搭建静态博客以及一些配置相关的问题。 1. 准备工作 下载并安装node.js【下载地址】 安装node.js会默认安装npm，安装完成后，在命令行中输入命令验证Hexo的环境是否搭建完成。 12node -v # 输出node.js的版本号npm -v # 输出npm的版本号 下载安装git【下载地址】 2. 创建本地静态博客 新建一个文件夹用于存放blog文件 进入该文件夹内，使用npm命令安装Hexo，输入:npm install -g hexo-cli(下载静态网站的相关文件) 右键运行git，输入:hexo init(初始化静态网站的架构) 在命令行中输入命令，验证静态网站是否完成 12hexo generate # 本地生成静态文件hexo serve # 启动本地服务 打开浏览器，访问https://localhost:4000 3. 将博客与Github关联 在Github上创建yourname.github.io项目 打开本地blog文件夹内的_config.yml配置文件，并设置其中的deploy属性： 1234deploy: type: git repository: https://github.com/yourname/yourname.github.io.git branch: master 运行：npm install hexo-deployer-git --save 运行：hexo generate 运行：hexo deploy # 将本地静态文件发布到Github打开浏览器，访问https://yourname.github.io 参考文章 Hexo官方网站 NexT主题 Next主题增加Gitment评论系统 Hexo Next主题博客功能完善 Markdown入门参考 最完美的Hexo多电脑同步方法]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+  </entry>
+</search>
