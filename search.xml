@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Visual Studio编程问题集锦]]></title>
+    <url>%2F2019%2F10%2F12%2Fvs-programming-errors-summary%2F</url>
+    <content type="text"><![CDATA[本文主要记录Visual Studio使用过程中出现的问题以及相应的解决方法。 1. 编译 模块计算机类型 x64 与目标计算机类型 x86 冲突 出现此问题要在三个的地方进行确认： 项目右键-&gt;属性-&gt;链接器-&gt;高级-&gt;目标计算机：设置为MachineX64 (/MACHINE:X64) 项目右键-&gt;属性-&gt;链接器-&gt;命令行-&gt;其他选项：设置为/machine:X64 VS菜单栏-&gt;生成-&gt;配置管理器-&gt;活动解决方案平台：设置为x64 NOTE: 在进行一些开源项目的编译时，属性菜单中没有链接器 的属性，但是有库管理器 属性，可以在该属性下配置目标计算机和命令行的值。]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[Redis简介]]></title>
+    <url>%2F2019%2F10%2F12%2Fredis-introduction%2F</url>
+    <content type="text"><![CDATA[本文主要记录Redis的安装、配置、数据类型以及基本操作。 1. Windows平台下安装Redis官网的Redis只有Linux版本的，但是Github上有Windows版的Redis【下载地址】。Windows的Redis有msi安装版，压缩包版和源码编译三种使用方式。 Redis的目录下主要有两类文件：应用文件和配置文件。 文件名 文件功能 redis-server 服务端应用，提供Redis服务 redis-cli 客户端程序，通过连接Redis服务并进行操作 redis-benchmark 性能测试，用来模拟同时由N个客户端发送M个SETs/GETs操作 redis-check-aof 更新日志检查 redis-check-dump 本地数据库检查 redis.windows.conf 配置文件，将Redis作为普通软件使用，命令行关闭则Redis关闭 redis.windows-service.conf 配置文件，将Redis作为系统服务进行配置 2. 配置和使用2.1 使用命令Redis安装完成后需要进行启动才能使用，打开命令行，输入： 12345678910111213141516171819202122C:\Redis&gt;redis-server redis.windows.conf _._ _.-``__ &apos;&apos;-._ _.-`` `. `_. &apos;&apos;-._ Redis 3.2.100 (00000000/0) 64 bit.-`` .-```. ```\/ _.,_ &apos;&apos;-._( &apos; , .-` | `, ) Running in standalone mode|`-._`-...-` __...-.``-._|&apos;` _.-&apos;| Port: 6379| `-._ `._ / _.-&apos; | PID: 6660`-._ `-._ `-./ _.-&apos; _.-&apos;|`-._`-._ `-.__.-&apos; _.-&apos;_.-&apos;|| `-._`-._ _.-&apos;_.-&apos; | http://redis.io`-._ `-._`-.__.-&apos;_.-&apos; _.-&apos;|`-._`-._ `-.__.-&apos; _.-&apos;_.-&apos;|| `-._`-._ _.-&apos;_.-&apos; |`-._ `-._`-.__.-&apos;_.-&apos; _.-&apos; `-._ `-.__.-&apos; _.-&apos; `-._ _.-&apos; `-.__.-&apos;[6660] 12 Oct 11:17:05.019 # Server started, Redis version 3.2.100[6660] 12 Oct 11:17:05.028 * DB loaded from disk: 0.007 seconds[6660] 12 Oct 11:17:05.029 * The server is now ready to accept connections on port 6379 就可以看到Redis已经打开了。使用这种方式的缺点是不能关闭命令行，否则Redis服务就会关闭。如果要开机启动Redis服务，需要将Redis安装成Windows服务。 12345678# 安装服务redis-server --service-install redis.windows.conf # 启动服务redis-server --service-start # 停止服务redis-server --service-stop # 卸载服务redis-server --service-uninstall 另外打开一个命令行窗口，输入客户端使用命令redis-cli -h host -p port -a password就可以连接到Redis服务,host默认为127.0.0.1,port默认为6379。 12C:\Redis&gt;redis-cli -h 127.0.0.1 -p 6379 #命令行输入127.0.0.1:6379&gt; # 2.2 Redis配置文件属性12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061################################## NETWORK ######################################bind 127.0.0.1#protected-mode yes#Redis默认监听端口port 6379#tcp-backlog 511#客户端闲置多少秒后断开连接timeout 0#tcp-keepalive 0################################# GENERAL ######################################是否作为守护进程运行,windows下不支持该属性daemonize no#日志显示级别loglevel notice#指定日志输出的文件名，默认输出到标准输出端口logfile &quot;&quot;#databases 16################################ SNAPSHOTTING #################################持久化策略save &lt;seconds&gt; &lt;changes&gt;save 100 1 #当有一条数据被改变时，900s刷新到disk一次save 300 10 #当有10条数据被改变时，300s刷新到disk一次save 60 10000 #当有10000条数据被改变，60s刷新到disk一次#持久化数据保存的文件名dbfilename dump.db#持久化数据保存的路径dir ./################################# REPLICATION ##################################主从配置，设置该数据库为其他的从数据库slaveof &lt;masterip&gt; &lt;masterport&gt;#主服务器连接时需要的密码masterauth &lt;master-password&gt;################################## SECURITY ####################################设置连接密码requirepass &lt;password&gt;################################### LIMITS #####################################最大客户连接数maxclients 10000#persistence-available [(yes)|no]#可使用的最大最大内存maxmemory &lt;bytes&gt;#maxmemory-policy noeviction#maxmemory-samples 5############################## APPEND ONLY MODE ################################是否开启日志功能appendonly no#AOF持久化策略appendfsync [always|everysec|no] 3. Redis数据类型作为key-value型数据库，Redis也提供了键和值的映射关系。除了常规的数值和字符串，Resis的值还可以是Lists，Sets，Sorted Sets,Hashes。值的数据类型决定了该键值支持的操作。Redis 支持诸如列表、集合或有序集合的交集、并集、查集等高级原子操作；同时，如果值的类型是普通数字，Redis则提供自增等原子操作 4. 编程4.1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 12345678910111213141516171819202122232425262728293031import cv2import redisimport structimport numpy as npdef toRedis(array): ''' Encode ndarry 'array' to bytes ''' h,w = array.shape shape = struct.pack('&gt;II',h,w) encode = shape+array.tobytes() return encodedef fromRedis(encode): h,w = struct.unpack('&gt;II',encode[:8]) array = np.frombuffer(encode,dtype=np.uint8,offset=8).reshape(h,w) return arrayif __name__=='__main__': r = redis.Redis(host='127.0.0.1',port=6379) img = cv2.imread('./oil11_2.bmp',cv2.IMREAD_GRAYSCALE) r.set('name','tangming') r.set('age',5) r.set('image',toRedis(img)) print(r.get('name')) print(r.get('age')) array = fromRedis(r.get('image')) cv2.imshow('image',array) 4.2 Redis C++编程参考文献 &amp; 资源链接 microsoftarchive-redis]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[Redis内存模型]]></title>
+    <url>%2F2019%2F10%2F11%2Fredis-memory-model%2F</url>
+    <content type="text"><![CDATA[本文主要记录Redis的内存模型，包括内存的使用情况、内存分配器、简单动态字符串以及不同对象类型在内存中的编码方式等。 1. 内存统计在客户端可以通过info命令查看内存的使用情况。 1234567891011121314151617127.0.0.1:6379&gt; info memory# Memoryused_memory:13293448 #Redis分配器分配的内存总量used_memory_human:12.68M #used_memory_rss:13256520 #Redis进程占据操作系统的内存，除了used_memory之外还有本身运行内存以及内存碎片等used_memory_rss_human:12.64Mused_memory_peak:25839504used_memory_peak_human:24.64Mtotal_system_memory:0total_system_memory_human:0Bused_memory_lua:37888used_memory_lua_human:37.00Kmaxmemory:0maxmemory_human:0Bmaxmemory_policy:noevictionmem_fragmentation_ratio:1.00 #内存碎片比率mem_allocator:jemalloc-3.6.0 #Redis使用的内存分配器 Redis的内存占用主要分为以下几个部分： 数据：即使用键值对存储的数据，这部分内存统计在used_memory中 进程运行内存：Redis主进程本身运行需要的内存 缓冲内存：包括客户端缓冲内存、复制积压缓冲区、AOF缓冲区等。客户端缓冲内存存储客户端连接的输入输出缓冲；复制积压缓冲内存用于部分复制功能；AOF缓冲区用于进行AOF重写时保存最近的写入命令。 内存碎片：Redis再分配和回收物理内存过程中产生的无法有效利用的内存。 参考文献 &amp; 资源链接 如何阅读Redis源码 Redis设计与实现 Redis内存模型]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[PyTorch模型]]></title>
     <url>%2F2019%2F10%2F09%2Fpytorch-model-introduction%2F</url>
     <content type="text"><![CDATA[本文主要记录PyTorch模型搭建，参数初始化,模型的保存和加载以及模型Fintune的相关内容。 1. 模型的定义PyTorch中进行模型定义需要注意的主要有三个部分： 模型类要继承nn.Module，让PyTorch知道这个类是模型类 在__init__()函数中定义模型需要用到的组件(如conv,pool,fc等) 在forward()函数中将定义的组件组装成需要的模型]]></content>
@@ -79,12 +103,12 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[计算机视觉资源汇总]]></title>
-    <url>%2F2019%2F09%2F30%2Fawsome-computer-vision%2F</url>
-    <content type="text"><![CDATA[汇总分类计算机视觉相关的数据、论文以及学习资源。 图像和视频数据资源 CVonline:Image Datebase]]></content>
-      <categories>
-        <category>计算机视觉</category>
-      </categories>
+    <title><![CDATA[C/C++资源汇总]]></title>
+    <url>%2F2019%2F09%2F30%2Fawsome-c-and-cpp%2F</url>
+    <content type="text"><![CDATA[汇总C/C++编程相关的数据、论文以及学习资源。]]></content>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[机器学习资源汇总]]></title>
@@ -95,12 +119,12 @@
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[C/C++资源汇总]]></title>
-    <url>%2F2019%2F09%2F30%2Fawsome-c-and-cpp%2F</url>
-    <content type="text"><![CDATA[汇总C/C++编程相关的数据、论文以及学习资源。]]></content>
-      <tags>
-        <tag>C/C++</tag>
-      </tags>
+    <title><![CDATA[计算机视觉资源汇总]]></title>
+    <url>%2F2019%2F09%2F30%2Fawsome-computer-vision%2F</url>
+    <content type="text"><![CDATA[汇总分类计算机视觉相关的数据、论文以及学习资源。 图像和视频数据资源 CVonline:Image Datebase]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
   </entry>
   <entry>
     <title><![CDATA[Github+Hexo搭建个人网站]]></title>

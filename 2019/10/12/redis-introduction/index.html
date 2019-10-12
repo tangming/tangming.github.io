@@ -111,17 +111,17 @@
 
 
 
-<meta name="description" content="参考文献 &amp;amp; 资源链接 CVPR2019医学影像分析文集">
+<meta name="description" content="本文主要记录Redis的安装、配置、数据类型以及基本操作。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CVPR2019医学图像处理论文集">
-<meta property="og:url" content="http://yoursite.com/2019/10/09/papers-about-medical-image-analysis-at-cvpr2019/index.html">
+<meta property="og:title" content="Redis简介">
+<meta property="og:url" content="http://yoursite.com/2019/10/12/redis-introduction/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="参考文献 &amp;amp; 资源链接 CVPR2019医学影像分析文集">
+<meta property="og:description" content="本文主要记录Redis的安装、配置、数据类型以及基本操作。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-10T01:41:15.205Z">
+<meta property="og:updated_time" content="2019-10-12T11:39:23.205Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CVPR2019医学图像处理论文集">
-<meta name="twitter:description" content="参考文献 &amp;amp; 资源链接 CVPR2019医学影像分析文集">
+<meta name="twitter:title" content="Redis简介">
+<meta name="twitter:description" content="本文主要记录Redis的安装、配置、数据类型以及基本操作。">
 
 
 
@@ -151,13 +151,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/09/papers-about-medical-image-analysis-at-cvpr2019/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/12/redis-introduction/">
 
 
 
 
 
-  <title>CVPR2019医学图像处理论文集 | Tangming's Blog</title>
+  <title>Redis简介 | Tangming's Blog</title>
   
 
 
@@ -326,7 +326,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/09/papers-about-medical-image-analysis-at-cvpr2019/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/redis-introduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ming Tang">
@@ -343,7 +343,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CVPR2019医学图像处理论文集</h1>
+          <h1 class="post-title" itemprop="name headline">Redis简介</h1>
         
 
         <div class="post-meta">
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-09T19:51:03+08:00">
-                2019-10-09
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-12T09:19:29+08:00">
+                2019-10-12
               </time>
             
 
@@ -371,8 +371,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-10T09:41:15+08:00">
-                2019-10-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-12T19:39:23+08:00">
+                2019-10-12
               </time>
             
           </span>
@@ -390,8 +390,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/论文笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">论文笔记</span>
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -427,8 +427,61 @@
       
 
       
-        <h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
-<li><a href="https://mp.weixin.qq.com/s/3-YpBL02QY8PmlTiCVmJiQ" target="_blank" rel="noopener">CVPR2019医学影像分析文集</a></li>
+        <p>本文主要记录Redis的安装、配置、数据类型以及基本操作。</p>
+<a id="more"></a>
+<h2 id="1-Windows平台下安装Redis"><a href="#1-Windows平台下安装Redis" class="headerlink" title="1. Windows平台下安装Redis"></a>1. Windows平台下安装Redis</h2><p>官网的Redis只有Linux版本的，但是Github上有Windows版的Redis<a href="https://github.com/microsoftarchive/redis/releases" target="_blank" rel="noopener">【下载地址】</a>。Windows的Redis有msi安装版，压缩包版和源码编译三种使用方式。</p>
+<p>Redis的目录下主要有两类文件：应用文件和配置文件。</p>
+<table>
+<thead>
+<tr>
+<th align="left">文件名</th>
+<th align="left">文件功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">redis-server</td>
+<td align="left">服务端应用，提供Redis服务</td>
+</tr>
+<tr>
+<td align="left">redis-cli</td>
+<td align="left">客户端程序，通过连接Redis服务并进行操作</td>
+</tr>
+<tr>
+<td align="left">redis-benchmark</td>
+<td align="left">性能测试，用来模拟同时由N个客户端发送M个SETs/GETs操作</td>
+</tr>
+<tr>
+<td align="left">redis-check-aof</td>
+<td align="left">更新日志检查</td>
+</tr>
+<tr>
+<td align="left">redis-check-dump</td>
+<td align="left">本地数据库检查</td>
+</tr>
+<tr>
+<td align="left">redis.windows.conf</td>
+<td align="left">配置文件，将Redis作为普通软件使用，命令行关闭则Redis关闭</td>
+</tr>
+<tr>
+<td align="left">redis.windows-service.conf</td>
+<td align="left">配置文件，将Redis作为系统服务进行配置</td>
+</tr>
+</tbody></table>
+<h2 id="2-配置和使用"><a href="#2-配置和使用" class="headerlink" title="2. 配置和使用"></a>2. 配置和使用</h2><h3 id="2-1-使用命令"><a href="#2-1-使用命令" class="headerlink" title="2.1 使用命令"></a>2.1 使用命令</h3><p>Redis安装完成后需要进行启动才能使用，打开命令行，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">C:\Redis&gt;redis-server redis.windows.conf</span><br><span class="line">             _._</span><br><span class="line">        _.-``__ &apos;&apos;-._</span><br><span class="line">    _.-``    `.  `_.  &apos;&apos;-._           Redis 3.2.100 (00000000/0) 64 bit</span><br><span class="line">.-`` .-```.  ```\/    _.,_ &apos;&apos;-._</span><br><span class="line">(    &apos;      ,       .-`  | `,    )     Running in standalone mode</span><br><span class="line">|`-._`-...-` __...-.``-._|&apos;` _.-&apos;|     Port: 6379</span><br><span class="line">|    `-._   `._    /     _.-&apos;    |     PID: 6660</span><br><span class="line">`-._    `-._  `-./  _.-&apos;    _.-&apos;</span><br><span class="line">|`-._`-._    `-.__.-&apos;    _.-&apos;_.-&apos;|</span><br><span class="line">|    `-._`-._        _.-&apos;_.-&apos;    |           http://redis.io</span><br><span class="line">`-._    `-._`-.__.-&apos;_.-&apos;    _.-&apos;</span><br><span class="line">|`-._`-._    `-.__.-&apos;    _.-&apos;_.-&apos;|</span><br><span class="line">|    `-._`-._        _.-&apos;_.-&apos;    |</span><br><span class="line">`-._    `-._`-.__.-&apos;_.-&apos;    _.-&apos;</span><br><span class="line">    `-._    `-.__.-&apos;    _.-&apos;</span><br><span class="line">        `-._        _.-&apos;</span><br><span class="line">            `-.__.-&apos;</span><br><span class="line"></span><br><span class="line">[6660] 12 Oct 11:17:05.019 # Server started, Redis version 3.2.100</span><br><span class="line">[6660] 12 Oct 11:17:05.028 * DB loaded from disk: 0.007 seconds</span><br><span class="line">[6660] 12 Oct 11:17:05.029 * The server is now ready to accept connections on port 6379</span><br></pre></td></tr></table></figure>
+<p>就可以看到Redis已经打开了。使用这种方式的缺点是不能关闭命令行，否则Redis服务就会关闭。如果要开机启动Redis服务，需要将Redis安装成Windows服务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 安装服务</span><br><span class="line">redis-server --service-install redis.windows.conf </span><br><span class="line"># 启动服务</span><br><span class="line">redis-server --service-start </span><br><span class="line"># 停止服务</span><br><span class="line">redis-server --service-stop </span><br><span class="line"># 卸载服务</span><br><span class="line">redis-server --service-uninstall </span><br></pre></td></tr></table></figure>
+<p>另外打开一个命令行窗口，输入客户端使用命令<code>redis-cli -h host -p port -a password</code>就可以连接到Redis服务,<code>host</code>默认为<code>127.0.0.1</code>,<code>port</code>默认为<code>6379</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Redis&gt;redis-cli -h 127.0.0.1 -p 6379 #命令行输入</span><br><span class="line">127.0.0.1:6379&gt;                         #</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-Redis配置文件属性"><a href="#2-2-Redis配置文件属性" class="headerlink" title="2.2 Redis配置文件属性"></a>2.2 Redis配置文件属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">################################## NETWORK #####################################</span><br><span class="line">#</span><br><span class="line">bind 127.0.0.1</span><br><span class="line">#</span><br><span class="line">protected-mode yes</span><br><span class="line">#Redis默认监听端口</span><br><span class="line">port 6379</span><br><span class="line">#</span><br><span class="line">tcp-backlog 511</span><br><span class="line">#客户端闲置多少秒后断开连接</span><br><span class="line">timeout 0</span><br><span class="line">#</span><br><span class="line">tcp-keepalive 0</span><br><span class="line"></span><br><span class="line">################################# GENERAL #####################################</span><br><span class="line">#是否作为守护进程运行,windows下不支持该属性</span><br><span class="line">daemonize no</span><br><span class="line">#日志显示级别</span><br><span class="line">loglevel notice</span><br><span class="line">#指定日志输出的文件名，默认输出到标准输出端口</span><br><span class="line">logfile &quot;&quot;</span><br><span class="line">#</span><br><span class="line">databases 16</span><br><span class="line"></span><br><span class="line">################################ SNAPSHOTTING  ################################</span><br><span class="line">#持久化策略save &lt;seconds&gt; &lt;changes&gt;</span><br><span class="line">save 100 1    #当有一条数据被改变时，900s刷新到disk一次</span><br><span class="line">save 300 10   #当有10条数据被改变时，300s刷新到disk一次</span><br><span class="line">save 60 10000 #当有10000条数据被改变，60s刷新到disk一次</span><br><span class="line">#持久化数据保存的文件名</span><br><span class="line">dbfilename dump.db</span><br><span class="line">#持久化数据保存的路径</span><br><span class="line">dir ./</span><br><span class="line">################################# REPLICATION #################################</span><br><span class="line">#主从配置，设置该数据库为其他的从数据库</span><br><span class="line">slaveof &lt;masterip&gt; &lt;masterport&gt;</span><br><span class="line">#主服务器连接时需要的密码</span><br><span class="line">masterauth &lt;master-password&gt;</span><br><span class="line"></span><br><span class="line">################################## SECURITY ###################################</span><br><span class="line">#设置连接密码</span><br><span class="line">requirepass &lt;password&gt;</span><br><span class="line"></span><br><span class="line">################################### LIMITS ####################################</span><br><span class="line">#最大客户连接数</span><br><span class="line">maxclients 10000</span><br><span class="line">#</span><br><span class="line">persistence-available [(yes)|no]</span><br><span class="line">#可使用的最大最大内存</span><br><span class="line">maxmemory &lt;bytes&gt;</span><br><span class="line">#</span><br><span class="line">maxmemory-policy noeviction</span><br><span class="line">#</span><br><span class="line">maxmemory-samples 5</span><br><span class="line"></span><br><span class="line">############################## APPEND ONLY MODE ###############################</span><br><span class="line">#是否开启日志功能</span><br><span class="line">appendonly no</span><br><span class="line">#AOF持久化策略</span><br><span class="line">appendfsync [always|everysec|no]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Redis数据类型"><a href="#3-Redis数据类型" class="headerlink" title="3. Redis数据类型"></a>3. Redis数据类型</h2><p>作为key-value型数据库，Redis也提供了键和值的映射关系。除了常规的数值和字符串，Resis的值还可以是<code>Lists</code>，<code>Sets</code>，<code>Sorted Sets</code>,<code>Hashes</code>。值的数据类型决定了该键值支持的操作。Redis 支持诸如列表、集合或有序集合的交集、并集、查集等高级原子操作；同时，如果值的类型是普通数字，Redis则提供自增等原子操作</p>
+<h2 id="4-编程"><a href="#4-编程" class="headerlink" title="4. 编程"></a>4. 编程</h2><h3 id="4-1-Redis-Python编程"><a href="#4-1-Redis-Python编程" class="headerlink" title="4.1 Redis Python编程"></a>4.1 Redis Python编程</h3><p>Python使用Redis非常简单，可以通过<code>pip install redis</code>在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">toRedis</span><span class="params">(array)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Encode ndarry 'array' to bytes</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    h,w = array.shape</span><br><span class="line">    shape = struct.pack(<span class="string">'&gt;II'</span>,h,w)</span><br><span class="line">    encode = shape+array.tobytes()</span><br><span class="line">    <span class="keyword">return</span> encode</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fromRedis</span><span class="params">(encode)</span>:</span></span><br><span class="line">    h,w = struct.unpack(<span class="string">'&gt;II'</span>,encode[:<span class="number">8</span>])</span><br><span class="line">    array = np.frombuffer(encode,dtype=np.uint8,offset=<span class="number">8</span>).reshape(h,w)</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    r = redis.Redis(host=<span class="string">'127.0.0.1'</span>,port=<span class="number">6379</span>)</span><br><span class="line">    img = cv2.imread(<span class="string">'./oil11_2.bmp'</span>,cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    </span><br><span class="line">    r.set(<span class="string">'name'</span>,<span class="string">'tangming'</span>)</span><br><span class="line">    r.set(<span class="string">'age'</span>,<span class="number">5</span>)</span><br><span class="line">    r.set(<span class="string">'image'</span>,toRedis(img))</span><br><span class="line"></span><br><span class="line">    print(r.get(<span class="string">'name'</span>))</span><br><span class="line">    print(r.get(<span class="string">'age'</span>))</span><br><span class="line">    array = fromRedis(r.get(<span class="string">'image'</span>))</span><br><span class="line">    cv2.imshow(<span class="string">'image'</span>,array)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-Redis-C-编程"><a href="#4-2-Redis-C-编程" class="headerlink" title="4.2 Redis C++编程"></a>4.2 Redis C++编程</h3><h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://github.com/microsoftarchive/redis/releases" target="_blank" rel="noopener">microsoftarchive-redis</a></li>
 </ul>
 
       
@@ -454,8 +507,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/09/cuda-memory-model/" rel="next" title="CUDA—内存模型">
-                <i class="fa fa-chevron-left"></i> CUDA—内存模型
+              <a href="/2019/10/11/redis-memory-model/" rel="next" title="Redis内存模型">
+                <i class="fa fa-chevron-left"></i> Redis内存模型
               </a>
             
           </div>
@@ -464,8 +517,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/10/09/pytorch-model-introduction/" rel="prev" title="PyTorch模型">
-                PyTorch模型 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/12/vs-programming-errors-summary/" rel="prev" title="Visual Studio编程问题集锦">
+                Visual Studio编程问题集锦 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -621,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Windows平台下安装Redis"><span class="nav-text">1. Windows平台下安装Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置和使用"><span class="nav-text">2. 配置和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-使用命令"><span class="nav-text">2.1 使用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Redis配置文件属性"><span class="nav-text">2.2 Redis配置文件属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Redis数据类型"><span class="nav-text">3. Redis数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-编程"><span class="nav-text">4. 编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-Redis-Python编程"><span class="nav-text">4.1 Redis Python编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-Redis-C-编程"><span class="nav-text">4.2 Redis C++编程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></ol></div>
             
 
           </div>
