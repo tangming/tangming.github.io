@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="C/C++,">
+  <meta name="keywords" content="C/C++,序列化,cereal,">
 
 
 
@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。">
-<meta name="keywords" content="C&#x2F;C++">
+<meta name="description" content="Cereal是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。">
+<meta name="keywords" content="C&#x2F;C++,序列化,cereal">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C&#x2F;C++编程—断言(Assert)">
-<meta property="og:url" content="http://yoursite.com/2019/10/15/cpp-assert/index.html">
+<meta property="og:title" content="C++序列化库—Cereal">
+<meta property="og:url" content="http://yoursite.com/2019/10/16/cereal-introduction/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。">
+<meta property="og:description" content="Cereal是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-15T01:33:52.020Z">
+<meta property="og:updated_time" content="2019-10-16T07:13:27.696Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C&#x2F;C++编程—断言(Assert)">
-<meta name="twitter:description" content="断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。">
+<meta name="twitter:title" content="C++序列化库—Cereal">
+<meta name="twitter:description" content="Cereal是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。">
 
 
 
@@ -152,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/15/cpp-assert/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/16/cereal-introduction/">
 
 
 
 
 
-  <title>C/C++编程—断言(Assert) | Tangming's Blog</title>
+  <title>C++序列化库—Cereal | Tangming's Blog</title>
   
 
 
@@ -327,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/15/cpp-assert/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/cereal-introduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ming Tang">
@@ -344,7 +344,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C/C++编程—断言(Assert)</h1>
+          <h1 class="post-title" itemprop="name headline">C++序列化库—Cereal</h1>
         
 
         <div class="post-meta">
@@ -356,8 +356,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-15T09:25:30+08:00">
-                2019-10-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-16T10:02:43+08:00">
+                2019-10-16
               </time>
             
 
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-15T09:33:52+08:00">
-                2019-10-15
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-16T15:13:27+08:00">
+                2019-10-16
               </time>
             
           </span>
@@ -428,16 +428,12 @@
       
 
       
-        <p>断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。</p>
+        <p><a href="https://uscilab.github.io/cereal/" target="_blank" rel="noopener"><strong>Cereal</strong></a>是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。</p>
 <a id="more"></a>
-<p>一个断言通常含有两个参数：一个描述假设为真时的布尔表达式，一个断言为假时需要显示的信息。<br>C++标准中的assert宏并不支持文本信息，可以使用C++宏改进ASSERT。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASSERT(condition, message)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!(condition))</span><br><span class="line">    &#123;</span><br><span class="line">        LogError(<span class="string">"Assert failed:"</span>,</span><br><span class="line">            #condition, message);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>频繁的调用<code>asset()</code>会极大影响程序的性能，增加额外的开销。在调试结束以后，可以通过在包含<code>#include &lt;assert.h&gt;</code>的语句前插入<code>#define NDEBUG</code>来禁用<code>assert()</code>调用。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> ASSERT(condition)</span></span><br><span class="line">    <span class="keyword">if</span>(!(condition))</span><br><span class="line">    &#123;</span><br><span class="line">        fflush(<span class="built_in">stdout</span>);</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">"\nAssert failed:%s, lint %u\n"</span>,__FILE__, __LINE__);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASSERT(condition) NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a href="http://c.biancheng.net/c/assert/" target="_blank" rel="noopener">断言assert函数</a></li>
+<p>Cereal使用非常简单，只需要包含头文件以及编写一个序列化函数即可。</p>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://blog.csdn.net/u012348774/article/details/79117379" target="_blank" rel="noopener">Cereal Library系列教程</a></li>
+<li><a href="https://www.patrikhuber.ch/blog/6-serialising-opencv-matrices-using-boost-and-cereal" target="_blank" rel="noopener">Serialising OpenCV matrices using boost and cereal</a></li>
 </ul>
 
       
@@ -458,6 +454,10 @@
           
             <a href="/tags/C-C/" rel="tag"># C/C++</a>
           
+            <a href="/tags/序列化/" rel="tag"># 序列化</a>
+          
+            <a href="/tags/cereal/" rel="tag"># cereal</a>
+          
         </div>
       
 
@@ -469,8 +469,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/14/redis-hiredis-introduction/" rel="next" title="Redis C++客户端—Hiredis">
-                <i class="fa fa-chevron-left"></i> Redis C++客户端—Hiredis
+              <a href="/2019/10/16/cpp-serialization-introduction/" rel="next" title="C++序列化">
+                <i class="fa fa-chevron-left"></i> C++序列化
               </a>
             
           </div>
@@ -479,8 +479,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/10/15/math-library-introduction/" rel="prev" title="数学计算库汇总">
-                数学计算库汇总 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/16/redis-data-structures/" rel="prev" title="Redis数据类型">
+                Redis数据类型 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -638,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></ol></div>
             
 
           </div>
