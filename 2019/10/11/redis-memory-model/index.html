@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Redis,">
 
 
 
@@ -112,13 +112,14 @@
 
 
 <meta name="description" content="本文主要记录Redis的内存模型，包括内存的使用情况、内存分配器、简单动态字符串以及不同对象类型在内存中的编码方式等。">
+<meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis内存模型">
 <meta property="og:url" content="http://yoursite.com/2019/10/11/redis-memory-model/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
 <meta property="og:description" content="本文主要记录Redis的内存模型，包括内存的使用情况、内存分配器、简单动态字符串以及不同对象类型在内存中的编码方式等。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-12T12:00:06.739Z">
+<meta property="og:updated_time" content="2019-10-14T03:12:23.188Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis内存模型">
 <meta name="twitter:description" content="本文主要记录Redis的内存模型，包括内存的使用情况、内存分配器、简单动态字符串以及不同对象类型在内存中的编码方式等。">
@@ -331,7 +332,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ming Tang">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -371,8 +372,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-12T20:00:06+08:00">
-                2019-10-12
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-14T11:12:23+08:00">
+                2019-10-14
               </time>
             
           </span>
@@ -458,6 +459,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
       
 
       
@@ -553,6 +560,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Ming Tang">
+            
               <p class="site-author-name" itemprop="name">Ming Tang</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -564,7 +573,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -575,7 +584,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -586,7 +595,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

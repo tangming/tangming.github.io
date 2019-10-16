@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[C++序列化]]></title>
+    <url>%2F2019%2F10%2F16%2Fcpp-serialization-introduction%2F</url>
+    <content type="text"><![CDATA[在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为序列化，它的逆过程称为反序列化。 以下为一个简单的序列化程序： 1234567891011121314151617181920212223242526272829303132333435363738394041424344#include &lt;iostream&gt;#include &lt;string&gt;struct Student&#123; std::string name; int age;&#125;;int Serialize(const Student &amp;stu, char out[])&#123; int count = 0; memcpy(out, stu.name.c_str(), stu.name.length()); count += stu.name.length(); memcpy(out + count, &amp;stu.age, sizeof(int)); count += sizeof(int); return count;&#125;int Deserialize(Student &amp;stu, const char* in, int count)&#123; int offset = 0; stu.name.append(in, count - sizeof(int)); offset += stu.name.length(); memcpy(&amp;stu.age, in + offset, sizeof(int)); return 0;&#125;int main()&#123; char buf[128]; int count = 0; Student stu1; stu1.name = "tangming"; stu1.age = 1024; count = Serialize(stu1, buf); Student stu2; Deserialize(stu2, buf, count); system("pause"); return 0;&#125; C++中常用的序列化方法主要有protobuf和Boost.Serialization。Google Protocol Buffers(protobuf)是Google内部使用的数据编码方式，用来替代XML进行数据交换。protobuf效率较高，但是数据对象必须预先定义，并使用protoc编译，适合要求效率，允许自定义类型的内部场合使用。**Boost.Serialization**可以创建或重建程序中的等效结构，并保存为二进制数据、文本数据、XML或者有用户自定义的其他文件。Boost.Serialization使用灵活简单，而且支持标准C++容器。 参考文章 &amp; 资源链接 最常用的两种C++序列化方案的使用心得]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Intel MKL简介]]></title>
+    <url>%2F2019%2F10%2F15%2Fmkl-introduction%2F</url>
+    <content type="text"><![CDATA[MKL是Intel公司出品的数学函数计算库，提供经过高度优化和大量线程化处理的计算函数，有C和Fortran接口。 MKL主要包含的内容如下： 基本线性代数子系统 稀疏基本线性代数子系统 线性代数库 可扩展线性代数库 稀疏求解器 矢量数学库 矢量统计库 傅里叶变换库 集群傅里叶变换库 1. BLASBLAS是基本线性代数子系统，提供向量与向量、向量与矩阵以及矩阵与矩阵的运算。BLAS Level1提供向量数据的加减、点乘等；BLAS Level2提供向量与举证的运算，如乘法运算；BLAS Level3提供矩阵与矩阵的运算，比如矩阵乘法。BLAS函数名结构为：&lt;character&gt;&lt;name&gt;&lt;mod&gt;()其中**&lt;character&gt;**表示代表数据类型： 参数 描述 s real, single precision c complex, single precision d real, double precision x complex, double precision 在BLAS Level1中，**&lt;name&gt;**表示的是运算的方式，如dot表示向量点乘，swap表示向量交换。在BLAS Level2和BLAS Level3中，**&lt;name&gt;**表示矩阵的类型。 参数 描述 ge 一般矩阵(general matrix) sb (general band matrix) sy (symmetric matrix) sp (symmetric matrix package storage) sb (symmetric band matrix) he (Hermitian matrix) hp (Hermitian matrix package storage) hb (Hermitian band matrix) tr (triangular matrix) tp (triangular matrix package storage) tb (triangular band matrix)]]></content>
+      <categories>
+        <category>数学计算</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[数学计算库汇总]]></title>
+    <url>%2F2019%2F10%2F15%2Fmath-library-introduction%2F</url>
+    <content type="text"><![CDATA[对于机器学习的很多问题来说，计算的瓶颈在于大规模以及频繁的矩阵预算。为了使机器学习算法运行得更高效，需要在代码中采用比较成熟的矩阵运算数学库。本文主要总结常见的矩阵运算库。 1. 基本数学库1.1 BLAS(Basic Linear Algebra Subprograms)BLAS是一个API标准，用以规范发布基础线性代数操作的数值库。Netlib用Fortran实现了BLAS的API接口，得到的库就叫BLAS。 1.2 LAPACK(Linear Algebra PACKage)LAPACK也是由Netlib用Fortran语言编写的，底层是BLAS，但是LAPACK的运行效率更高。LAPACK提供了丰富的工具函数用于矩阵运算，如解多元线性方程、线性方程组的最小平方解、计算特征向量、奇异值分解等。 2. 高级数学库2.1 EIGENEigen是一个线性算术的C++模板库，支持多平台，直接包含头文件就可以使用。TensorFlow就是基于Eigen的。底层： BLAS/LAPACK：支持所有基于F77的BLAS或LAPACK作为底层(EIGEN_USE_BLAS、EIGEN_USE_LAPACK) MKL：支持MKL作为底层(EIGEN_USE_MKL_ALL) CUDA：支持在CUDA kernels里使用CUDA OpenMP：多线程优化 2.2 Intel MKL(Math Kernel Library)MKL基于Intel C++和Fortran编译器构建而成，并利用OpenMP实现了线程化。MKL的算法能够平均分配数据和任务，充分利用多个核心和处理器，支持Windows/Linux。底层： BLAS/LAPACK BLACS：Basic Linear Algebra Communication Subprograms ScaLAPACK：面向集群的LAPACK分布式内存并行版本 DFTs：离散傅里叶变换 VML：矢量数学库 VSL：矢量统计学库 PDF：偏微分方程 BRNGs：Basic Random Number Generators 2.3 ACML(AMD Core Math Library)对于Intel CPU，使用MKL能获得较好的运算性能，而对于AMD CPU，使用的是ACML。在矩阵运算方面，ACML底层使用的也是BLAS,LAPACK等。底层： BLAS/LAPACK：针对AMD进行了优化 FFTs：快速傅里叶变化 RNG：随机数生成器 2.4 OpenBLASOpenBLAS是一个高性能多核 BLAS 库 2.5 CUDA Math LibraryCUDA Math Library是在GPU上的数学计算库，其计算性能远高于CPU上的数学计算库。底层： CUBLAS：是一个基于GPU的BLAS库，提供的计算函数都在GPU上执行。]]></content>
+      <categories>
+        <category>数学计算</category>
+      </categories>
+      <tags>
+        <tag>C/C++ 机器学习 深度学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[C/C++编程—断言(Assert)]]></title>
+    <url>%2F2019%2F10%2F15%2Fcpp-assert%2F</url>
+    <content type="text"><![CDATA[断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。 一个断言通常含有两个参数：一个描述假设为真时的布尔表达式，一个断言为假时需要显示的信息。C++标准中的assert宏并不支持文本信息，可以使用C++宏改进ASSERT。 123456789#define ASSERT(condition, message)&#123; if(!(condition)) &#123; LogError("Assert failed:", #condition, message); exit(EXIT_FAILURE); &#125;&#125; 频繁的调用asset()会极大影响程序的性能，增加额外的开销。在调试结束以后，可以通过在包含#include &lt;assert.h&gt;的语句前插入#define NDEBUG来禁用assert()调用。 1234567891011#ifdef _DEBUG #define ASSERT(condition) if(!(condition)) &#123; fflush(stdout); fprintf(stderr,"\nAssert failed:%s, lint %u\n",__FILE__, __LINE__); &#125; #else#define ASSERT(condition) NULL#endif 参考文献 断言assert函数]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Redis C++客户端—cpp_redis]]></title>
+    <url>%2F2019%2F10%2F14%2Fredis-cpp_redis-introduction%2F</url>
+    <content type="text"><![CDATA[参考文献 &amp; 资源链接 Windows C++ Redis客户端 cpp_redis]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[形态学变换]]></title>
+    <url>%2F2019%2F10%2F12%2Fcv-morphological-transformations%2F</url>
+    <content type="text"><![CDATA[形态学变换主要是对二值图像进行处理，需要两个参数：原始图像，以及结构元。结构元决定了操作的性质，基本的操作为腐蚀和膨胀，他们的变体构成了开运算，闭运算等。 1. 腐蚀把前景物体的边界腐蚀掉，但是前景仍然是白色的。卷积核沿着图像滑动，如果与卷积核对应的原图像的所有像素值都是1，那么中心元素就保持原来的像素值，否则就变为零。根据卷积核的大小靠近前景的所有像素都会被腐蚀掉（变为0），所以前景物体会变小，整幅图像的白色区域会减少。这对于去除白噪音很有用，也可以用来断开两个连在一块的物体。 123456789# Pythonimport cv2import numpy as npkernel = np.ones((5,5),np.uint8)erosion = cv2.erode(img,kernel,iterations=1)# C++kernel = getStructuringElement(shape,kernel_size[,anchor]);// shape:MORPH_RECT/MORPH_CROSS/MORPH_ELLIPSEerode(src,dst,kernel); 2. 膨胀与腐蚀相反，与卷积核对应的原图像的像素值中只要有一个是1，中心元素的像素值就是1。所以这个操作会增加图像中白色区域（前景）。一般在去噪音时先腐蚀再膨胀，因为腐蚀再去掉白噪音的同时，也会使前景对象变小，所以我们再膨胀。这时噪音已经被去除，不会再回来了，但是前景还在并会增加，膨胀也可以用来连接两个分开的物体。 12345# Pythondilation = cv2.dilate(img,kernel,iterations=1)# C++dilate(src,dst,kernel); 3. 开运算先进行腐蚀再进行膨胀就叫做开运算，用来去除噪声。 12345# Pythonopening = cv2.morpologyEx(img,cv2.MORPH_OPEN,kernel)# C++morpologyEx(src,dst,MORPH_OPEN,kernel); 4. 闭运算先腐蚀后膨胀，用来填充前景物体上的小洞。 12345# Pythonclosing = cv2.morpologyEx(img,cv2.MORPH_CLOSE,kernel)# C++morpologyEx(src,dst,MORPH_CLOSE,kernel); 5. 形态学梯度膨胀图与腐蚀图之差。 12345# Pythongradient = cv2.morpologyEx(img,cv2.MORPH_GRADIENT,kernel)# C++morpologyEx(src,dst,MORPH_GRADIENT,kernel); 6. 顶帽运算原图像与开运算之差。 12345# Pythontophat = cv2.morpologyEx(img,cv2.MORPH_TOPHAT,kernel)# C++morpologyEx(src,dst,MORPH_TOPHAT,kernel); 7. 黑帽运算闭图像与原图像之差。 12345# Pythonblackhat = cv2.morpologyEx(img,cv2.MORPH_BLACKHAT,kernel)# C++morpologyEx(src,dst,MORPH_BLACKHAT,kernel);]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+      <tags>
+        <tag>OpenCV</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Visual Studio编程问题集锦]]></title>
     <url>%2F2019%2F10%2F12%2Fvs-programming-errors-summary%2F</url>
     <content type="text"><![CDATA[本文主要记录Visual Studio使用过程中出现的问题以及相应的解决方法。 1. 编译 模块计算机类型 x64 与目标计算机类型 x86 冲突 出现此问题要在三个的地方进行确认： 项目右键-&gt;属性-&gt;链接器-&gt;高级-&gt;目标计算机：设置为MachineX64 (/MACHINE:X64) 项目右键-&gt;属性-&gt;链接器-&gt;命令行-&gt;其他选项：设置为/machine:X64 VS菜单栏-&gt;生成-&gt;配置管理器-&gt;活动解决方案平台：设置为x64 NOTE: 在进行一些开源项目的编译时，属性菜单中没有链接器 的属性，但是有库管理器 属性，可以在该属性下配置目标计算机和命令行的值。]]></content>
@@ -11,10 +68,13 @@
   <entry>
     <title><![CDATA[Redis简介]]></title>
     <url>%2F2019%2F10%2F12%2Fredis-introduction%2F</url>
-    <content type="text"><![CDATA[本文主要记录Redis的安装、配置、数据类型以及基本操作。 1. Windows平台下安装Redis官网的Redis只有Linux版本的，但是Github上有Windows版的Redis【下载地址】。Windows的Redis有msi安装版，压缩包版和源码编译三种使用方式。 Redis的目录下主要有两类文件：应用文件和配置文件。 文件名 文件功能 redis-server 服务端应用，提供Redis服务 redis-cli 客户端程序，通过连接Redis服务并进行操作 redis-benchmark 性能测试，用来模拟同时由N个客户端发送M个SETs/GETs操作 redis-check-aof 更新日志检查 redis-check-dump 本地数据库检查 redis.windows.conf 配置文件，将Redis作为普通软件使用，命令行关闭则Redis关闭 redis.windows-service.conf 配置文件，将Redis作为系统服务进行配置 2. 配置和使用2.1 使用命令Redis安装完成后需要进行启动才能使用，打开命令行，输入： 12345678910111213141516171819202122C:\Redis&gt;redis-server redis.windows.conf _._ _.-``__ &apos;&apos;-._ _.-`` `. `_. &apos;&apos;-._ Redis 3.2.100 (00000000/0) 64 bit.-`` .-```. ```\/ _.,_ &apos;&apos;-._( &apos; , .-` | `, ) Running in standalone mode|`-._`-...-` __...-.``-._|&apos;` _.-&apos;| Port: 6379| `-._ `._ / _.-&apos; | PID: 6660`-._ `-._ `-./ _.-&apos; _.-&apos;|`-._`-._ `-.__.-&apos; _.-&apos;_.-&apos;|| `-._`-._ _.-&apos;_.-&apos; | http://redis.io`-._ `-._`-.__.-&apos;_.-&apos; _.-&apos;|`-._`-._ `-.__.-&apos; _.-&apos;_.-&apos;|| `-._`-._ _.-&apos;_.-&apos; |`-._ `-._`-.__.-&apos;_.-&apos; _.-&apos; `-._ `-.__.-&apos; _.-&apos; `-._ _.-&apos; `-.__.-&apos;[6660] 12 Oct 11:17:05.019 # Server started, Redis version 3.2.100[6660] 12 Oct 11:17:05.028 * DB loaded from disk: 0.007 seconds[6660] 12 Oct 11:17:05.029 * The server is now ready to accept connections on port 6379 就可以看到Redis已经打开了。使用这种方式的缺点是不能关闭命令行，否则Redis服务就会关闭。如果要开机启动Redis服务，需要将Redis安装成Windows服务。 12345678# 安装服务redis-server --service-install redis.windows.conf # 启动服务redis-server --service-start # 停止服务redis-server --service-stop # 卸载服务redis-server --service-uninstall 另外打开一个命令行窗口，输入客户端使用命令redis-cli -h host -p port -a password就可以连接到Redis服务,host默认为127.0.0.1,port默认为6379。 12C:\Redis&gt;redis-cli -h 127.0.0.1 -p 6379 #命令行输入127.0.0.1:6379&gt; # 2.2 Redis配置文件属性12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061################################## NETWORK ######################################bind 127.0.0.1#protected-mode yes#Redis默认监听端口port 6379#tcp-backlog 511#客户端闲置多少秒后断开连接timeout 0#tcp-keepalive 0################################# GENERAL ######################################是否作为守护进程运行,windows下不支持该属性daemonize no#日志显示级别loglevel notice#指定日志输出的文件名，默认输出到标准输出端口logfile &quot;&quot;#databases 16################################ SNAPSHOTTING #################################持久化策略save &lt;seconds&gt; &lt;changes&gt;save 100 1 #当有一条数据被改变时，900s刷新到disk一次save 300 10 #当有10条数据被改变时，300s刷新到disk一次save 60 10000 #当有10000条数据被改变，60s刷新到disk一次#持久化数据保存的文件名dbfilename dump.db#持久化数据保存的路径dir ./################################# REPLICATION ##################################主从配置，设置该数据库为其他的从数据库slaveof &lt;masterip&gt; &lt;masterport&gt;#主服务器连接时需要的密码masterauth &lt;master-password&gt;################################## SECURITY ####################################设置连接密码requirepass &lt;password&gt;################################### LIMITS #####################################最大客户连接数maxclients 10000#persistence-available [(yes)|no]#可使用的最大最大内存maxmemory &lt;bytes&gt;#maxmemory-policy noeviction#maxmemory-samples 5############################## APPEND ONLY MODE ################################是否开启日志功能appendonly no#AOF持久化策略appendfsync [always|everysec|no] 3. Redis数据类型作为key-value型数据库，Redis也提供了键和值的映射关系。除了常规的数值和字符串，Resis的值还可以是Lists，Sets，Sorted Sets,Hashes。值的数据类型决定了该键值支持的操作。Redis 支持诸如列表、集合或有序集合的交集、并集、查集等高级原子操作；同时，如果值的类型是普通数字，Redis则提供自增等原子操作 4. 编程4.1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 12345678910111213141516171819202122232425262728293031import cv2import redisimport structimport numpy as npdef toRedis(array): ''' Encode ndarry 'array' to bytes ''' h,w = array.shape shape = struct.pack('&gt;II',h,w) encode = shape+array.tobytes() return encodedef fromRedis(encode): h,w = struct.unpack('&gt;II',encode[:8]) array = np.frombuffer(encode,dtype=np.uint8,offset=8).reshape(h,w) return arrayif __name__=='__main__': r = redis.Redis(host='127.0.0.1',port=6379) img = cv2.imread('./oil11_2.bmp',cv2.IMREAD_GRAYSCALE) r.set('name','tangming') r.set('age',5) r.set('image',toRedis(img)) print(r.get('name')) print(r.get('age')) array = fromRedis(r.get('image')) cv2.imshow('image',array) 4.2 Redis C++编程参考文献 &amp; 资源链接 microsoftarchive-redis]]></content>
+    <content type="text"><![CDATA[本文主要记录Redis的安装、配置、数据类型以及基本操作。 1. Windows平台下安装Redis官网的Redis只有Linux版本的，但是Github上有Windows版的Redis【下载地址】。Windows的Redis有msi安装版，压缩包版和源码编译三种使用方式。 Redis的目录下主要有两类文件：应用文件和配置文件。 文件名 文件功能 redis-server 服务端应用，提供Redis服务 redis-cli 客户端程序，通过连接Redis服务并进行操作 redis-benchmark 性能测试，用来模拟同时由N个客户端发送M个SETs/GETs操作 redis-check-aof 更新日志检查 redis-check-dump 本地数据库检查 redis.windows.conf 配置文件，将Redis作为普通软件使用，命令行关闭则Redis关闭 redis.windows-service.conf 配置文件，将Redis作为系统服务进行配置 2. 配置和使用2.1 使用命令Redis安装完成后需要进行启动才能使用，打开命令行，输入redis-server redis.windows.conf命令，即可启动Redis服务： 12345678910111213141516171819202122C:\Redis&gt;redis-server redis.windows.conf _._ _.-``__ &apos;&apos;-._ _.-`` `. `_. &apos;&apos;-._ Redis 3.2.100 (00000000/0) 64 bit.-`` .-```. ```\/ _.,_ &apos;&apos;-._( &apos; , .-` | `, ) Running in standalone mode|`-._`-...-` __...-.``-._|&apos;` _.-&apos;| Port: 6379| `-._ `._ / _.-&apos; | PID: 6660`-._ `-._ `-./ _.-&apos; _.-&apos;|`-._`-._ `-.__.-&apos; _.-&apos;_.-&apos;|| `-._`-._ _.-&apos;_.-&apos; | http://redis.io`-._ `-._`-.__.-&apos;_.-&apos; _.-&apos;|`-._`-._ `-.__.-&apos; _.-&apos;_.-&apos;|| `-._`-._ _.-&apos;_.-&apos; |`-._ `-._`-.__.-&apos;_.-&apos; _.-&apos; `-._ `-.__.-&apos; _.-&apos; `-._ _.-&apos; `-.__.-&apos;[6660] 12 Oct 11:17:05.019 # Server started, Redis version 3.2.100[6660] 12 Oct 11:17:05.028 * DB loaded from disk: 0.007 seconds[6660] 12 Oct 11:17:05.029 * The server is now ready to accept connections on port 6379 可以看到Redis已经打开了，使用这种方式的缺点是不能关闭命令行，否则Redis服务就会关闭。如果要开机启动Redis服务，需要将Redis安装成Windows服务。 12345678# 安装服务redis-server --service-install redis.windows.conf # 启动服务redis-server --service-start # 停止服务redis-server --service-stop # 卸载服务redis-server --service-uninstall 另外打开一个命令行窗口，输入客户端使用命令redis-cli -h host -p port -a password就可以连接到Redis服务,host默认为127.0.0.1,port默认为6379。 12C:\Redis&gt;redis-cli -h 127.0.0.1 -p 6379 #命令行输入127.0.0.1:6379&gt; # 2.2 Redis配置文件属性12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061################################## NETWORK ######################################bind 127.0.0.1#protected-mode yes#Redis默认监听端口port 6379#tcp-backlog 511#客户端闲置多少秒后断开连接timeout 0#tcp-keepalive 0################################# GENERAL ######################################是否作为守护进程运行,windows下不支持该属性daemonize no#日志显示级别loglevel notice#指定日志输出的文件名，默认输出到标准输出端口logfile &quot;&quot;#databases 16################################ SNAPSHOTTING #################################持久化策略save &lt;seconds&gt; &lt;changes&gt;save 100 1 #当有一条数据被改变时，900s刷新到disk一次save 300 10 #当有10条数据被改变时，300s刷新到disk一次save 60 10000 #当有10000条数据被改变，60s刷新到disk一次#持久化数据保存的文件名dbfilename dump.db#持久化数据保存的路径dir ./################################# REPLICATION ##################################主从配置，设置该数据库为其他的从数据库slaveof &lt;masterip&gt; &lt;masterport&gt;#主服务器连接时需要的密码masterauth &lt;master-password&gt;################################## SECURITY ####################################设置连接密码requirepass &lt;password&gt;################################### LIMITS #####################################最大客户连接数maxclients 10000#persistence-available [(yes)|no]#可使用的最大最大内存maxmemory &lt;bytes&gt;#maxmemory-policy noeviction#maxmemory-samples 5############################## APPEND ONLY MODE ################################是否开启日志功能appendonly no#AOF持久化策略appendfsync [always|everysec|no] 2.3 Redis数据浏览器RedisClient这个工具是Redis的客户端，专门用来浏览当前Redis中的所有数据。省去了查询Redis里面有哪些数据还需要输入命令行的繁琐和不便利。RedisClient可以直接在Github上进行下载，支持Windows、Linux和MacOS。操作简单，功能也很全，Github仓库里有详细的使用说明。 3. Redis数据类型作为key-value型数据库，Redis也提供了键和值的映射关系。除了常规的数值和字符串，Resis的值还可以是Lists，Sets，Sorted Sets,Hashes。值的数据类型决定了该键值支持的操作。Redis 支持诸如列表、集合或有序集合的交集、并集、查集等高级原子操作；同时，如果值的类型是普通数字，Redis则提供自增等原子操作 4. 编程4.1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 123456789101112131415161718192021222324252627282930313233343536import cv2import redisimport structimport numpy as npdef toRedis(array): ''' Encode ndarry 'array' to bytes ''' # 1. get shape of Numpy array and encode h,w = array.shape shape = struct.pack('&gt;II',h,w) # 2. append the Numpy array as bytes to the shape encode = shape+array.tobytes() return encodedef fromRedis(encode): # 4. extract the shape of the Numpy array from the string h,w = struct.unpack('&gt;II',encode[:8]) # extract data and repopulate Numpy array, reshape to original shape array = np.frombuffer(encode,dtype=np.uint8,offset=8).reshape(h,w) return arrayif __name__=='__main__': r = redis.Redis(host='127.0.0.1',port=6379) img = cv2.imread('./oil11_2.bmp',cv2.IMREAD_GRAYSCALE) r.set('name','tangming') r.set('age',5) # 3. store the encoded array under supplied key r.set('image',toRedis(img)) print(r.get('name')) print(r.get('age')) array = fromRedis(r.get('image')) cv2.imshow('image',array) 4.2 Redis C++编程用C++来操作Redis数据库，需要另外的Redis客户端库，常用的有hiredis、xredis和cpp_redis。hiredis使用简单，函数少，最接近Redis原始命令。cpp_redis需要C++11特性。如果使用C++语言让Redis存储图像这类复杂的数据，就要用到序列化，序列化就是将程序数据转化成能被存储并传输的格式的过程，它的逆过程成为反序列化。也可以使用json将目标对象转换成string在Redis中进行存储，相对于序列化的方式要更加消耗资源。 参考文献 &amp; 资源链接 microsoftarchive-redis Java Redis Client GUI Tool]]></content>
       <categories>
         <category>数据库</category>
       </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Redis内存模型]]></title>
@@ -23,11 +83,14 @@
       <categories>
         <category>数据库</category>
       </categories>
+      <tags>
+        <tag>Redis</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[PyTorch模型]]></title>
     <url>%2F2019%2F10%2F09%2Fpytorch-model-introduction%2F</url>
-    <content type="text"><![CDATA[本文主要记录PyTorch模型搭建，参数初始化,模型的保存和加载以及模型Fintune的相关内容。 1. 模型的定义PyTorch中进行模型定义需要注意的主要有三个部分： 模型类要继承nn.Module，让PyTorch知道这个类是模型类 在__init__()函数中定义模型需要用到的组件(如conv,pool,fc等) 在forward()函数中将定义的组件组装成需要的模型]]></content>
+    <content type="text"><![CDATA[本文主要记录PyTorch模型搭建，参数初始化,模型的保存和加载以及模型Fintune的相关内容。 1. 模型的搭建1.1 模型的定义PyTorch中进行模型定义需要注意的主要有三个部分： 模型类要继承nn.Module，让PyTorch知道这个类是模型类 在__init__()函数中定义模型需要用到的组件(如conv,pool,fc等) 在forward()函数中将定义的组件组装成需要的模型 1.2 nn.Sequetialtorch.nn.Sequetial是一个序列容器，能够将一系列的操作按照先后顺序封装起来，方便重复使用。 2. 模型权值的初始化模型定义完成后，通常还需要对模型的权值进行初始化之后才能开始训练。初始化的方法会直接影响到模型是否收敛。 2.1 权值初始化的流程权值的初始化分为两步： 定义一个初始化函数，在函数中设定什么层使用什么初始化方法，初始化方法在torch.nn.init中给出 实例化一个模型，执行该函数，即可完成初始化 2.2 常用的初始化方法PyTorch在torch.nn.init中提供了常用的初始化方法函数，主要分为两部分：Xavier,Kaiming系列和其他分布方法。 3. 模型Fintune一个良好的初始化权值可以加快模型的收敛，甚至可以提高模型的精度。在实际的应用中，我们通常用一个已经训练过的模型的权值作为模型的初始化参数，称之为模型Fintune，更广泛的叫做迁移学习。 Fintune的目的是让我们的新模型有一个较好的权重初始值，其流程主要分为三步： 训练并保存模型，得到一个预训练模型 加载模型，得到预训练模型的权值 初始化，将得到的权值对应放到新模型的不同层中 3.1 模型的保存和加载3.2 权值初始化]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
@@ -59,7 +122,7 @@
   <entry>
     <title><![CDATA[医学图像处理资源汇总]]></title>
     <url>%2F2019%2F10%2F03%2Fawsome-medical-image-processing%2F</url>
-    <content type="text"><![CDATA[汇总分类医学图像处理相关的数据、论文以及学习资源。 医学图像数据资源 Chest X-ray Dataset Open-Access Medical Image Repositories CVonline:Image Datebase–Biological/Medical CT-based Atlas of Head and Neck Cornell Vision and Image Analysis Group Public Databases Medical Imaging Datasets MICCAI2018 PET Radiomics Challenges TCIA Collections IXI Dataset OSSIS Data Mandibular CT Dataset Collection]]></content>
+    <content type="text"><![CDATA[汇总分类医学图像处理相关的数据、论文以及学习资源。 医学图像数据资源 Chest X-ray Dataset Open-Access Medical Image Repositories CVonline:Image Datebase–Biological/Medical CT-based Atlas of Head and Neck Cornell Vision and Image Analysis Group Public Databases Medical Imaging Datasets MICCAI2018 PET Radiomics Challenges TCIA Collections IXI Dataset OSSIS Data Mandibular CT Dataset Collection 甲状腺结节 Thyroid Segmentation in Ultrasonography Dataset DDTI:An open access database of thyroid ultrasound images TDID (Thyroid Digital Image Database)]]></content>
       <categories>
         <category>医学图像处理</category>
       </categories>
@@ -67,7 +130,7 @@
   <entry>
     <title><![CDATA[PyTorch简介]]></title>
     <url>%2F2019%2F10%2F03%2Fpytorch-introduction%2F</url>
-    <content type="text"><![CDATA[PyTorch是基于torch的Python开源机器学习库，本文主要记录PyTorch的基本数据类型以及自动求导机制。 PyTorch是一个基于Python的科学计算包，主要提供以下两种服务： 作为NumPy的替代品，使用GPU的强大计算力（通过张量实现） 提供最大的灵活性和高速的深度学习研究平台（包含自动求导系统的深度神经网络） 1. 张量张量(Tensor)是PyTorch里面基础的运算单元，与NumPy的ndarry相同，都表示的是一个数据类型相同的多维矩阵。与ndarry的最大区别就是，Tensor可以在GPU上运行，ndarry只能在CPU上运行。张量本质上是一个矩阵，就存在着创建、索引、算数操作、逻辑操作以及维度操作等方法以及数据类型等属性。 2. 自动求导(Autograd)深度学习的算法本质是通过反向传播求导数，PyTorch的autograd的模块则实现了此功能。在Tensor上的所有操作，autograd都能为其自动提供微分，避免手动计算导数的复杂过程。 参考文章 PyTorch学习笔记]]></content>
+    <content type="text"><![CDATA[PyTorch是基于torch的Python开源机器学习库，本文主要记录PyTorch的基本数据类型以及自动求导机制。 PyTorch是一个基于Python的科学计算包，主要提供以下两种服务： 作为NumPy的替代品，使用GPU的强大计算力（通过张量实现） 提供最大的灵活性和高速的深度学习研究平台（包含自动求导系统的深度神经网络） 1. 张量张量(Tensor)是PyTorch里面基础的运算单元，与NumPy的ndarry相同，都表示的是一个数据类型相同的多维矩阵。与ndarry的最大区别就是，Tensor可以在GPU上运行，ndarry只能在CPU上运行。张量本质上是一个矩阵，就存在着创建、索引、算数操作、逻辑操作以及维度操作等方法以及数据类型等属性。 1.1 基本类型Tensor的基本数据类型有五种： 32位浮点型 64位浮点型 16位整型 32位整型 64位整型除了数值类型外，还有byte型和char型。 2. 自动求导(Autograd)深度学习的算法本质是通过反向传播求导数，PyTorch的autograd的模块则实现了此功能。在Tensor上的所有操作，autograd都能为其自动提供微分，避免手动计算导数的复杂过程。在张量创建时，通过设置requires_grad为True来标识该张量需要进行自动求导，PyTorch会记录该张量的每一步操作并自动计算。 2.1 扩展Autograd如果需要自定义扩展autograd的功能，就需要扩展Function类。Function使用autograd来计算结果和梯度，并对操作历史进行编码。在Function类中，最重要的方法就是forward()和backward()，它们分别代表前向传播和后向传播。一个自定义的Function需要以下三个方法： __init__：Function的构造函数，其中定义操作需要的额外参数 forward()：执行前向传播的计算代码 backward()：执行后向传播的计算代码 NOTE: 方法必须是静态方法，所以在函数前面啊要加上@staticmethod。 参考文章 PyTorch学习笔记]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
@@ -89,18 +152,37 @@
   <entry>
     <title><![CDATA[深度学习资源汇总]]></title>
     <url>%2F2019%2F10%2F01%2Fawsome-deep-learning%2F</url>
-    <content type="text"><![CDATA[汇总分类深度学习相关的数据、论文以及学习资源。 深度学习框架 Pytorch中文网 天池TIANCHI Awesome-PyTorch-Chinese Pytorch中文手册(pytorch-handbook) 论文及书籍资源数据资源代码资源]]></content>
+    <content type="text"><![CDATA[汇总分类深度学习相关的数据、论文以及学习资源。 深度学习框架 Pytorch中文网 天池TIANCHI Awesome-PyTorch-Chinese Pytorch中文手册(pytorch-handbook) TensorFlow2.0 Handbook 论文及书籍资源数据资源代码资源]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[C程序的内存布局]]></title>
+    <title><![CDATA[C/C++编程—C程序的内存布局]]></title>
     <url>%2F2019%2F10%2F01%2Fc-memory-layout%2F</url>
     <content type="text"><![CDATA[C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——栈区、堆区、数据区和代码区(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。 一个可执行文件分为映像和运行两种状态。在编译链接后形成的映像中，只包含代码段(Code)、只读数据段(RO data)和读写数据段(RW data)。在程序运行前的加载过程中，将动态生成未初始化数据段(BSS)，在程序运行时将动态生成堆(Heap)和栈(Stack)区域。 1. 静态区域(全局区域)1.1 代码段代码段由程序中执行的机器代码组成。在C语言中，程序语言进行编译后，形成机器代码。在程序执行过程中，CPU的程序计数器指向代码段的每一条机器代码，并由处理器依次运行。 1.2 只读数据段(RO data，即常量区)只读数据区存储的是程序中使用的一些不会被更改的数据，如字符串常量。程序运行结束后由系统进行释放。 1.3 读写数据段(RW data)存放已初始化的全局变量和静态变量（在程序生命周期中地址不变），这些变量占用存储器的空间，在程序执行时要位于可读写区域且被初始化。 1.4 未初始化数据段(BSS-Block Started by Symbol)未初始化数据是在程序声明，但是没有初始化的变量，这些变量在程序运行之前不需要占用存储器的空间。BSS段的变量只有名称和大小，没有值。 2. 动态区域2.1 堆(Heap) 堆内存只在程序运行时出现，一般由程序员分配和释放（C语言中使用malloc/free，C++中使用new/delete），区别于数据结构中的堆。 操作系统中有一个记录内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请的空间的堆结点，然后将该结点从链表中移除，并将该结点的内存分配给程序，多余的部分重新放回空闲链表中。 在windows下，堆是由低地址向高地址扩展的结构，是不连续的内存区域。 2.1 栈(Stack) 栈内存只在程序运行时出现，由系统编译器自动分配和释放，存放函数的参数值、内部的局部变量以及返回值等。 只要栈的剩余空间大于所申请的空间，系统将为程序提供内存。在windows下，栈是由高地址向低地址扩展的结构，是一块连续的内存区域。 参考文章 C程序的内存布局 C语言内存分布图]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
       <tags>
         <tag>C/C++</tag>
       </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[计算机视觉资源汇总]]></title>
+    <url>%2F2019%2F09%2F30%2Fawsome-computer-vision%2F</url>
+    <content type="text"><![CDATA[汇总分类计算机视觉相关的数据、论文以及学习资源。 图像和视频数据资源 CVonline:Image Datebase 学习资源 OpenCV-Python中文教程]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[机器学习资源汇总]]></title>
+    <url>%2F2019%2F09%2F30%2Fawsome-machine-learning%2F</url>
+    <content type="text"><![CDATA[汇总分类机器学习相关的数据、论文以及学习资源。 学习资源 机器学习笔记 主要分为六个部分：激活函数、梯度下降、参数、正则化、模型介绍和使用技巧。]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
   </entry>
   <entry>
     <title><![CDATA[C/C++资源汇总]]></title>
@@ -111,25 +193,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[机器学习资源汇总]]></title>
-    <url>%2F2019%2F09%2F30%2Fawsome-machine-learning%2F</url>
-    <content type="text"><![CDATA[汇总分类机器学习相关的数据、论文以及学习资源。]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title><![CDATA[计算机视觉资源汇总]]></title>
-    <url>%2F2019%2F09%2F30%2Fawsome-computer-vision%2F</url>
-    <content type="text"><![CDATA[汇总分类计算机视觉相关的数据、论文以及学习资源。 图像和视频数据资源 CVonline:Image Datebase]]></content>
-      <categories>
-        <category>计算机视觉</category>
-      </categories>
-  </entry>
-  <entry>
     <title><![CDATA[Github+Hexo搭建个人网站]]></title>
     <url>%2F2019%2F09%2F30%2Fhexo-building-personal-website%2F</url>
-    <content type="text"><![CDATA[Hexo+Github应该是目前搭建个人博客使用最广的方式，本文主要记录利用Hexo+Github搭建静态博客以及一些配置相关的问题。 1. 准备工作 下载并安装node.js【下载地址】 安装node.js会默认安装npm，安装完成后，在命令行中输入命令验证Hexo的环境是否搭建完成。 12node -v # 输出node.js的版本号npm -v # 输出npm的版本号 下载安装git【下载地址】 2. 创建本地静态博客 新建一个文件夹用于存放blog文件 进入该文件夹内，使用npm命令安装Hexo，输入:npm install -g hexo-cli(下载静态网站的相关文件) 右键运行git，输入:hexo init(初始化静态网站的架构) 在命令行中输入命令，验证静态网站是否完成 12hexo generate # 本地生成静态文件hexo serve # 启动本地服务 打开浏览器，访问https://localhost:4000 3. 将博客与Github关联 在Github上创建yourname.github.io项目 打开本地blog文件夹内的_config.yml配置文件，并设置其中的deploy属性： 1234deploy: type: git repository: https://github.com/yourname/yourname.github.io.git branch: master 运行：npm install hexo-deployer-git --save 运行：hexo generate 运行：hexo deploy # 将本地静态文件发布到Github打开浏览器，访问https://yourname.github.io 参考文章 Hexo官方网站 NexT主题 Next主题增加Gitment评论系统 Hexo Next主题博客功能完善 Markdown入门参考 最完美的Hexo多电脑同步方法]]></content>
+    <content type="text"><![CDATA[Hexo+Github应该是目前搭建个人博客使用最广的方式，本文主要记录利用Hexo+Github搭建静态博客以及一些配置相关的问题。 1. 准备工作 下载并安装node.js【下载地址】 安装node.js会默认安装npm，安装完成后，在命令行中输入命令验证Hexo的环境是否搭建完成。 12node -v # 输出node.js的版本号npm -v # 输出npm的版本号 下载安装git【下载地址】 2. 创建本地静态博客 新建一个文件夹用于存放blog文件 进入该文件夹内，使用npm命令安装Hexo，输入:npm install -g hexo-cli(下载静态网站的相关文件) 右键运行git，输入:hexo init(初始化静态网站的架构) 在命令行中输入命令，验证静态网站是否完成 12hexo generate # 本地生成静态文件hexo serve # 启动本地服务 打开浏览器，访问https://localhost:4000 3. 将博客与Github关联 在Github上创建yourname.github.io项目 打开本地blog文件夹内的_config.yml配置文件，并设置其中的deploy属性： 1234deploy: type: git repository: https://github.com/yourname/yourname.github.io.git branch: master 运行：npm install hexo-deployer-git --save 运行：hexo generate 运行：hexo deploy # 将本地静态文件发布到Github打开浏览器，访问https://yourname.github.io 参考文章 Hexo官方网站 NexT主题 Next主题增加Gitment评论系统 Hexo Next主题博客功能完善 Markdown入门参考 最完美的Hexo多电脑同步方法 Hexo博客搭建之在文章中插入图片]]></content>
       <categories>
         <category>开发工具</category>
       </categories>

@@ -119,7 +119,7 @@
 <meta property="og:site_name" content="Tangming&#39;s Blog">
 <meta property="og:description" content="PyTorch是基于torch的Python开源机器学习库，本文主要记录PyTorch的基本数据类型以及自动求导机制。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-09T06:08:43.318Z">
+<meta property="og:updated_time" content="2019-10-15T01:11:43.827Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PyTorch简介">
 <meta name="twitter:description" content="PyTorch是基于torch的Python开源机器学习库，本文主要记录PyTorch的基本数据类型以及自动求导机制。">
@@ -332,7 +332,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ming Tang">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-09T14:08:43+08:00">
-                2019-10-09
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-15T09:11:43+08:00">
+                2019-10-15
               </time>
             
           </span>
@@ -436,7 +436,22 @@
 <li>提供最大的灵活性和高速的深度学习研究平台（包含自动求导系统的深度神经网络）</li>
 </ul>
 <h2 id="1-张量"><a href="#1-张量" class="headerlink" title="1. 张量"></a>1. 张量</h2><p><strong>张量</strong>(Tensor)是PyTorch里面基础的运算单元，与NumPy的ndarry相同，都表示的是一个数据类型相同的多维矩阵。与ndarry的最大区别就是，Tensor可以在GPU上运行，ndarry只能在CPU上运行。<br>张量本质上是一个矩阵，就存在着创建、索引、算数操作、逻辑操作以及维度操作等方法以及数据类型等属性。</p>
-<h2 id="2-自动求导-Autograd"><a href="#2-自动求导-Autograd" class="headerlink" title="2. 自动求导(Autograd)"></a>2. 自动求导(Autograd)</h2><p>深度学习的算法本质是通过反向传播求导数，PyTorch的autograd的模块则实现了此功能。在Tensor上的所有操作，autograd都能为其自动提供微分，避免手动计算导数的复杂过程。</p>
+<h3 id="1-1-基本类型"><a href="#1-1-基本类型" class="headerlink" title="1.1 基本类型"></a>1.1 基本类型</h3><p>Tensor的基本数据类型有五种：</p>
+<ul>
+<li>32位浮点型</li>
+<li>64位浮点型</li>
+<li>16位整型</li>
+<li>32位整型</li>
+<li>64位整型<br>除了数值类型外，还有byte型和char型。</li>
+</ul>
+<h2 id="2-自动求导-Autograd"><a href="#2-自动求导-Autograd" class="headerlink" title="2. 自动求导(Autograd)"></a>2. 自动求导(Autograd)</h2><p>深度学习的算法本质是通过反向传播求导数，PyTorch的autograd的模块则实现了此功能。在Tensor上的所有操作，autograd都能为其自动提供微分，避免手动计算导数的复杂过程。<br>在张量创建时，通过设置<code>requires_grad</code>为<code>True</code>来标识该张量需要进行自动求导，PyTorch会记录该张量的每一步操作并自动计算。</p>
+<h3 id="2-1-扩展Autograd"><a href="#2-1-扩展Autograd" class="headerlink" title="2.1 扩展Autograd"></a>2.1 扩展Autograd</h3><p>如果需要自定义扩展autograd的功能，就需要扩展Function类。Function使用autograd来计算结果和梯度，并对操作历史进行编码。在Function类中，最重要的方法就是<code>forward()</code>和<code>backward()</code>，它们分别代表前向传播和后向传播。<br>一个自定义的Function需要以下三个方法：</p>
+<ul>
+<li><code>__init__</code>：Function的构造函数，其中定义操作需要的额外参数</li>
+<li><code>forward()</code>：执行前向传播的计算代码</li>
+<li><code>backward()</code>：执行后向传播的计算代码</li>
+</ul>
+<p><strong>NOTE:</strong> 方法必须是静态方法，所以在函数前面啊要加上<code>@staticmethod</code>。</p>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
 <li><a href="https://heary.cn/posts/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_blank" rel="noopener">PyTorch学习笔记</a></li>
 </ul>
@@ -555,6 +570,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Ming Tang">
+            
               <p class="site-author-name" itemprop="name">Ming Tang</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -566,7 +583,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -577,7 +594,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -588,7 +605,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -637,7 +654,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-张量"><span class="nav-text">1. 张量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-自动求导-Autograd"><span class="nav-text">2. 自动求导(Autograd)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-text">参考文章</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-张量"><span class="nav-text">1. 张量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-基本类型"><span class="nav-text">1.1 基本类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-自动求导-Autograd"><span class="nav-text">2. 自动求导(Autograd)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-扩展Autograd"><span class="nav-text">2.1 扩展Autograd</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-text">参考文章</span></a></li></ol></div>
             
 
           </div>
