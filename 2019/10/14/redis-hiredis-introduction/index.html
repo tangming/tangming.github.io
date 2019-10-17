@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Redis,">
+  <meta name="keywords" content="Redis,Hiredis,">
 
 
 
@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="参考文献 &amp;amp; 资源链接 Windows C++ Redis客户端 cpp_redis">
-<meta name="keywords" content="Redis">
+<meta name="description" content="Hiredis是Redis数据库一个轻量的C语言客户端库。它只是简单的提供了对redis操作语句支持的接口，并没有实现具体的操作语句的功能，因此可以很容易的使用该库和redis数据库进行交互。">
+<meta name="keywords" content="Redis,Hiredis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis C++客户端—Hiredis">
 <meta property="og:url" content="http://yoursite.com/2019/10/14/redis-hiredis-introduction/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="参考文献 &amp;amp; 资源链接 Windows C++ Redis客户端 cpp_redis">
+<meta property="og:description" content="Hiredis是Redis数据库一个轻量的C语言客户端库。它只是简单的提供了对redis操作语句支持的接口，并没有实现具体的操作语句的功能，因此可以很容易的使用该库和redis数据库进行交互。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-16T06:30:33.905Z">
+<meta property="og:updated_time" content="2019-10-17T09:01:39.563Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis C++客户端—Hiredis">
-<meta name="twitter:description" content="参考文献 &amp;amp; 资源链接 Windows C++ Redis客户端 cpp_redis">
+<meta name="twitter:description" content="Hiredis是Redis数据库一个轻量的C语言客户端库。它只是简单的提供了对redis操作语句支持的接口，并没有实现具体的操作语句的功能，因此可以很容易的使用该库和redis数据库进行交互。">
 
 
 
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-16T14:30:33+08:00">
-                2019-10-16
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-17T17:01:39+08:00">
+                2019-10-17
               </time>
             
           </span>
@@ -428,10 +428,16 @@
       
 
       
-        <h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
-<li><a href="https://blog.csdn.net/calmreason/article/details/54881014" target="_blank" rel="noopener">Windows C++ Redis客户端 cpp_redis</a></li>
-</ul>
+        <p>Hiredis是Redis数据库一个轻量的C语言客户端库。它只是简单的提供了对redis操作语句支持的接口，并没有实现具体的操作语句的功能，因此可以很容易的使用该库和redis数据库进行交互。</p>
+<a id="more"></a>
+<h2 id="1-Hiredis编译"><a href="#1-Hiredis编译" class="headerlink" title="1. Hiredis编译"></a>1. Hiredis编译</h2><p>Hiredis是用C写的Redis客户端，对Redis协议进行了简单的封装。除了支持发送命令和接收应答外，Hiredis还提供了独立于I/O的数据流解析操作，用于解析应答数据。在Windows平台上使用Hiredis，一般需要将<a href="https://github.com/redis/hiredis" target="_blank" rel="noopener"><strong>源码</strong></a>编译生成库文件然后进行调用。在Visual Studio上编译Hiredis项目的时候会出现<strong>无法生成lib</strong>的问题，其Github库的<a href="https://github.com/redis/hiredis/issues/687" target="_blank" rel="noopener"><strong>issues#687</strong></a>提供了一种解决方案，测试可行。</p>
+<blockquote><p>同步连接：服务器与第一个请求建立连接并通信以后，第二个请求会被阻塞。<br>异步连接：服务器可以同时响应多个请求</p>
+</blockquote>
+<p>Hiredis提供了同步、异步以及回复解析三种API。</p>
+<h2 id="2-同步API"><a href="#2-同步API" class="headerlink" title="2. 同步API"></a>2. 同步API</h2><p>常用的同步API的函数有：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">redisContext *<span class="title">redisConnect</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *ip, <span class="keyword">int</span> port)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">redisCommand</span><span class="params">(redisContext *c, <span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">freeReplyObject</span><span class="params">(<span class="keyword">void</span> *reply)</span></span>;</span><br></pre></td></tr></table></figure>
 
+<h3 id="2-1-连接"><a href="#2-1-连接" class="headerlink" title="2.1 连接"></a>2.1 连接</h3><h3 id="2-2-发送命令"><a href="#2-2-发送命令" class="headerlink" title="2.2 发送命令"></a>2.2 发送命令</h3><h3 id="2-3-处理应答"><a href="#2-3-处理应答" class="headerlink" title="2.3 处理应答"></a>2.3 处理应答</h3><h3 id="2-4-清理连接"><a href="#2-4-清理连接" class="headerlink" title="2.4 清理连接"></a>2.4 清理连接</h3><h3 id="2-5-发送多个命令"><a href="#2-5-发送多个命令" class="headerlink" title="2.5 发送多个命令"></a>2.5 发送多个命令</h3><h3 id="2-6-管线"><a href="#2-6-管线" class="headerlink" title="2.6 管线"></a>2.6 管线</h3><h3 id="2-7-错误处理"><a href="#2-7-错误处理" class="headerlink" title="2.7 错误处理"></a>2.7 错误处理</h3><h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2>
       
     </div>
     
@@ -449,6 +455,8 @@
         <div class="post-tags">
           
             <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+            <a href="/tags/Hiredis/" rel="tag"># Hiredis</a>
           
         </div>
       
@@ -559,7 +567,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -581,7 +589,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -630,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Hiredis编译"><span class="nav-text">1. Hiredis编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-同步API"><span class="nav-text">2. 同步API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-连接"><span class="nav-text">2.1 连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-发送命令"><span class="nav-text">2.2 发送命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-处理应答"><span class="nav-text">2.3 处理应答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-清理连接"><span class="nav-text">2.4 清理连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-发送多个命令"><span class="nav-text">2.5 发送多个命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-管线"><span class="nav-text">2.6 管线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-错误处理"><span class="nav-text">2.7 错误处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></ol></div>
             
 
           </div>
@@ -1191,6 +1199,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

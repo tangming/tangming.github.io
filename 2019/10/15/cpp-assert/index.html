@@ -119,7 +119,7 @@
 <meta property="og:site_name" content="Tangming&#39;s Blog">
 <meta property="og:description" content="断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-15T01:33:52.020Z">
+<meta property="og:updated_time" content="2019-10-16T08:19:35.858Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C&#x2F;C++编程—断言(Assert)">
 <meta name="twitter:description" content="断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。">
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-15T09:33:52+08:00">
-                2019-10-15
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-16T16:19:35+08:00">
+                2019-10-16
               </time>
             
           </span>
@@ -436,7 +436,7 @@
 <p>频繁的调用<code>asset()</code>会极大影响程序的性能，增加额外的开销。在调试结束以后，可以通过在包含<code>#include &lt;assert.h&gt;</code>的语句前插入<code>#define NDEBUG</code>来禁用<code>assert()</code>调用。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> ASSERT(condition)</span></span><br><span class="line">    <span class="keyword">if</span>(!(condition))</span><br><span class="line">    &#123;</span><br><span class="line">        fflush(<span class="built_in">stdout</span>);</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">"\nAssert failed:%s, lint %u\n"</span>,__FILE__, __LINE__);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASSERT(condition) NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
 <li><a href="http://c.biancheng.net/c/assert/" target="_blank" rel="noopener">断言assert函数</a></li>
 </ul>
 
@@ -567,7 +567,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -589,7 +589,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -638,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></ol></div>
             
 
           </div>
@@ -1199,6 +1199,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="C/C++,">
+  <meta name="keywords" content="C/C++,Redis,Python,">
 
 
 
@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——栈区、堆区、数据区和代码区(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。">
-<meta name="keywords" content="C&#x2F;C++">
+<meta name="description" content="1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 123456789101112131415161718192021222324252627282930313233343536import cv2import redisimport structi">
+<meta name="keywords" content="C&#x2F;C++,Redis,Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C&#x2F;C++编程—C程序的内存布局">
-<meta property="og:url" content="http://yoursite.com/2019/10/01/c-memory-layout/index.html">
+<meta property="og:title" content="Redis编程环境">
+<meta property="og:url" content="http://yoursite.com/2019/10/16/redis-programming-guide/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——栈区、堆区、数据区和代码区(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。">
+<meta property="og:description" content="1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 123456789101112131415161718192021222324252627282930313233343536import cv2import redisimport structi">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-15T01:28:56.375Z">
+<meta property="og:updated_time" content="2019-10-17T03:09:32.212Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C&#x2F;C++编程—C程序的内存布局">
-<meta name="twitter:description" content="C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——栈区、堆区、数据区和代码区(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。">
+<meta name="twitter:title" content="Redis编程环境">
+<meta name="twitter:description" content="1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 123456789101112131415161718192021222324252627282930313233343536import cv2import redisimport structi">
 
 
 
@@ -152,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/01/c-memory-layout/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/16/redis-programming-guide/">
 
 
 
 
 
-  <title>C/C++编程—C程序的内存布局 | Tangming's Blog</title>
+  <title>Redis编程环境 | Tangming's Blog</title>
   
 
 
@@ -327,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/01/c-memory-layout/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/redis-programming-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ming Tang">
@@ -344,7 +344,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C/C++编程—C程序的内存布局</h1>
+          <h1 class="post-title" itemprop="name headline">Redis编程环境</h1>
         
 
         <div class="post-meta">
@@ -356,8 +356,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-01T16:41:37+08:00">
-                2019-10-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-16T16:07:13+08:00">
+                2019-10-16
               </time>
             
 
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-15T09:28:56+08:00">
-                2019-10-15
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-17T11:09:32+08:00">
+                2019-10-17
               </time>
             
           </span>
@@ -391,8 +391,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/编程语言/" itemprop="url" rel="index">
-                    <span itemprop="name">编程语言</span>
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -428,25 +428,12 @@
       
 
       
-        <p>C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——<strong>栈区、堆区、数据区和代码区</strong>(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。</p>
-<a id="more"></a>
-<p>一个可执行文件分为<strong>映像</strong>和<strong>运行</strong>两种状态。在编译链接后形成的映像中，只包含<code>代码段(Code)</code>、<code>只读数据段(RO data)</code>和<code>读写数据段(RW data)</code>。在程序运行前的加载过程中，将动态生成<code>未初始化数据段(BSS)</code>，在程序运行时将动态生成<code>堆(Heap)</code>和<code>栈(Stack)</code>区域。</p>
-<h2 id="1-静态区域-全局区域"><a href="#1-静态区域-全局区域" class="headerlink" title="1. 静态区域(全局区域)"></a>1. 静态区域(全局区域)</h2><h3 id="1-1-代码段"><a href="#1-1-代码段" class="headerlink" title="1.1 代码段"></a>1.1 代码段</h3><p>代码段由程序中执行的机器代码组成。在C语言中，程序语言进行编译后，形成机器代码。在程序执行过程中，CPU的程序计数器指向代码段的每一条机器代码，并由处理器依次运行。</p>
-<h3 id="1-2-只读数据段-RO-data，即常量区"><a href="#1-2-只读数据段-RO-data，即常量区" class="headerlink" title="1.2 只读数据段(RO data，即常量区)"></a>1.2 只读数据段(RO data，即常量区)</h3><p>只读数据区存储的是程序中使用的一些不会被更改的数据，如字符串常量。程序运行结束后由系统进行释放。</p>
-<h3 id="1-3-读写数据段-RW-data"><a href="#1-3-读写数据段-RW-data" class="headerlink" title="1.3 读写数据段(RW data)"></a>1.3 读写数据段(RW data)</h3><p>存放已初始化的全局变量和静态变量（在程序生命周期中地址不变），这些变量占用存储器的空间，在程序执行时要位于可读写区域且被初始化。</p>
-<h3 id="1-4-未初始化数据段-BSS-Block-Started-by-Symbol"><a href="#1-4-未初始化数据段-BSS-Block-Started-by-Symbol" class="headerlink" title="1.4 未初始化数据段(BSS-Block Started by Symbol)"></a>1.4 未初始化数据段(BSS-Block Started by Symbol)</h3><p>未初始化数据是在程序声明，但是没有初始化的变量，这些变量在程序运行之前不需要占用存储器的空间。BSS段的变量只有名称和大小，没有值。</p>
-<h2 id="2-动态区域"><a href="#2-动态区域" class="headerlink" title="2. 动态区域"></a>2. 动态区域</h2><h3 id="2-1-堆-Heap"><a href="#2-1-堆-Heap" class="headerlink" title="2.1 堆(Heap)"></a>2.1 堆(Heap)</h3><ul>
-<li>堆内存只在程序运行时出现，一般由程序员分配和释放（C语言中使用malloc/free，C++中使用new/delete），区别于数据结构中的堆。  </li>
-<li>操作系统中有一个记录内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请的空间的堆结点，然后将该结点从链表中移除，并将该结点的内存分配给程序，多余的部分重新放回空闲链表中。  </li>
-<li>在windows下，堆是由低地址向高地址扩展的结构，是不连续的内存区域。  </li>
-</ul>
-<h3 id="2-1-栈-Stack"><a href="#2-1-栈-Stack" class="headerlink" title="2.1 栈(Stack)"></a>2.1 栈(Stack)</h3><ul>
-<li>栈内存只在程序运行时出现，由系统编译器自动分配和释放，存放函数的参数值、内部的局部变量以及返回值等。  </li>
-<li>只要栈的剩余空间大于所申请的空间，系统将为程序提供内存。在windows下，栈是由高地址向低地址扩展的结构，是一块连续的内存区域。</li>
-</ul>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
-<li><a href="https://blog.csdn.net/gatieme/article/details/43567433" target="_blank" rel="noopener">C程序的内存布局</a></li>
-<li><a href="https://blog.csdn.net/yanbober/article/details/8713250" target="_blank" rel="noopener">C语言内存分布图</a></li>
+        <h3 id="1-Redis-Python编程"><a href="#1-Redis-Python编程" class="headerlink" title="1 Redis Python编程"></a>1 Redis Python编程</h3><p>Python使用Redis非常简单，可以通过<code>pip install redis</code>在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">toRedis</span><span class="params">(array)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Encode ndarry 'array' to bytes</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="comment"># 1. get shape of Numpy array and encode</span></span><br><span class="line">    h,w = array.shape</span><br><span class="line">    shape = struct.pack(<span class="string">'&gt;II'</span>,h,w) <span class="comment"># '&gt;'表示大端，'I'表示4个字节的unsigned int，'II'表示8字节的unsigned int</span></span><br><span class="line">    <span class="comment"># 2. append the Numpy array as bytes to the shape</span></span><br><span class="line">    encode = shape+array.tobytes()</span><br><span class="line">    <span class="keyword">return</span> encode</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fromRedis</span><span class="params">(encode)</span>:</span></span><br><span class="line">    <span class="comment"># 4. extract the shape of the Numpy array from the string</span></span><br><span class="line">    h,w = struct.unpack(<span class="string">'&gt;II'</span>,encode[:<span class="number">8</span>])</span><br><span class="line">    <span class="comment"># extract data and repopulate Numpy array, reshape to original shape</span></span><br><span class="line">    array = np.frombuffer(encode,dtype=np.uint8,offset=<span class="number">8</span>).reshape(h,w)</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    r = redis.Redis(host=<span class="string">'127.0.0.1'</span>,port=<span class="number">6379</span>)</span><br><span class="line">    img = cv2.imread(<span class="string">'./oil11_2.bmp'</span>,cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    </span><br><span class="line">    r.set(<span class="string">'name'</span>,<span class="string">'tangming'</span>)</span><br><span class="line">    r.set(<span class="string">'age'</span>,<span class="number">5</span>)</span><br><span class="line">    <span class="comment"># 3. store the encoded array under supplied key</span></span><br><span class="line">    r.set(<span class="string">'image'</span>,toRedis(img))</span><br><span class="line"></span><br><span class="line">    print(r.get(<span class="string">'name'</span>))</span><br><span class="line">    print(r.get(<span class="string">'age'</span>))</span><br><span class="line">    array = fromRedis(r.get(<span class="string">'image'</span>))</span><br><span class="line">    cv2.imshow(<span class="string">'image'</span>,array)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Redis-C-编程"><a href="#2-Redis-C-编程" class="headerlink" title="2 Redis C++编程"></a>2 Redis C++编程</h3><p>用C++来操作Redis数据库，需要另外的Redis客户端库，常用的有<a href="https://github.com/redis/hiredis" target="_blank" rel="noopener">hiredis</a>、<a href="https://gitee.com/0xsky/xredis/tree/master" target="_blank" rel="noopener">xredis</a>和<a href="https://github.com/cpp-redis/cpp_redis" target="_blank" rel="noopener">cpp_redis</a>。hiredis使用简单，函数少，最接近Redis原始命令。cpp_redis需要C++11编译器的支持。</p>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://www.cnblogs.com/gala/archive/2011/09/22/2184801.html" target="_blank" rel="noopener">Python使用struct处理二进制</a></li>
 </ul>
 
       
@@ -467,6 +454,10 @@
           
             <a href="/tags/C-C/" rel="tag"># C/C++</a>
           
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
         </div>
       
 
@@ -478,8 +469,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/09/30/awsome-computer-vision/" rel="next" title="计算机视觉资源汇总">
-                <i class="fa fa-chevron-left"></i> 计算机视觉资源汇总
+              <a href="/2019/10/16/redis-data-types/" rel="next" title="Redis数据类型">
+                <i class="fa fa-chevron-left"></i> Redis数据类型
               </a>
             
           </div>
@@ -488,8 +479,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/10/01/awsome-deep-learning/" rel="prev" title="深度学习资源汇总">
-                深度学习资源汇总 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/16/cpp-resource-management/" rel="prev" title="C++资源管理和智能指针">
+                C++资源管理和智能指针 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -576,7 +567,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -598,7 +589,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -647,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-静态区域-全局区域"><span class="nav-text">1. 静态区域(全局区域)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-代码段"><span class="nav-text">1.1 代码段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-只读数据段-RO-data，即常量区"><span class="nav-text">1.2 只读数据段(RO data，即常量区)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-读写数据段-RW-data"><span class="nav-text">1.3 读写数据段(RW data)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-未初始化数据段-BSS-Block-Started-by-Symbol"><span class="nav-text">1.4 未初始化数据段(BSS-Block Started by Symbol)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-动态区域"><span class="nav-text">2. 动态区域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-堆-Heap"><span class="nav-text">2.1 堆(Heap)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-栈-Stack"><span class="nav-text">2.1 栈(Stack)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-text">参考文章</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Redis-Python编程"><span class="nav-text">1 Redis Python编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Redis-C-编程"><span class="nav-text">2 Redis C++编程</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></div>
             
 
           </div>
@@ -1208,6 +1199,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

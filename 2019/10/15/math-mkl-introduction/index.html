@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="C/C++,序列化,cereal,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -111,18 +111,17 @@
 
 
 
-<meta name="description" content="Cereal是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。">
-<meta name="keywords" content="C&#x2F;C++,序列化,cereal">
+<meta name="description" content="MKL是Intel公司出品的数学函数计算库，提供经过高度优化和大量线程化处理的计算函数，有C和Fortran接口。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++序列化库—Cereal">
-<meta property="og:url" content="http://yoursite.com/2019/10/16/cereal-introduction/index.html">
+<meta property="og:title" content="Intel MKL简介">
+<meta property="og:url" content="http://yoursite.com/2019/10/15/math-mkl-introduction/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="Cereal是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。">
+<meta property="og:description" content="MKL是Intel公司出品的数学函数计算库，提供经过高度优化和大量线程化处理的计算函数，有C和Fortran接口。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-16T07:13:27.696Z">
+<meta property="og:updated_time" content="2019-10-17T07:43:41.323Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++序列化库—Cereal">
-<meta name="twitter:description" content="Cereal是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。">
+<meta name="twitter:title" content="Intel MKL简介">
+<meta name="twitter:description" content="MKL是Intel公司出品的数学函数计算库，提供经过高度优化和大量线程化处理的计算函数，有C和Fortran接口。">
 
 
 
@@ -152,13 +151,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/16/cereal-introduction/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/15/math-mkl-introduction/">
 
 
 
 
 
-  <title>C++序列化库—Cereal | Tangming's Blog</title>
+  <title>Intel MKL简介 | Tangming's Blog</title>
   
 
 
@@ -327,7 +326,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/cereal-introduction/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/15/math-mkl-introduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ming Tang">
@@ -344,7 +343,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++序列化库—Cereal</h1>
+          <h1 class="post-title" itemprop="name headline">Intel MKL简介</h1>
         
 
         <div class="post-meta">
@@ -356,8 +355,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-16T10:02:43+08:00">
-                2019-10-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-15T21:03:48+08:00">
+                2019-10-15
               </time>
             
 
@@ -372,8 +371,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-16T15:13:27+08:00">
-                2019-10-16
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-17T15:43:41+08:00">
+                2019-10-17
               </time>
             
           </span>
@@ -391,8 +390,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/编程语言/" itemprop="url" rel="index">
-                    <span itemprop="name">编程语言</span>
+                  <a href="/categories/数学计算/" itemprop="url" rel="index">
+                    <span itemprop="name">数学计算</span>
                   </a>
                 </span>
 
@@ -428,13 +427,99 @@
       
 
       
-        <p><a href="https://uscilab.github.io/cereal/" target="_blank" rel="noopener"><strong>Cereal</strong></a>是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。</p>
+        <p><a href="https://software.intel.com/en-us/mkl" target="_blank" rel="noopener"><strong>MKL</strong></a>是Intel公司出品的数学函数计算库，提供经过高度优化和大量线程化处理的计算函数，有C和Fortran接口。</p>
 <a id="more"></a>
-<p>Cereal使用非常简单，只需要包含头文件以及编写一个序列化函数即可。</p>
-<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
-<li><a href="https://blog.csdn.net/u012348774/article/details/79117379" target="_blank" rel="noopener">Cereal Library系列教程</a></li>
-<li><a href="https://www.patrikhuber.ch/blog/6-serialising-opencv-matrices-using-boost-and-cereal" target="_blank" rel="noopener">Serialising OpenCV matrices using boost and cereal</a></li>
+
+<p>MKL主要包含的内容如下：</p>
+<ul>
+<li>基本线性代数子系统</li>
+<li>稀疏基本线性代数子系统</li>
+<li>线性代数库</li>
+<li>可扩展线性代数库</li>
+<li>稀疏求解器</li>
+<li>矢量数学库</li>
+<li>矢量统计库</li>
+<li>傅里叶变换库</li>
+<li>集群傅里叶变换库</li>
 </ul>
+<h2 id="1-BLAS"><a href="#1-BLAS" class="headerlink" title="1. BLAS"></a>1. BLAS</h2><p>BLAS是基本线性代数子系统，提供向量与向量、向量与矩阵以及矩阵与矩阵的运算。BLAS Level1提供向量数据的加减、点乘等；BLAS Level2提供向量与举证的运算，如乘法运算；BLAS Level3提供矩阵与矩阵的运算，比如矩阵乘法。<br>BLAS函数名结构为：<code>&lt;character&gt;&lt;name&gt;&lt;mod&gt;()</code><br>其中<code>**&lt;character&gt;**</code>表示代表数据类型：</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">s</td>
+<td align="center">real,    single precision</td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td align="center">complex, single precision</td>
+</tr>
+<tr>
+<td align="center">d</td>
+<td align="center">real,    double precision</td>
+</tr>
+<tr>
+<td align="center">x</td>
+<td align="center">complex, double precision</td>
+</tr>
+</tbody></table>
+<p>在BLAS Level1中，<code>**&lt;name&gt;**</code>表示的是运算的方式，如<code>dot</code>表示向量点乘，<code>swap</code>表示向量交换。在BLAS Level2和BLAS Level3中，<code>**&lt;name&gt;**</code>表示矩阵的类型。</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ge</td>
+<td align="center">一般矩阵(general matrix)</td>
+</tr>
+<tr>
+<td align="center">sb</td>
+<td align="center">(general band matrix)</td>
+</tr>
+<tr>
+<td align="center">sy</td>
+<td align="center">(symmetric matrix)</td>
+</tr>
+<tr>
+<td align="center">sp</td>
+<td align="center">(symmetric matrix package storage)</td>
+</tr>
+<tr>
+<td align="center">sb</td>
+<td align="center">(symmetric band matrix)</td>
+</tr>
+<tr>
+<td align="center">he</td>
+<td align="center">(Hermitian matrix)</td>
+</tr>
+<tr>
+<td align="center">hp</td>
+<td align="center">(Hermitian matrix package storage)</td>
+</tr>
+<tr>
+<td align="center">hb</td>
+<td align="center">(Hermitian band matrix)</td>
+</tr>
+<tr>
+<td align="center">tr</td>
+<td align="center">(triangular matrix)</td>
+</tr>
+<tr>
+<td align="center">tp</td>
+<td align="center">(triangular matrix package storage)</td>
+</tr>
+<tr>
+<td align="center">tb</td>
+<td align="center">(triangular band matrix)</td>
+</tr>
+</tbody></table>
 
       
     </div>
@@ -450,16 +535,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/C-C/" rel="tag"># C/C++</a>
-          
-            <a href="/tags/序列化/" rel="tag"># 序列化</a>
-          
-            <a href="/tags/cereal/" rel="tag"># cereal</a>
-          
-        </div>
-      
 
       
       
@@ -469,8 +544,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/16/cpp-serialization-introduction/" rel="next" title="C++序列化">
-                <i class="fa fa-chevron-left"></i> C++序列化
+              <a href="/2019/10/15/math-library-introduction/" rel="next" title="数学计算库汇总">
+                <i class="fa fa-chevron-left"></i> 数学计算库汇总
               </a>
             
           </div>
@@ -479,8 +554,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/10/16/redis-data-structures/" rel="prev" title="Redis数据类型">
-                Redis数据类型 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/16/cpp-serialization-introduction/" rel="prev" title="C++序列化">
+                C++序列化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -567,7 +642,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -589,7 +664,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -638,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-BLAS"><span class="nav-text">1. BLAS</span></a></li></ol></div>
             
 
           </div>
@@ -1199,6 +1274,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 
