@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="C/C++,Redis,Python,">
+  <meta name="keywords" content="C/C++,RAII,">
 
 
 
@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 123456789101112131415161718192021222324252627282930313233343536import cv2import redisimport structi">
-<meta name="keywords" content="C&#x2F;C++,Redis,Python">
+<meta name="description" content="C++中最常使用的资源就是内存，其他常见的还包括文件句柄、互斥锁(mutex lock)、数据库连接、以及网络socket等。在计算机系统中，这些系统资源是有限的，所以在使用完资源后必须要进行释放。本文主要记录C++中的资源管理的机制RAII(Resource Acquisition Is Initialization)以及智能指针。">
+<meta name="keywords" content="C&#x2F;C++,RAII">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis编程环境">
-<meta property="og:url" content="http://yoursite.com/2019/10/16/redis-programming-guide/index.html">
+<meta property="og:title" content="C&#x2F;C++编程—资源管理和智能指针">
+<meta property="og:url" content="http://yoursite.com/2019/10/16/cpp-resources-management/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 123456789101112131415161718192021222324252627282930313233343536import cv2import redisimport structi">
+<meta property="og:description" content="C++中最常使用的资源就是内存，其他常见的还包括文件句柄、互斥锁(mutex lock)、数据库连接、以及网络socket等。在计算机系统中，这些系统资源是有限的，所以在使用完资源后必须要进行释放。本文主要记录C++中的资源管理的机制RAII(Resource Acquisition Is Initialization)以及智能指针。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-17T03:09:32.212Z">
+<meta property="og:updated_time" content="2019-10-18T07:53:46.738Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis编程环境">
-<meta name="twitter:description" content="1 Redis Python编程Python使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 123456789101112131415161718192021222324252627282930313233343536import cv2import redisimport structi">
+<meta name="twitter:title" content="C&#x2F;C++编程—资源管理和智能指针">
+<meta name="twitter:description" content="C++中最常使用的资源就是内存，其他常见的还包括文件句柄、互斥锁(mutex lock)、数据库连接、以及网络socket等。在计算机系统中，这些系统资源是有限的，所以在使用完资源后必须要进行释放。本文主要记录C++中的资源管理的机制RAII(Resource Acquisition Is Initialization)以及智能指针。">
 
 
 
@@ -152,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/16/redis-programming-guide/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/16/cpp-resources-management/">
 
 
 
 
 
-  <title>Redis编程环境 | Tangming's Blog</title>
+  <title>C/C++编程—资源管理和智能指针 | Tangming's Blog</title>
   
 
 
@@ -327,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/redis-programming-guide/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/cpp-resources-management/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ming Tang">
@@ -344,7 +344,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis编程环境</h1>
+          <h1 class="post-title" itemprop="name headline">C/C++编程—资源管理和智能指针</h1>
         
 
         <div class="post-meta">
@@ -356,7 +356,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-16T16:07:13+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-16T19:00:19+08:00">
                 2019-10-16
               </time>
             
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-17T11:09:32+08:00">
-                2019-10-17
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-18T15:53:46+08:00">
+                2019-10-18
               </time>
             
           </span>
@@ -391,8 +391,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
+                  <a href="/categories/编程语言/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
                   </a>
                 </span>
 
@@ -428,12 +428,28 @@
       
 
       
-        <h3 id="1-Redis-Python编程"><a href="#1-Redis-Python编程" class="headerlink" title="1 Redis Python编程"></a>1 Redis Python编程</h3><p>Python使用Redis非常简单，可以通过<code>pip install redis</code>在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">toRedis</span><span class="params">(array)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Encode ndarry 'array' to bytes</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="comment"># 1. get shape of Numpy array and encode</span></span><br><span class="line">    h,w = array.shape</span><br><span class="line">    shape = struct.pack(<span class="string">'&gt;II'</span>,h,w) <span class="comment"># '&gt;'表示大端，'I'表示4个字节的unsigned int，'II'表示8字节的unsigned int</span></span><br><span class="line">    <span class="comment"># 2. append the Numpy array as bytes to the shape</span></span><br><span class="line">    encode = shape+array.tobytes()</span><br><span class="line">    <span class="keyword">return</span> encode</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fromRedis</span><span class="params">(encode)</span>:</span></span><br><span class="line">    <span class="comment"># 4. extract the shape of the Numpy array from the string</span></span><br><span class="line">    h,w = struct.unpack(<span class="string">'&gt;II'</span>,encode[:<span class="number">8</span>])</span><br><span class="line">    <span class="comment"># extract data and repopulate Numpy array, reshape to original shape</span></span><br><span class="line">    array = np.frombuffer(encode,dtype=np.uint8,offset=<span class="number">8</span>).reshape(h,w)</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    r = redis.Redis(host=<span class="string">'127.0.0.1'</span>,port=<span class="number">6379</span>)</span><br><span class="line">    img = cv2.imread(<span class="string">'./oil11_2.bmp'</span>,cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    </span><br><span class="line">    r.set(<span class="string">'name'</span>,<span class="string">'tangming'</span>)</span><br><span class="line">    r.set(<span class="string">'age'</span>,<span class="number">5</span>)</span><br><span class="line">    <span class="comment"># 3. store the encoded array under supplied key</span></span><br><span class="line">    r.set(<span class="string">'image'</span>,toRedis(img))</span><br><span class="line"></span><br><span class="line">    print(r.get(<span class="string">'name'</span>))</span><br><span class="line">    print(r.get(<span class="string">'age'</span>))</span><br><span class="line">    array = fromRedis(r.get(<span class="string">'image'</span>))</span><br><span class="line">    cv2.imshow(<span class="string">'image'</span>,array)</span><br></pre></td></tr></table></figure>
+        <p>C++中最常使用的资源就是内存，其他常见的还包括文件句柄、互斥锁(mutex lock)、数据库连接、以及网络socket等。在计算机系统中，这些系统资源是有限的，所以在使用完资源后必须要进行释放。本文主要记录C++中的资源管理的机制RAII(Resource Acquisition Is Initialization)以及智能指针。</p>
+<a id="more"></a>
+<h2 id="1-C-资源管理"><a href="#1-C-资源管理" class="headerlink" title="1. C++资源管理"></a>1. C++资源管理</h2><p>我们在使用系统资源时，都必须遵循一个步骤：<code>申请资源</code>-&gt;<code>使用资源</code>-&gt;<code>释放资源</code>。资源只有申请后才能使用，使用完成后必须要释放，如果不释放就会造成资源泄露。比如，我们使用<code>malloc/new</code>开辟的内存资源，必须要通过<code>free/delete</code>进行释放，否则就会造成内存泄漏。所以，在编程的时候<code>malloc</code>和<code>free</code>、<code>new</code>和<code>delete</code>总是匹配的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FILE* file = fopen(fn,<span class="string">'r'</span>); <span class="comment">// 申请文件句柄资源</span></span><br><span class="line"><span class="comment">// 使用资源</span></span><br><span class="line"><span class="keyword">if</span>(!f()) <span class="keyword">return</span>; <span class="comment">// f()失败，返回</span></span><br><span class="line"><span class="comment">// ... </span></span><br><span class="line"><span class="keyword">if</span>(!g()) <span class="keyword">return</span>; <span class="comment">// g()失败，返回</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">fclose(file); <span class="comment">// 释放资源</span></span><br></pre></td></tr></table></figure>
+<p>在上述代码中，存在着因某些操作失败而提前返回的现象，这时就会跳过资源释放的操作，造成<strong>资源泄露</strong>。对于简单的代码可以在不同的位置重复书写释放资源的代码，如果项目中有异常处理或者需要管理的资源有多个，重复书写资源释放的代码会造成代码冗余且后期难以维护。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">FILE* file = fopen(fn,<span class="string">'r'</span>); <span class="comment">// 申请资源</span></span><br><span class="line"><span class="comment">// 使用资源</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!f()) &#123;fclose(file); <span class="keyword">return</span>;&#125; <span class="comment">// f()失败，返回</span></span><br><span class="line">    <span class="comment">// ... </span></span><br><span class="line">    <span class="keyword">if</span>(!g()) &#123;fclose(file); <span class="keyword">return</span>;&#125; <span class="comment">// g()失败，返回</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(...)</span><br><span class="line">&#123;</span><br><span class="line">    fclose(file);</span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fclose(file); <span class="comment">// 释放资源</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="2-Redis-C-编程"><a href="#2-Redis-C-编程" class="headerlink" title="2 Redis C++编程"></a>2 Redis C++编程</h3><p>用C++来操作Redis数据库，需要另外的Redis客户端库，常用的有<a href="https://github.com/redis/hiredis" target="_blank" rel="noopener">hiredis</a>、<a href="https://gitee.com/0xsky/xredis/tree/master" target="_blank" rel="noopener">xredis</a>和<a href="https://github.com/cpp-redis/cpp_redis" target="_blank" rel="noopener">cpp_redis</a>。hiredis使用简单，函数少，最接近Redis原始命令。cpp_redis需要C++11编译器的支持。</p>
-<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
-<li><a href="https://www.cnblogs.com/gala/archive/2011/09/22/2184801.html" target="_blank" rel="noopener">Python使用struct处理二进制</a></li>
+<h2 id="2-RAII的机制"><a href="#2-RAII的机制" class="headerlink" title="2. RAII的机制"></a>2. RAII的机制</h2><p>在C++中，定义在栈上的局部对象的创建和销毁是由系统自动完成的。我们在某个作用域中定义和使用局部对象，当控制流程超出作用域的控制范围时，系统会自动调用析构函数来销毁该对象。</p>
+<p>RAII是C++语言中一种资源管理的常用规范，其基本思路是<strong>用类来封装资源，在类的构造函数中获取资源，在类的析构函数中释放资源</strong>。使用的时候，把资源管理类实例化为一个对象，当类超出作用域的时候，就会调用类的析构函数对资源进行释放。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandle</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    FileHandle(<span class="keyword">char</span> <span class="keyword">const</span>* fn, <span class="keyword">char</span> <span class="keyword">const</span>* t)&#123; f = fopen(fn,t);&#125;</span><br><span class="line">    ~FileHandle()&#123;fclose(f);&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    FileHandle(FileHandle <span class="keyword">const</span>&amp;); <span class="comment">//复制构造函数</span></span><br><span class="line">    FileHandle&amp; operate= (FileHandle <span class="keyword">const</span>&amp;);<span class="comment">//赋值运算符</span></span><br><span class="line">    FILE* f;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>FileHandle类的构造函数调用fopen()获取资源；FileHandle类的析构函数调用fclose()释放资源。FileHandle对象代表的是资源，不具有拷贝语义，因此需要将复制构造函数和赋值运算符声明为私有成员，这样可以避免在进行资源对象作为参数传递时发生值的复制，造成访问冲突。</p>
+<h2 id="3-智能指针"><a href="#3-智能指针" class="headerlink" title="3. 智能指针"></a>3. 智能指针</h2><p>在C++中，我们创建一个指向某个对象的普通指针，在使用完这个指针之后需要进行删除，否则会造成一个悬挂指针，导致内存泄漏。</p>
+<p>智能指针和普通指针的区别在于智能指针实际上是对普通指针加了一层封装机制，这样的一层封装机制的目的是为了使得智能指针可以方便的管理一个对象的生命期。智能指针就是RAII的实现范例，专门用来动态的分配内存。它提供所有普通指针提供的接口，却很少发生异常。在构造中，它分配内存，当离开作用域时，它会自动释放已分配的内存。</p>
+<p><strong>NOTE:</strong> C++11的智能指针的构造函数都有<code>explicit</code>关键词修饰，表明它<strong>不能被隐式的进行类型转换</strong>。</p>
+<p>C++11中有三个智能指针：<code>unique_prt</code>、<code>shared_ptr</code>和<code>weak_ptr</code>。</p>
+<h3 id="3-1-unique-prt"><a href="#3-1-unique-prt" class="headerlink" title="3.1 unique_prt"></a>3.1 unique_prt</h3><p><code>unique_prt</code>是一个独享所有权的智能指针</p>
+<h3 id="3-2-shared-ptr"><a href="#3-2-shared-ptr" class="headerlink" title="3.2 shared_ptr"></a>3.2 shared_ptr</h3><p><code>shared_ptr</code>使用了计数机制来表明资源被几个指针共享。</p>
+<h3 id="3-3-weak-ptr"><a href="#3-3-weak-ptr" class="headerlink" title="3.3 weak_ptr"></a>3.3 weak_ptr</h3><p><code>weak_ptr</code>是用来解决<code>shared_ptr</code>相互引用时的死锁问题。</p>
+<p><code>weak_ptr</code>相当于<code>shared_ptr</code>的辅助指针，所以主要的智能指针只有<code>shared_ptr</code>和<code>weak_ptr</code>。</p>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://www.cnblogs.com/Braveliu/p/3287966.html" target="_blank" rel="noopener">RAII用法详解</a></li>
+<li><a href="https://docs.microsoft.com/zh-cn/cpp/cpp/smart-pointers-modern-cpp?view=vs-2015" target="_blank" rel="noopener">智能指针</a></li>
 </ul>
 
       
@@ -454,9 +470,7 @@
           
             <a href="/tags/C-C/" rel="tag"># C/C++</a>
           
-            <a href="/tags/Redis/" rel="tag"># Redis</a>
-          
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/RAII/" rel="tag"># RAII</a>
           
         </div>
       
@@ -479,8 +493,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/10/16/cpp-resource-management/" rel="prev" title="C++资源管理和智能指针">
-                C++资源管理和智能指针 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/17/ml-cross-entropy-loss-function/" rel="prev" title="交叉熵损失函数">
+                交叉熵损失函数 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -567,7 +581,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -638,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Redis-Python编程"><span class="nav-text">1 Redis Python编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Redis-C-编程"><span class="nav-text">2 Redis C++编程</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献-amp-资源链接"><span class="nav-text">参考文献 &amp; 资源链接</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-C-资源管理"><span class="nav-text">1. C++资源管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-RAII的机制"><span class="nav-text">2. RAII的机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-智能指针"><span class="nav-text">3. 智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-unique-prt"><span class="nav-text">3.1 unique_prt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-shared-ptr"><span class="nav-text">3.2 shared_ptr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-weak-ptr"><span class="nav-text">3.3 weak_ptr</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章-amp-资源链接"><span class="nav-text">参考文章 &amp; 资源链接</span></a></li></ol></div>
             
 
           </div>

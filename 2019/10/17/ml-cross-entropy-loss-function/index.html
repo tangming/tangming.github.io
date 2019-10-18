@@ -111,18 +111,18 @@
 
 
 
-<meta name="description" content="交叉熵损失函数(逻辑回归)：$$J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$ $J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)： $$\frac{\partial}{\partial\theta_">
+<meta name="description" content="交叉熵损失函数(逻辑回归)：$$J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$$J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)：$$\frac{\partial}{\partial\theta_j}">
 <meta name="keywords" content="交叉熵,损失函数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="交叉熵损失函数">
 <meta property="og:url" content="http://yoursite.com/2019/10/17/ml-cross-entropy-loss-function/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="交叉熵损失函数(逻辑回归)：$$J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$ $J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)： $$\frac{\partial}{\partial\theta_">
+<meta property="og:description" content="交叉熵损失函数(逻辑回归)：$$J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$$J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)：$$\frac{\partial}{\partial\theta_j}">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-17T06:38:40.948Z">
+<meta property="og:updated_time" content="2019-10-18T01:33:40.339Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="交叉熵损失函数">
-<meta name="twitter:description" content="交叉熵损失函数(逻辑回归)：$$J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$ $J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)： $$\frac{\partial}{\partial\theta_">
+<meta name="twitter:description" content="交叉熵损失函数(逻辑回归)：$$J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$$J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)：$$\frac{\partial}{\partial\theta_j}">
 
 
 
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-17T14:38:40+08:00">
-                2019-10-17
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-18T09:33:40+08:00">
+                2019-10-18
               </time>
             
           </span>
@@ -428,9 +428,7 @@
       
 
       
-        <p>交叉熵损失函数(逻辑回归)：<br>$$<br>J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))<br>$$</p>
-<p>$J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)：</p>
-<p>$$\frac{\partial}{\partial\theta_j}J(\theta)=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}$$</p>
+        <p>交叉熵损失函数(逻辑回归)：<br>$$<br>J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))<br>$$<br>$J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)：<br>$$\frac{\partial}{\partial\theta_j}J(\theta)=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}$$</p>
 <a id="more"></a>
 
 <h2 id="1-交叉熵损失函数的数学原理"><a href="#1-交叉熵损失函数的数学原理" class="headerlink" title="1. 交叉熵损失函数的数学原理"></a>1. 交叉熵损失函数的数学原理</h2><p>在二分类问题模型中，真实样本的标签为$[0,1]$，分别表示负类和正类。模型的最后通常会经过一个Sigmoid函数，输出一个概率值，这个概率值反映了预测为正类的可能性。<br>Sigmod函数的输出表征了当前<strong>样本标签</strong>为1的概率：<br>$$ \hat{y}=P(y=1 \mid x)$$<br>对于<strong>样本标签</strong>为0的概率可以表达为：<br>$$ 1-\hat{y}=P(y=0\mid x)$$<br>从极大似然性的角度将上面两个公式进行融合得到：<br>$$ P(y\mid x)=\hat{y}^y\cdot(1-\hat{y})^{1-y}$$<br>当<strong>真实标签</strong>为1或者0时，依据上式可分别得到：<br>$$ P(y=1 \mid x)=\hat{y}$$<br>$$ P(y=0\mid x)=1-\hat{y}$$<br>两种情况下概率表达式完全一样。  </p>
@@ -440,13 +438,9 @@
 <li><strong>logistic回归</strong>（二分类问题）中，$y^{(i)}$取0或1；</li>
 <li><strong>softmax回归</strong>（多分类问题）中，$y^{(i)}$取值为$1~k$中的一个值表示一个类别</li>
 </ul>
-<p>输入样本数据$x^{(i)}=(1,x_1^{(i)},x_2^{(i)},…,x_m^{(i)})^T$，$y^{(i)}$，模型参数为$\theta=(\theta_0,\theta_1,\theta_3,…,\theta_m)^T$，因此有：<br>$$ \theta^Tx^{(i)}:=\theta_0+\theta_1x_1^{(i)}+…+\theta_mx_m^{(i)}$$</p>
-<p>假设函数(hypothesis function)定义为：<br>$$ h_\theta(x^{(i)})=\frac{1}{1+e^{-\theta^Tx^{(i)}}}$$<br>用对于第一节得出的损失函数$ h_\theta(x^{(i)})$取代$\hat{y}^{(i)}$，就可以得到在机器学习中常见的交叉熵损失函数的表达式：<br>$$ J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$</p>
-<p>$J(\theta)$对$\theta$的偏导数涉及到矩阵和向量的倒数，对于交叉熵损失函数$J(\theta)$，其中：<br>$$ log(h_\theta(x^{(i)}))=log\frac{1}{1+e^{-\theta^Tx^{(i)}}}=-log(1+e^{-\theta^Tx^{(i)}})$$<br>$$<br>\begin {aligned}<br>log(1-h_\theta(x^{(i)}))&amp;=log(1-\frac{1}{1+e^{-\theta^Tx^{(i)}}})=log\frac{e^{-\theta^Tx^{(i)}}}{1+e^{-\theta^Tx^{(i)}}}\\<br>&amp;=log(e^{-\theta^Tx^{(i)}})-log(1+e^{-\theta^Tx^{(i)}})\\<br>&amp;=-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}})<br>\end {aligned}<br>$$<br>由此可以得到：<br>$$<br>\begin{aligned}<br>J(\theta)&amp;=-\frac{1}{N}\sum_{i=1}^{N}[-y^{(i)}(log(1+e^{-\theta^Tx^{(i)}}))+(1-y^{(i)})(-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}}))]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}})]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-log(e^{\theta^Tx^{(i)}})-log(1+e^{-\theta^Tx^{(i)}})]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-log(1+e^{\theta^Tx^{(i)}})]<br>\end{aligned}<br>$$<br>再计算$J(\theta)$对$\theta_j$的偏导数:<br>$$<br>\begin{aligned}<br>\frac{\partial}{\partial\theta_j}J(\theta)&amp;=\frac{\partial}{\partial\theta_j}(\frac{1}{N}\sum_{i=1}^{N}[log(1+e^{\theta^Tx^{(i)}})-y^{(i)}\theta^Tx^{(i)}])\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}[\frac{\partial}{\partial\theta_j}log(1+e^{\theta^Tx^{(i)}})-\frac{\partial}{\partial\theta_j}(y^{(i)}\theta^Tx^{(i)})]\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}[\frac{x_j^{(i)}e^{\theta^Tx^{(i)}}}{1+e^{\theta^Tx^{(i)}}}-y^{(i)}x_j^{(i)}]\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}<br>\end{aligned}<br>$$</p>
+<p>输入样本数据$x^{(i)}=(1,x_1^{(i)},x_2^{(i)},…,x_m^{(i)})^T$，$y^{(i)}$，模型参数为$\theta=(\theta_0,\theta_1,\theta_3,…,\theta_m)^T$，因此有：<br>$$ \theta^Tx^{(i)}:=\theta_0+\theta_1x_1^{(i)}+…+\theta_mx_m^{(i)}$$<br>假设函数(hypothesis function)定义为：<br>$$ h_\theta(x^{(i)})=\frac{1}{1+e^{-\theta^Tx^{(i)}}}$$<br>用对于第一节得出的损失函数$ h_\theta(x^{(i)})$取代$\hat{y}^{(i)}$，就可以得到在机器学习中常见的交叉熵损失函数的表达式：<br>$$ J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$<br>$J(\theta)$对$\theta$的偏导数涉及到矩阵和向量的倒数，对于交叉熵损失函数$J(\theta)$，其中：<br>$$ log(h_\theta(x^{(i)}))=log\frac{1}{1+e^{-\theta^Tx^{(i)}}}=-log(1+e^{-\theta^Tx^{(i)}})$$<br>$$<br>\begin {aligned}<br>log(1-h_\theta(x^{(i)}))&amp;=log(1-\frac{1}{1+e^{-\theta^Tx^{(i)}}})=log\frac{e^{-\theta^Tx^{(i)}}}{1+e^{-\theta^Tx^{(i)}}}\\<br>&amp;=log(e^{-\theta^Tx^{(i)}})-log(1+e^{-\theta^Tx^{(i)}})\\<br>&amp;=-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}})<br>\end {aligned}<br>$$<br>由此可以得到：<br>$$<br>\begin{aligned}<br>J(\theta)&amp;=-\frac{1}{N}\sum_{i=1}^{N}[-y^{(i)}(log(1+e^{-\theta^Tx^{(i)}}))+(1-y^{(i)})(-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}}))]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}})]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-log(e^{\theta^Tx^{(i)}})-log(1+e^{-\theta^Tx^{(i)}})]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-log(1+e^{\theta^Tx^{(i)}})]<br>\end{aligned}<br>$$<br>再计算$J(\theta)$对$\theta_j$的偏导数:<br>$$<br>\begin{aligned}<br>\frac{\partial}{\partial\theta_j}J(\theta)&amp;=\frac{\partial}{\partial\theta_j}(\frac{1}{N}\sum_{i=1}^{N}[log(1+e^{\theta^Tx^{(i)}})-y^{(i)}\theta^Tx^{(i)}])\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}[\frac{\partial}{\partial\theta_j}log(1+e^{\theta^Tx^{(i)}})-\frac{\partial}{\partial\theta_j}(y^{(i)}\theta^Tx^{(i)})]\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}[\frac{x_j^{(i)}e^{\theta^Tx^{(i)}}}{1+e^{\theta^Tx^{(i)}}}-y^{(i)}x_j^{(i)}]\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}<br>\end{aligned}<br>$$</p>
 <h2 id="3-为什么用交叉熵作为损失函数"><a href="#3-为什么用交叉熵作为损失函数" class="headerlink" title="3.为什么用交叉熵作为损失函数"></a>3.为什么用交叉熵作为损失函数</h2><p>在深度学习中，我们常用的损失函数是二次函数$L=\frac{(y-\hat{y})^2}{2}$，若激活函数使用的是sigmoid函数，则$\hat{y}=\sigma(z)$，其中$z=wx+b$。采用链式法则求导则有：<br>$$<br>\frac{\partial L}{\partial w}=(\hat{y}-y)\sigma(z)’x\<br>\frac{\partial L}{\partial b}=(\hat{y}-y)\sigma(z)’<br>$$<br>由上面两个式子可以看出，损失函数的梯度都与sigmoid函数的梯度有关，而simoid函数的两端存在梯度消失问题。</p>
-<p>使用交叉熵作为损失函数，其倒数形式为：</p>
-<p>$$<br>\frac{\partial L}{\partial w}=\frac{1}{N}\sum_i{x(\sigma(z)-y)}\<br>\frac{\partial L}{\partial b}=\frac{1}{N}\sum_i{(\sigma(z)-y)}<br>$$</p>
-<p>使用交叉熵作为损失函数，其反向传播梯度与sigmoid函数的梯度无关，从而避免了梯度消失的问题。</p>
+<p>使用交叉熵作为损失函数，其倒数形式为：<br>$$<br>\frac{\partial L}{\partial w}=\frac{1}{N}\sum_i{x(\sigma(z)-y)}\<br>\frac{\partial L}{\partial b}=\frac{1}{N}\sum_i{(\sigma(z)-y)}<br>$$<br>使用交叉熵作为损失函数，其反向传播梯度与sigmoid函数的梯度无关，从而避免了梯度消失的问题。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
 <li><a href="https://zhuanlan.zhihu.com/p/38241764" target="_blank" rel="noopener">简单的交叉熵损失函数，你真的懂了吗？</a>  </li>
 <li><a href="https://www.cnblogs.com/Josie-chen/p/9964667.html" target="_blank" rel="noopener">交叉熵损失函数求导推导</a></li>
@@ -483,8 +477,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/16/cpp-resource-management/" rel="next" title="C++资源管理和智能指针">
-                <i class="fa fa-chevron-left"></i> C++资源管理和智能指针
+              <a href="/2019/10/16/cpp-resources-management/" rel="next" title="C/C++编程—资源管理和智能指针">
+                <i class="fa fa-chevron-left"></i> C/C++编程—资源管理和智能指针
               </a>
             
           </div>
@@ -577,7 +571,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
