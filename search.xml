@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[交叉熵损失函数]]></title>
-    <url>%2F2019%2F10%2F17%2Fml-cross-entropy-loss-function%2F</url>
-    <content type="text"><![CDATA[交叉熵损失函数(逻辑回归)：$$J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$$J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)：$$\frac{\partial}{\partial\theta_j}J(\theta)=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}$$ 1. 交叉熵损失函数的数学原理在二分类问题模型中，真实样本的标签为$[0,1]$，分别表示负类和正类。模型的最后通常会经过一个Sigmoid函数，输出一个概率值，这个概率值反映了预测为正类的可能性。Sigmod函数的输出表征了当前样本标签为1的概率：$$ \hat{y}=P(y=1 \mid x)$$对于样本标签为0的概率可以表达为：$$ 1-\hat{y}=P(y=0\mid x)$$从极大似然性的角度将上面两个公式进行融合得到：$$ P(y\mid x)=\hat{y}^y\cdot(1-\hat{y})^{1-y}$$当真实标签为1或者0时，依据上式可分别得到：$$ P(y=1 \mid x)=\hat{y}$$$$ P(y=0\mid x)=1-\hat{y}$$两种情况下概率表达式完全一样。 对于$P(y \mid x)$，我们希望其越大越好。因为$log$运算不会影响函数本身的单调性，所以，对$P(y \mid x)$进行对数运算。则有：$$\begin {aligned}log(P(y\mid x))&amp;=log(\hat{y}^y\cdot(1-\hat{y})^{1-y})\\&amp;=ylog(\hat{y})+(1-y)log(1-\hat{y})\end {aligned}$$我们希望 $log(P(y \mid x))$越大越好，即$-log(P(y \mid x))$越小越好。对于N个样本的总的损失函数为：$$ loss=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(\hat{y}^{(i)})+(1-y^{(i)})log(1-\hat{y}^{(i)})$$ 2. 交叉熵损失函数求导我们一共有N组样本，$(x^{(i)},y^{(i)})$表示第$i$组样本及其对应的类别标记。其中，$x^{(i)}=(1,x_1^{(i)},x_2^{(i)},…,x_m^{(i)})^T$，$y^{(i)}$为表示类别的数值。 logistic回归（二分类问题）中，$y^{(i)}$取0或1； softmax回归（多分类问题）中，$y^{(i)}$取值为$1~k$中的一个值表示一个类别 输入样本数据$x^{(i)}=(1,x_1^{(i)},x_2^{(i)},…,x_m^{(i)})^T$，$y^{(i)}$，模型参数为$\theta=(\theta_0,\theta_1,\theta_3,…,\theta_m)^T$，因此有：$$ \theta^Tx^{(i)}:=\theta_0+\theta_1x_1^{(i)}+…+\theta_mx_m^{(i)}$$假设函数(hypothesis function)定义为：$$ h_\theta(x^{(i)})=\frac{1}{1+e^{-\theta^Tx^{(i)}}}$$用对于第一节得出的损失函数$ h_\theta(x^{(i)})$取代$\hat{y}^{(i)}$，就可以得到在机器学习中常见的交叉熵损失函数的表达式：$$ J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$$J(\theta)$对$\theta$的偏导数涉及到矩阵和向量的倒数，对于交叉熵损失函数$J(\theta)$，其中：$$ log(h_\theta(x^{(i)}))=log\frac{1}{1+e^{-\theta^Tx^{(i)}}}=-log(1+e^{-\theta^Tx^{(i)}})$$$$\begin {aligned}log(1-h_\theta(x^{(i)}))&amp;=log(1-\frac{1}{1+e^{-\theta^Tx^{(i)}}})=log\frac{e^{-\theta^Tx^{(i)}}}{1+e^{-\theta^Tx^{(i)}}}\\&amp;=log(e^{-\theta^Tx^{(i)}})-log(1+e^{-\theta^Tx^{(i)}})\\&amp;=-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}})\end {aligned}$$由此可以得到：$$\begin{aligned}J(\theta)&amp;=-\frac{1}{N}\sum_{i=1}^{N}[-y^{(i)}(log(1+e^{-\theta^Tx^{(i)}}))+(1-y^{(i)})(-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}}))]\\&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}})]\\&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-log(e^{\theta^Tx^{(i)}})-log(1+e^{-\theta^Tx^{(i)}})]\\&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-log(1+e^{\theta^Tx^{(i)}})]\end{aligned}$$再计算$J(\theta)$对$\theta_j$的偏导数:$$\begin{aligned}\frac{\partial}{\partial\theta_j}J(\theta)&amp;=\frac{\partial}{\partial\theta_j}(\frac{1}{N}\sum_{i=1}^{N}[log(1+e^{\theta^Tx^{(i)}})-y^{(i)}\theta^Tx^{(i)}])\\&amp;=\frac{1}{N}\sum_{i=1}^{N}[\frac{\partial}{\partial\theta_j}log(1+e^{\theta^Tx^{(i)}})-\frac{\partial}{\partial\theta_j}(y^{(i)}\theta^Tx^{(i)})]\\&amp;=\frac{1}{N}\sum_{i=1}^{N}[\frac{x_j^{(i)}e^{\theta^Tx^{(i)}}}{1+e^{\theta^Tx^{(i)}}}-y^{(i)}x_j^{(i)}]\\&amp;=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}\end{aligned}$$ 3.为什么用交叉熵作为损失函数在深度学习中，我们常用的损失函数是二次函数$L=\frac{(y-\hat{y})^2}{2}$，若激活函数使用的是sigmoid函数，则$\hat{y}=\sigma(z)$，其中$z=wx+b$。采用链式法则求导则有：$$\frac{\partial L}{\partial w}=(\hat{y}-y)\sigma(z)’x\\frac{\partial L}{\partial b}=(\hat{y}-y)\sigma(z)’$$由上面两个式子可以看出，损失函数的梯度都与sigmoid函数的梯度有关，而simoid函数的两端存在梯度消失问题。 使用交叉熵作为损失函数，其倒数形式为：$$\frac{\partial L}{\partial w}=\frac{1}{N}\sum_i{x(\sigma(z)-y)}\\frac{\partial L}{\partial b}=\frac{1}{N}\sum_i{(\sigma(z)-y)}$$使用交叉熵作为损失函数，其反向传播梯度与sigmoid函数的梯度无关，从而避免了梯度消失的问题。 参考文献 简单的交叉熵损失函数，你真的懂了吗？ 交叉熵损失函数求导推导]]></content>
+    <title>交叉熵损失函数</title>
+    <url>/2019/10/17/ml-cross-entropy-loss-function/</url>
+    <content><![CDATA[<p>交叉熵损失函数(逻辑回归)：<br>$$<br>J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))<br>$$<br>$J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)：<br>$$\frac{\partial}{\partial\theta_j}J(\theta)=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}$$</p>
+<a id="more"></a>
+
+<h2 id="1-交叉熵损失函数的数学原理"><a href="#1-交叉熵损失函数的数学原理" class="headerlink" title="1. 交叉熵损失函数的数学原理"></a>1. 交叉熵损失函数的数学原理</h2><p>在二分类问题模型中，真实样本的标签为$[0,1]$，分别表示负类和正类。模型的最后通常会经过一个Sigmoid函数，输出一个概率值，这个概率值反映了预测为正类的可能性。<br>Sigmod函数的输出表征了当前<strong>样本标签</strong>为1的概率：<br>$$ \hat{y}=P(y=1 \mid x)$$<br>对于<strong>样本标签</strong>为0的概率可以表达为：<br>$$ 1-\hat{y}=P(y=0\mid x)$$<br>从极大似然性的角度将上面两个公式进行融合得到：<br>$$ P(y\mid x)=\hat{y}^y\cdot(1-\hat{y})^{1-y}$$<br>当<strong>真实标签</strong>为1或者0时，依据上式可分别得到：<br>$$<br>P(y=1 \mid x)=\hat{y}\\<br>P(y=0\mid x)=1-\hat{y}<br>$$<br>两种情况下概率表达式完全一样。  </p>
+<p>对于$P(y \mid x)$，我们希望其越大越好。因为$log$运算不会影响函数本身的单调性，所以，对$P(y \mid x)$进行对数运算。则有：<br>$$<br>\begin {aligned}<br>log(P(y\mid x))&amp;=log(\hat{y}^y\cdot(1-\hat{y})^{1-y})\\<br>&amp;=ylog(\hat{y})+(1-y)log(1-\hat{y})<br>\end {aligned}<br>$$<br>我们希望 $log(P(y \mid x))$越大越好，即$-log(P(y \mid x))$越小越好。对于N个样本的总的损失函数为：<br>$$ loss=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(\hat{y}^{(i)})+(1-y^{(i)})log(1-\hat{y}^{(i)})$$</p>
+<h2 id="2-交叉熵损失函数求导"><a href="#2-交叉熵损失函数求导" class="headerlink" title="2. 交叉熵损失函数求导"></a>2. 交叉熵损失函数求导</h2><p>我们一共有N组样本，$(x^{(i)},y^{(i)})$表示第$i$组样本及其对应的类别标记。其中，$x^{(i)}=(1,x_1^{(i)},x_2^{(i)},…,x_m^{(i)})^T$，$y^{(i)}$为表示类别的数值。  </p>
+<ul>
+<li><strong>logistic回归</strong>（二分类问题）中，$y^{(i)}$取0或1；</li>
+<li><strong>softmax回归</strong>（多分类问题）中，$y^{(i)}$取值为$1~k$中的一个值表示一个类别</li>
+</ul>
+<p>输入样本数据$x^{(i)}=(1,x_1^{(i)},x_2^{(i)},…,x_m^{(i)})^T$，$y^{(i)}$，模型参数为$\theta=(\theta_0,\theta_1,\theta_3,…,\theta_m)^T$，因此有：<br>$$ \theta^Tx^{(i)}:=\theta_0+\theta_1x_1^{(i)}+…+\theta_mx_m^{(i)}$$<br>假设函数(hypothesis function)定义为：<br>$$ h_\theta(x^{(i)})=\frac{1}{1+e^{-\theta^Tx^{(i)}}}$$<br>用对于第一节得出的损失函数$ h_\theta(x^{(i)})$取代$\hat{y}^{(i)}$，就可以得到在机器学习中常见的交叉熵损失函数的表达式：<br>$$ J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))$$<br>$J(\theta)$对$\theta$的偏导数涉及到矩阵和向量的倒数，对于交叉熵损失函数$J(\theta)$，其中：<br>$$ log(h_\theta(x^{(i)}))=log\frac{1}{1+e^{-\theta^Tx^{(i)}}}=-log(1+e^{-\theta^Tx^{(i)}})$$<br>$$<br>\begin {aligned}<br>log(1-h_\theta(x^{(i)}))&amp;=log(1-\frac{1}{1+e^{-\theta^Tx^{(i)}}})\\<br>&amp;=log\frac{e^{-\theta^Tx^{(i)}}}{1+e^{-\theta^Tx^{(i)}}}\\<br>&amp;=log(e^{-\theta^Tx^{(i)}})-log(1+e^{-\theta^Tx^{(i)}})\\<br>&amp;=-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}})<br>\end {aligned}<br>$$<br>由此可以得到：<br>$$<br>\begin{aligned}<br>J(\theta)&amp;=-\frac{1}{N}\sum_{i=1}^{N}[-y^{(i)}(log(1+e^{-\theta^Tx^{(i)}}))+(1-y^{(i)})(-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}}))]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-\theta^Tx^{(i)}-log(1+e^{-\theta^Tx^{(i)}})]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-log(e^{\theta^Tx^{(i)}})-log(1+e^{-\theta^Tx^{(i)}})]\\<br>&amp;=-\frac{1}{N}\sum_{i=1}^{N}[y^{(i)}\theta^Tx^{(i)}-log(1+e^{\theta^Tx^{(i)}})]<br>\end{aligned}<br>$$<br>再计算$J(\theta)$对$\theta_j$的偏导数:<br>$$<br>\begin{aligned}<br>\frac{\partial}{\partial\theta_j}J(\theta)&amp;=\frac{\partial}{\partial\theta_j}(\frac{1}{N}\sum_{i=1}^{N}[log(1+e^{\theta^Tx^{(i)}})-y^{(i)}\theta^Tx^{(i)}])\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}[\frac{\partial}{\partial\theta_j}log(1+e^{\theta^Tx^{(i)}})-\frac{\partial}{\partial\theta_j}(y^{(i)}\theta^Tx^{(i)})]\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}[\frac{x_j^{(i)}e^{\theta^Tx^{(i)}}}{1+e^{\theta^Tx^{(i)}}}-y^{(i)}x_j^{(i)}]\\<br>&amp;=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}<br>\end{aligned}<br>$$</p>
+<h2 id="3-为什么用交叉熵作为损失函数"><a href="#3-为什么用交叉熵作为损失函数" class="headerlink" title="3.为什么用交叉熵作为损失函数"></a>3.为什么用交叉熵作为损失函数</h2><p>在深度学习中，我们常用的损失函数是二次函数$L=\frac{(y-\hat{y})^2}{2}$，若激活函数使用的是sigmoid函数，则$\hat{y}=\sigma(z)$，其中$z=wx+b$。采用链式法则求导则有：<br>$$<br>\frac{\partial L}{\partial w}=(\hat{y}-y)\sigma(z)’x\\<br>\frac{\partial L}{\partial b}=(\hat{y}-y)\sigma(z)’<br>$$<br>由上面两个式子可以看出，损失函数的梯度都与sigmoid函数的梯度有关，而simoid函数的两端存在梯度消失问题。</p>
+<p>使用交叉熵作为损失函数，其倒数形式为：<br>$$<br>\frac{\partial L}{\partial w}=\frac{1}{N}\sum_i{x(\sigma(z)-y)}\\<br>\frac{\partial L}{\partial b}=\frac{1}{N}\sum_i{(\sigma(z)-y)}<br>$$<br>使用交叉熵作为损失函数，其反向传播梯度与sigmoid函数的梯度无关，从而避免了梯度消失的问题。</p>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/38241764" target="_blank" rel="noopener">简单的交叉熵损失函数，你真的懂了吗？</a>  </li>
+<li><a href="https://www.cnblogs.com/Josie-chen/p/9964667.html" target="_blank" rel="noopener">交叉熵损失函数求导推导</a></li>
+</ul>
+]]></content>
       <categories>
         <category>机器学习</category>
       </categories>
@@ -13,21 +30,75 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[C/C++编程—资源管理和智能指针]]></title>
-    <url>%2F2019%2F10%2F16%2Fcpp-resources-management%2F</url>
-    <content type="text"><![CDATA[C++中最常使用的资源就是内存，其他常见的还包括文件句柄、互斥锁(mutex lock)、数据库连接、以及网络socket等。在计算机系统中，这些系统资源是有限的，所以在使用完资源后必须要进行释放。本文主要记录C++中的资源管理的机制RAII(Resource Acquisition Is Initialization)以及智能指针。 1. C++资源管理我们在使用系统资源时，都必须遵循一个步骤：申请资源-&gt;使用资源-&gt;释放资源。资源只有申请后才能使用，使用完成后必须要释放，如果不释放就会造成资源泄露。比如，我们使用malloc/new开辟的内存资源，必须要通过free/delete进行释放，否则就会造成内存泄漏。所以，在编程的时候malloc和free、new和delete总是匹配的。 1234567FILE* file = fopen(fn,'r'); // 申请文件句柄资源// 使用资源if(!f()) return; // f()失败，返回// ... if(!g()) return; // g()失败，返回// ...fclose(file); // 释放资源 在上述代码中，存在着因某些操作失败而提前返回的现象，这时就会跳过资源释放的操作，造成资源泄露。对于简单的代码可以在不同的位置重复书写释放资源的代码，如果项目中有异常处理或者需要管理的资源有多个，重复书写资源释放的代码会造成代码冗余且后期难以维护。 12345678910111213141516FILE* file = fopen(fn,'r'); // 申请资源// 使用资源try&#123; if(!f()) &#123;fclose(file); return;&#125; // f()失败，返回 // ... if(!g()) &#123;fclose(file); return;&#125; // g()失败，返回 // ...&#125;catch(...)&#123; fclose(file); throw;&#125;fclose(file); // 释放资源 2. RAII的机制在C++中，定义在栈上的局部对象的创建和销毁是由系统自动完成的。我们在某个作用域中定义和使用局部对象，当控制流程超出作用域的控制范围时，系统会自动调用析构函数来销毁该对象。 RAII是C++语言中一种资源管理的常用规范，其基本思路是用类来封装资源，在类的构造函数中获取资源，在类的析构函数中释放资源。使用的时候，把资源管理类实例化为一个对象，当类超出作用域的时候，就会调用类的析构函数对资源进行释放。 12345678910class FileHandle&#123;public: FileHandle(char const* fn, char const* t)&#123; f = fopen(fn,t);&#125; ~FileHandle()&#123;fclose(f);&#125;private: FileHandle(FileHandle const&amp;); //复制构造函数 FileHandle&amp; operate= (FileHandle const&amp;);//赋值运算符 FILE* f;&#125; FileHandle类的构造函数调用fopen()获取资源；FileHandle类的析构函数调用fclose()释放资源。FileHandle对象代表的是资源，不具有拷贝语义，因此需要将复制构造函数和赋值运算符声明为私有成员，这样可以避免在进行资源对象作为参数传递时发生值的复制，造成访问冲突。 3. 智能指针在C++中，我们创建一个指向某个对象的普通指针，在使用完这个指针之后需要进行删除，否则会造成一个悬挂指针，导致内存泄漏。 智能指针和普通指针的区别在于智能指针实际上是对普通指针加了一层封装机制，这样的一层封装机制的目的是为了使得智能指针可以方便的管理一个对象的生命期。智能指针就是RAII的实现范例，专门用来动态的分配内存。它提供所有普通指针提供的接口，却很少发生异常。在构造中，它分配内存，当离开作用域时，它会自动释放已分配的内存。 NOTE: C++11的智能指针的构造函数都有explicit关键词修饰，表明它不能被隐式的进行类型转换。 C++11中有三个智能指针：unique_prt、shared_ptr和weak_ptr。 3.1 unique_prtunique_prt是一个独享所有权的智能指针 3.2 shared_ptrshared_ptr使用了计数机制来表明资源被几个指针共享。 3.3 weak_ptrweak_ptr是用来解决shared_ptr相互引用时的死锁问题。 weak_ptr相当于shared_ptr的辅助指针，所以主要的智能指针只有shared_ptr和weak_ptr。 参考文章 &amp; 资源链接 RAII用法详解 智能指针]]></content>
+    <title>C/C++编程—资源管理机制与智能指针</title>
+    <url>/2019/10/16/cpp-resources-management/</url>
+    <content><![CDATA[<p>C++中最常使用的资源就是内存，其他常见的还包括文件句柄、互斥锁(mutex lock)、数据库连接、以及网络socket等。在计算机系统中，这些系统资源是有限的，所以在使用完资源后必须要进行释放。本文主要记录C++中的资源管理的机制RAII(Resource Acquisition Is Initialization)以及智能指针。</p>
+<a id="more"></a>
+<h2 id="1-C-资源管理"><a href="#1-C-资源管理" class="headerlink" title="1. C++资源管理"></a>1. C++资源管理</h2><p>我们在使用系统资源时，都必须遵循一个步骤：<code>申请资源</code>-&gt;<code>使用资源</code>-&gt;<code>释放资源</code>。资源只有申请后才能使用，使用完成后必须要释放，如果不释放就会造成资源泄露。比如，我们使用<code>malloc/new</code>开辟的内存资源，必须要通过<code>free/delete</code>进行释放，否则就会造成内存泄漏。所以，在编程的时候<code>malloc</code>和<code>free</code>、<code>new</code>和<code>delete</code>总是匹配的。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">FILE* file = fopen(fn,<span class="string">'r'</span>); <span class="comment">// 申请文件句柄资源</span></span><br><span class="line"><span class="comment">// 使用资源</span></span><br><span class="line"><span class="keyword">if</span>(!f()) <span class="keyword">return</span>; <span class="comment">// f()失败，返回</span></span><br><span class="line"><span class="comment">// ... </span></span><br><span class="line"><span class="keyword">if</span>(!g()) <span class="keyword">return</span>; <span class="comment">// g()失败，返回</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">fclose(file); <span class="comment">// 释放资源</span></span><br></pre></td></tr></table></figure>
+<p>在上述代码中，存在着因某些操作失败而提前返回的现象，这时就会跳过资源释放的操作，造成<strong>资源泄露</strong>。对于简单的代码可以在不同的位置重复书写释放资源的代码，如果项目中有异常处理或者需要管理的资源有多个，重复书写资源释放的代码会造成代码冗余且后期难以维护。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">FILE* file = fopen(fn,<span class="string">'r'</span>); <span class="comment">// 申请资源</span></span><br><span class="line"><span class="comment">// 使用资源</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!f()) &#123;fclose(file); <span class="keyword">return</span>;&#125; <span class="comment">// f()失败，返回</span></span><br><span class="line">    <span class="comment">// ... </span></span><br><span class="line">    <span class="keyword">if</span>(!g()) &#123;fclose(file); <span class="keyword">return</span>;&#125; <span class="comment">// g()失败，返回</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(...)</span><br><span class="line">&#123;</span><br><span class="line">    fclose(file);</span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fclose(file); <span class="comment">// 释放资源</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-RAII机制"><a href="#2-RAII机制" class="headerlink" title="2. RAII机制"></a>2. RAII机制</h2><p>在C++中，定义在栈上的局部对象的创建和销毁是由系统自动完成的。我们在某个作用域中定义和使用局部对象，当控制流程超出作用域的控制范围时，系统会自动调用析构函数来销毁该对象。</p>
+<p>RAII是C++语言中一种资源管理的常用规范，其基本思路是<strong>用类来封装资源，在类的构造函数中获取资源，在类的析构函数中释放资源</strong>。使用的时候，把资源管理类实例化为一个对象，当类超出作用域的时候，就会调用类的析构函数对资源进行释放。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandle</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    FileHandle(<span class="keyword">char</span> <span class="keyword">const</span>* fn, <span class="keyword">char</span> <span class="keyword">const</span>* t)&#123; f = fopen(fn,t);&#125;</span><br><span class="line">    ~FileHandle()&#123;fclose(f);&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    FileHandle(FileHandle <span class="keyword">const</span>&amp;); <span class="comment">//复制构造函数</span></span><br><span class="line">    FileHandle&amp; operate= (FileHandle <span class="keyword">const</span>&amp;);<span class="comment">//赋值运算符</span></span><br><span class="line">    FILE* f;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>FileHandle类的构造函数调用fopen()获取资源；FileHandle类的析构函数调用fclose()释放资源。FileHandle对象代表的是资源，不具有拷贝语义，因此需要<strong>将复制构造函数和赋值运算符声明为私有成员</strong>，这样可以避免在进行资源对象作为参数传递时发生值的复制，造成访问冲突。</p>
+<h2 id="3-智能指针"><a href="#3-智能指针" class="headerlink" title="3. 智能指针"></a>3. 智能指针</h2><p>智能指针就是RAII的实现范例，主要用于管理在堆上分配的内存。在C++中，我们创建一个指向某个对象的普通指针，在使用完这个指针之后需要进行删除，否则会造成一个悬挂指针，导致内存泄漏。智能指针将普通的指针封装为一个栈对象，当栈兑现过的生命周期结束以后，会在析构函数中释放掉申请的内存，防止内存泄漏。</p>
+<p>智能指针和普通指针的区别在于智能指针实际上是对普通指针加了一层封装机制，这样的一层封装机制的目的是为了使得智能指针可以方便的管理一个对象的生命期。</p>
+<p><strong>NOTE:</strong> C++11的智能指针的构造函数都有<code>explicit</code>关键词修饰，表明它<strong>不能被隐式的进行类型转换</strong>。</p>
+<p>C++11中有三个智能指针：<code>unique_ptr</code>、<code>shared_ptr</code>和<code>weak_ptr</code>。C98中有一个智能指针<code>auto_ptr</code>，已被<code>unique_ptr</code>取代。</p>
+<h3 id="3-1-unique-ptr"><a href="#3-1-unique-ptr" class="headerlink" title="3.1 unique_ptr"></a>3.1 unique_ptr</h3><p><code>unique_prt</code>是一个独享所有权的智能指针，其功能是保证同一时间内只有一个智能指针指向该对象。</p>
+<h3 id="3-2-shared-ptr"><a href="#3-2-shared-ptr" class="headerlink" title="3.2 shared_ptr"></a>3.2 shared_ptr</h3><p><code>shared_ptr</code>实现了共享式拥有概念，即多个智能指针指向同一个对象，该对象和其资源会在<strong>最后一个引用被销毁</strong>时进行释放。<code>shared_ptr</code>使用了计数机制来表明资源被几个指针共享，调用<code>release()</code>可以释放当前指针的所有权。可以通过<code>use_count()</code>函数来查看资源被引用的个数，当新增一个引用时，引用计数加1，当过期时引用计数减1，当引用计数为0时，智能指针会自动释放引用的内存资源。</p>
+<p><strong>NOTE:</strong>智能指针依然存在这内存泄漏的可能性，当两个对象互相使用一个<code>shared_ptr</code>成员变量指向对方，会造成循环引用，使得引用计数失效，从而导致内存泄漏。</p>
+<h3 id="3-3-weak-ptr"><a href="#3-3-weak-ptr" class="headerlink" title="3.3 weak_ptr"></a>3.3 weak_ptr</h3><p>为了解决<code>shared_ptr</code>循环引用导致的内存泄漏问题，C++引入了<code>weak_ptr</code>。<code>weak_ptr</code>的构造函数不会修改引用计数的值，从而不会对对象的内存进行管理，类似于一个普通指针，但不指向引用计数的共享内存。其功能时检测到所管理的对象是否已经释放，从而避免非法访问。<br><code>weak_ptr</code>相当于<code>shared_ptr</code>的辅助指针，所以主要的智能指针只有<code>shared_ptr</code>和<code>unique_ptr</code>。</p>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://www.cnblogs.com/Braveliu/p/3287966.html" target="_blank" rel="noopener">RAII用法详解</a></li>
+<li><a href="https://docs.microsoft.com/zh-cn/cpp/cpp/smart-pointers-modern-cpp?view=vs-2015" target="_blank" rel="noopener">智能指针</a></li>
+</ul>
+]]></content>
       <categories>
         <category>编程语言</category>
       </categories>
       <tags>
         <tag>C/C++</tag>
         <tag>RAII</tag>
+        <tag>内存管理</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Redis数据类型]]></title>
-    <url>%2F2019%2F10%2F16%2Fredis-data-types%2F</url>
-    <content type="text"><![CDATA[作为key-value型数据库，Redis也提供了键和值的映射关系。除了常规的数值和字符串，Resis的值还可以是Lists，Sets，Sorted Sets,Hashes。值的数据类型决定了该键值支持的操作。Redis 支持诸如列表、集合或有序集合的交集、并集、查集等高级原子操作；同时，如果值的类型是普通数字，Redis则提供自增等原子操作。 1. Strings字符串是Redis最基本的数据类型。Redis字符串是二进制安全的，这意味着Redis字符串可以包含任何类型的数据，例如JPEG图像或序列化的Ruby对象。一个字符串值允许存储的最大容量为512MB。利用字符串可以进行以下操作： 利用INCR系列命令将Strings用作原子计数器 利用APPEND命令在字符串的末尾添加值 利用GETRANGE和SETRANGE命令对字符串中的部分字符进行修改和查询 利用GETBIT和SETBIT命令对字符串进行位操作字符串是其他四种数据类型的基础，其他数据类型和字符串的差别在于组织字符串的形式不同。 2. ListsRedis的列表就是一个简单的字符串列表，按照插入顺序排序。通过LPUSH命令将新元素插入到列表的头部，通过RPUSH将新元素插入到列表的尾部。Redis列表最多可容纳$2^{32}-1$个元素。Redis列表使用双向链表实现的，主要特点是，无论列表有多大，在列表头部和尾部插入和删除元素耗费的时间是一样的。访问列表两端的元素速度非常快，但是访问列表中间位置的元素非常耗时间，是其时间复杂度为$O(N)$。对列表进行的主要操作有： LPUSH和RPUSH向列表两端插入元素，LPOP和RPOP从列表两端弹出元素 LRANG获取特定索引范围的列表片段，LTRIM删除索引以外的元素 LINDEX和LSET用来索引/设置指定索引位置的元素 LREM用来移除列表中特定数量的元素，&gt;0从左边删除，&lt;0从右边删除，=0删除列表中特定值的所有元素 3. SetsRedis集合是无序的字符串集合，Redis集合使用值为空的散列表实现，所以插入、删除、检测元素是否存在的时间复杂度都是$O(1)$。Redis集合最多可容纳$2^{32}-1$个元素。对集合进行的主要操作有： SADD和AREM进行元素的增加/删除 进行快速的集合运算，SDIFF求差集，SINTER求交集，SUNION求并集。 4. Hashes Redis是采用字典结构以key-value的形式存储数据的，Hhash的value也是一种字典结构，其存储了字段(field)和字段值(field value)的映射，但字段值只能是字符串，Hash的这种结构很适合存储对象数据。每个Hash最多只能存储$2^{32}-1$个key-value对。 5. Sorted Sets与Redis集合类似，Redis有序集合是非重复的String集合。 区别在于，有序集合的每个成员都有一个分数，该分数用于从最小到最大进行排序。 虽然成员是唯一的，但分数可能会重复。有序集合类型是使用散列表和跳跃表(Skip list)实现的，所以即使读取位于中间部分的数据速度也很快，时间复杂度是$O(logN)$。有序集合不仅可以非常快的进行元素的增删查改，因为元素是顺序排序的，所以可以获取特定范围的元素。 6. 其他Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定 的、并且是很小的。 Redis中还可以存储数值和二进制数据。如果使用Redis存储图像这类数据，就要将图像数据序列化成二进制数据。序列化就是将程序数据转化成能被存储并传输的格式的过程，它的逆过程称为反序列化。 参考文献 &amp; 资源链接 Storing complex data structures in Redis Data types An introduction to Redis data types and abstractions]]></content>
+    <title>Redis数据类型</title>
+    <url>/2019/10/16/redis-data-types/</url>
+    <content><![CDATA[<p>作为key-value型数据库，Redis也提供了键和值的映射关系。除了常规的数值和字符串，Resis的值还可以是<code>Lists</code>，<code>Sets</code>，<code>Sorted Sets</code>,<code>Hashes</code>。值的数据类型决定了该键值支持的操作。Redis 支持诸如列表、集合或有序集合的交集、并集、查集等高级原子操作；同时，如果值的类型是普通数字，Redis则提供自增等原子操作。</p>
+<a id="more"></a>
+<h2 id="1-Strings"><a href="#1-Strings" class="headerlink" title="1. Strings"></a>1. Strings</h2><p>字符串是Redis最基本的数据类型。Redis字符串是二进制安全的，这意味着Redis字符串可以包含任何类型的数据，例如JPEG图像或序列化的Ruby对象。一个字符串值允许存储的最大容量为512MB。<br>利用字符串可以进行以下操作：</p>
+<ul>
+<li>利用<code>INCR</code>系列命令将Strings用作原子计数器</li>
+<li>利用<code>APPEND</code>命令在字符串的末尾添加值</li>
+<li>利用<code>GETRANGE</code>和<code>SETRANGE</code>命令对字符串中的部分字符进行修改和查询</li>
+<li>利用<code>GETBIT</code>和<code>SETBIT</code>命令对字符串进行位操作<br>字符串是其他四种数据类型的基础，其他数据类型和字符串的差别在于组织字符串的形式不同。</li>
+</ul>
+<h2 id="2-Lists"><a href="#2-Lists" class="headerlink" title="2. Lists"></a>2. Lists</h2><p>Redis的列表就是一个简单的字符串列表，按照插入顺序排序。通过<code>LPUSH</code>命令将新元素插入到列表的头部，通过<code>RPUSH</code>将新元素插入到列表的尾部。Redis列表最多可容纳$2^{32}-1$个元素。<br>Redis列表使用双向链表实现的，主要特点是，无论列表有多大，在列表头部和尾部插入和删除元素耗费的时间是一样的。访问列表两端的元素速度非常快，但是访问列表中间位置的元素非常耗时间，是其时间复杂度为$O(N)$。<br>对列表进行的主要操作有：</p>
+<ul>
+<li><code>LPUSH</code>和<code>RPUSH</code>向列表两端插入元素，<code>LPOP</code>和<code>RPOP</code>从列表两端弹出元素</li>
+<li><code>LRANG</code>获取特定索引范围的列表片段，<code>LTRIM</code>删除索引以外的元素</li>
+<li><code>LINDEX</code>和<code>LSET</code>用来索引/设置指定索引位置的元素</li>
+<li><code>LREM</code>用来移除列表中特定数量的元素，<code>&gt;0</code>从左边删除，<code>&lt;0</code>从右边删除，<code>=0</code>删除列表中特定值的所有元素</li>
+</ul>
+<h2 id="3-Sets"><a href="#3-Sets" class="headerlink" title="3. Sets"></a>3. Sets</h2><p>Redis集合是无序的字符串集合，Redis集合使用值为空的散列表实现，所以插入、删除、检测元素是否存在的时间复杂度都是$O(1)$。Redis集合最多可容纳$2^{32}-1$个元素。<br>对集合进行的主要操作有：</p>
+<ul>
+<li><code>SADD</code>和<code>AREM</code>进行元素的增加/删除</li>
+<li>进行快速的集合运算，<code>SDIFF</code>求差集，<code>SINTER</code>求交集，<code>SUNION</code>求并集。</li>
+</ul>
+<h2 id="4-Hashes"><a href="#4-Hashes" class="headerlink" title="4. Hashes"></a>4. Hashes</h2><p> Redis是采用字典结构以key-value的形式存储数据的，Hhash的value也是一种字典结构，其存储了字段(field)和字段值(field value)的映射，但字段值只能是字符串，Hash的这种结构很适合存储对象数据。每个Hash最多只能存储$2^{32}-1$个key-value对。</p>
+<h2 id="5-Sorted-Sets"><a href="#5-Sorted-Sets" class="headerlink" title="5. Sorted Sets"></a>5. Sorted Sets</h2><p>与Redis集合类似，Redis有序集合是非重复的String集合。 区别在于，有序集合的每个成员都有一个分数，该分数用于从最小到最大进行排序。 虽然成员是唯一的，但分数可能会重复。有序集合类型是使用散列表和跳跃表(Skip list)实现的，所以即使读取位于中间部分的数据速度也很快，时间复杂度是$O(logN)$。有序集合不仅可以非常快的进行元素的增删查改，因为元素是顺序排序的，所以可以获取特定范围的元素。</p>
+<h2 id="6-其他"><a href="#6-其他" class="headerlink" title="6. 其他"></a>6. 其他</h2><p>Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定 的、并且是很小的。</p>
+<p>Redis中还可以存储数值和二进制数据。如果使用Redis存储图像这类数据，就要将图像数据<strong>序列化</strong>成二进制数据。序列化就是将程序数据转化成能被存储并传输的格式的过程，它的逆过程称为<strong>反序列化</strong>。</p>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://dmitrypol.github.io/redis/2017/06/21/redis-complex-data-struct.html" target="_blank" rel="noopener">Storing complex data structures in Redis</a></li>
+<li><a href="https://redis.io/topics/data-types" target="_blank" rel="noopener">Data types</a></li>
+<li><a href="https://redis.io/topics/data-types-intro" target="_blank" rel="noopener">An introduction to Redis data types and abstractions</a></li>
+</ul>
+]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -37,9 +108,38 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[C/C++编程—序列化库Cereal]]></title>
-    <url>%2F2019%2F10%2F16%2Fcpp-serialization-cereal-introduction%2F</url>
-    <content type="text"><![CDATA[Cereal是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。 Cereal使用非常简单，只需要包含头文件以及为需要序列化的数据编写一个序列化函数即可，会寻找定义在数据结构中serialization函数。使用Cereal进行序列化主要分为两个步骤：定义对象数据的序列化函数，以及对象数据的序列化。 1. Cereal序列化函数Cereal支持单独使用serialization函数，或者分别使用load/save函数进行序列化。序列化函数既可以定义在数据的外部，也可以定义在内部。 123456789101112131415161718192021222324252627#include &lt;iostream&gt;#include &lt;string&gt;/*内部serialization函数*/struct Student&#123; std::string name; int age; template&lt;calss Archive&gt; void serialize(Archive &amp;archive) &#123; archive(name, age); &#125;&#125;;/*外部serialization函数*/struct Student&#123; std::string name; int age;&#125;;template&lt;calss Archive&gt;void serialize(Archive &amp;archive, Student &amp;stu)&#123; archive(stu.name, stu.age);&#125; NOTE：序列化函数也可以私有化，但是必须声明Cereal为友元，因为序列函数私有化之后无法从外部访问，只能通过cereal::access进行访问。 123456789101112131415#include &lt;cereal\access.hpp&gt; // 必须class Student&#123; friend class cereal::access; // 必须private: template&lt;calss Archive&gt; void serialize(Archive &amp;archive) // 私有函数，无法从外部访问 &#123; archive(name, age); &#125; std::string name; int age;&#125; NOTE：如果使用load/save函数进行序列化，save函数必须是const类型，否则Cereal会报错。 12345678910111213141516171819202122232425262728293031323334353637#include &lt;iostream&gt;#include &lt;string&gt;/*内部serialization函数*/struct Student&#123; std::string name; int age; template&lt;calss Archive&gt; void save(Archive &amp;archive) const // const &#123; archive(name, age); &#125; template&lt;calss Archive&gt; void load(Archive &amp;archive) &#123; archive(name, age); &#125;&#125;;/*外部serialization函数*/struct Student&#123; std::string name; int age;&#125;;template&lt;calss Archive&gt;void save(Archive &amp;archive, Student const &amp;stu) // const&#123; archive(stu.name, stu.age);&#125;template&lt;calss Archive&gt;void save(Archive &amp;archive, Student &amp;stu)&#123; archive(stu.name, stu.age);&#125; 2. Cereal数据序列化Cereal支持二进制、XML和JSON三种格式的读写操作，在使用时包含对应的头文件。 1234#include &lt;cereal\archives\binary.hpp&gt; // 二进制#include &lt;cereal\archives\portable_binary.hpp&gt; // 顺序二进制#include &lt;cereal\archives\xml.hpp&gt;#include &lt;cereal\archives\json.hpp&gt; Cereal的读写操作是基于C++的std::ostream和std::istream。这意味着，操作对象可以是文件、内存流，甚至标准的输入输出。以下代码实现的是对cv::Mat序列化，序列化函数为Serialising OpenCV matrices using boost and cereal。 123456789101112131415161718192021222324252627282930313233#include &lt;iostream&gt;#include &lt;sstream&gt;#include &lt;cereal\archives\binary.hpp&gt;#include &lt;opencv2\core.hpp&gt;#include &lt;opencv2\highgui.hpp&gt;#include "matserialization.h"#ifdef _DEBUG#pragma comment(lib,"opencv_world346d.lib")#else#pragma comment(lib,"opencv_world346.lib")#endifint main()&#123; cv::Mat image = cv::imread("../../data/imgs/panda.bmp", cv::IMREAD_GRAYSCALE); std::stringstream str; &#123; // 使用大括号来限定序列化类的生存范围 cereal::BinaryOutputArchive oarchive(str); oarchive(image); &#125; // Cereal存储类自动销毁，完成序列化操作 cv::Mat image_loaded; &#123; cereal::BinaryInputArchive iarchive(str); iarchive(image_loaded); &#125; system("pause"); return 0;&#125; NOTE：Cereal的工作方式是RAII规范，即只有在存储类被销毁时，才能完全保证完全输出。 3. Cereal与boost.SerializationCereal和Boost很相似。这是因为Cereal被设计时就考虑了Boost用户的使用习惯，模仿了许多Boost序列化库的语法习惯。Cereal和Boost序列库的接口非常相似，在一些情况下可以非常迅速的将Boost库替换成Cereal。但是即便如此，Cereal和Boost还是有很大的区别。 cereal在保存数据时会存储尽可能少的元数据。 Boost默认情况下会存储有关库版本以及类型本身的各种元数据。 cereal只需要头文件，不依赖任何三方库或者平台。boost的库非常多，而且需要考虑不同机器之间的版本问题。 cereal支持几乎所有的标准库，cereal支持而boost不支持的包括：&lt;forward_list&gt;，&lt;memory&gt;，&lt;queue&gt;，&lt;stack&gt;，&lt;tuple&gt;，&lt;unordered_set&gt;和&lt;unordered_map&gt;。 cereal更加简洁。例如，在Cereal中当把serialize函数分成load/save函数时，不需要提前使用宏声明。Cereal还使用了static_assert，提供了更加准确的错误提示。 cereal和boost使用不同的语法进行序列化。boost使用的是&amp;，&lt;&lt;和&gt;&gt;，cereal使用的是()。 参考文献 &amp; 资源链接 Cereal Library系列教程 Serialising OpenCV matrices using boost and cereal Transitioning From Boost]]></content>
+    <title>C/C++编程—序列化库Cereal</title>
+    <url>/2019/10/16/cpp-serialization-cereal-introduction/</url>
+    <content><![CDATA[<p><a href="https://uscilab.github.io/cereal/" target="_blank" rel="noopener"><strong>Cereal</strong></a>是一个开源的、轻量级的跨平台序列化库。cereal只包含头文件，不依赖任何三方库，易于使用。Cereal可以将任意的数据类型序列化成二进制、XML格式或者JSON。</p>
+<a id="more"></a>
+<p>Cereal使用非常简单，只需要包含头文件以及为需要序列化的数据编写一个序列化函数即可，会寻找定义在数据结构中<code>serialization</code>函数。使用<code>Cereal</code>进行序列化主要分为两个步骤：<strong>定义对象数据的序列化函数</strong>，以及<strong>对象数据的序列化</strong>。</p>
+<h2 id="1-Cereal序列化函数"><a href="#1-Cereal序列化函数" class="headerlink" title="1. Cereal序列化函数"></a>1. Cereal序列化函数</h2><p>Cereal支持单独使用<code>serialization</code>函数，或者分别使用<code>load/save</code>函数进行序列化。序列化函数既可以定义在数据的外部，也可以定义在内部。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*内部serialization函数*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">template</span>&lt;calss Archive&gt;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">serialize</span><span class="params">(Archive &amp;archive)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        archive(name, age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*外部serialization函数*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;calss Archive&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">serialize</span><span class="params">(Archive &amp;archive, Student &amp;stu)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    archive(stu.name, stu.age);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE：</strong>序列化函数也可以私有化，但是必须声明Cereal为友元，因为序列函数私有化之后无法从外部访问，只能通过<code>cereal::access</code>进行访问。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cereal\access.hpp&gt; // 必须</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">cereal</span>:</span>:access; <span class="comment">// 必须</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">template</span>&lt;calss Archive&gt;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">serialize</span><span class="params">(Archive &amp;archive)</span> <span class="comment">// 私有函数，无法从外部访问</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        archive(name, age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE：</strong>如果使用<code>load/save</code>函数进行序列化，<code>save</code>函数必须是const类型，否则Cereal会报错。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*内部serialization函数*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">template</span>&lt;calss Archive&gt;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">save</span><span class="params">(Archive &amp;archive)</span> <span class="keyword">const</span> <span class="comment">// const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        archive(name, age);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">template</span>&lt;calss Archive&gt;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">load</span><span class="params">(Archive &amp;archive)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        archive(name, age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*外部serialization函数*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;calss Archive&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">save</span><span class="params">(Archive &amp;archive, Student <span class="keyword">const</span> &amp;stu)</span> <span class="comment">// const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    archive(stu.name, stu.age);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;calss Archive&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">save</span><span class="params">(Archive &amp;archive, Student &amp;stu)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    archive(stu.name, stu.age);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Cereal数据序列化"><a href="#2-Cereal数据序列化" class="headerlink" title="2. Cereal数据序列化"></a>2. Cereal数据序列化</h2><p>Cereal支持二进制、XML和JSON三种格式的读写操作，在使用时包含对应的头文件。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cereal\archives\binary.hpp&gt; // 二进制</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cereal\archives\portable_binary.hpp&gt; // 顺序二进制</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cereal\archives\xml.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cereal\archives\json.hpp&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>Cereal的读写操作是基于C++的std::ostream和std::istream。这意味着，操作对象可以是文件、内存流，甚至标准的输入输出。以下代码实现的是对<code>cv::Mat</code>序列化，序列化函数为<a href="https://www.patrikhuber.ch/blog/6-serialising-opencv-matrices-using-boost-and-cereal" target="_blank" rel="noopener"><strong>Serialising OpenCV matrices using boost and cereal</strong></a>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cereal\archives\binary.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2\core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2\highgui.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"matserialization.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"opencv_world346d.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"opencv_world346.lib"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cv::Mat image = cv::imread(<span class="string">"../../data/imgs/panda.bmp"</span>, cv::IMREAD_GRAYSCALE);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">stringstream</span> str;</span><br><span class="line">    &#123; <span class="comment">// 使用大括号来限定序列化类的生存范围</span></span><br><span class="line">        cereal::<span class="function">BinaryOutputArchive <span class="title">oarchive</span><span class="params">(str)</span></span>;</span><br><span class="line">        oarchive(image);</span><br><span class="line">    &#125; <span class="comment">// Cereal存储类自动销毁，完成序列化操作</span></span><br><span class="line">    cv::Mat image_loaded;</span><br><span class="line">    &#123;</span><br><span class="line">        cereal::<span class="function">BinaryInputArchive <span class="title">iarchive</span><span class="params">(str)</span></span>;</span><br><span class="line">        iarchive(image_loaded);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>NOTE：</strong>Cereal的工作方式是<a href="/2019/10/16/cpp-resource-management/#more"><strong>RAII规范</strong></a>，即只有在存储类被销毁时，才能完全保证完全输出。</p>
+<h2 id="3-Cereal与boost-Serialization"><a href="#3-Cereal与boost-Serialization" class="headerlink" title="3. Cereal与boost.Serialization"></a>3. Cereal与boost.Serialization</h2><p>Cereal和Boost很相似。这是因为Cereal被设计时就考虑了Boost用户的使用习惯，模仿了许多Boost序列化库的语法习惯。Cereal和Boost序列库的接口非常相似，在一些情况下可以非常迅速的将Boost库替换成Cereal。但是即便如此，Cereal和Boost还是有很大的区别。</p>
+<ul>
+<li>cereal在保存数据时会存储尽可能少的元数据。 Boost默认情况下会存储有关库版本以及类型本身的各种元数据。</li>
+<li>cereal只需要头文件，不依赖任何三方库或者平台。boost的库非常多，而且需要考虑不同机器之间的版本问题。</li>
+<li>cereal支持几乎所有的标准库，cereal支持而boost不支持的包括：<code>&lt;forward_list&gt;</code>，<code>&lt;memory&gt;</code>，<code>&lt;queue&gt;</code>，<code>&lt;stack&gt;</code>，<code>&lt;tuple&gt;</code>，<code>&lt;unordered_set&gt;</code>和<code>&lt;unordered_map&gt;</code>。</li>
+<li>cereal更加简洁。例如，在Cereal中当把serialize函数分成load/save函数时，不需要提前使用宏声明。Cereal还使用了static_assert，提供了更加准确的错误提示。</li>
+<li>cereal和boost使用不同的语法进行序列化。boost使用的是<code>&amp;</code>，<code>&lt;&lt;</code>和<code>&gt;&gt;</code>，cereal使用的是<code>()</code>。</li>
+</ul>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://blog.csdn.net/u012348774/article/details/79117379" target="_blank" rel="noopener">Cereal Library系列教程</a></li>
+<li><a href="https://www.patrikhuber.ch/blog/6-serialising-opencv-matrices-using-boost-and-cereal" target="_blank" rel="noopener">Serialising OpenCV matrices using boost and cereal</a></li>
+<li><a href="https://uscilab.github.io/cereal/transition_from_boost.html" target="_blank" rel="noopener">Transitioning From Boost</a></li>
+</ul>
+]]></content>
       <categories>
         <category>编程语言</category>
       </categories>
@@ -50,9 +150,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[C/C++编程—序列化]]></title>
-    <url>%2F2019%2F10%2F16%2Fcpp-serialization-introduction%2F</url>
-    <content type="text"><![CDATA[在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为序列化，它的逆过程称为反序列化。 以下为一个简单的C++序列化程序： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546#include &lt;iostream&gt;#include &lt;string&gt;struct Student&#123; std::string name; int age;&#125;;int Serialize(const Student &amp;stu, char out[])&#123; int count = 0; memcpy(out, stu.name.c_str(), stu.name.length()); count += stu.name.length(); memcpy(out + count, &amp;stu.age, sizeof(int)); count += sizeof(int); return count;&#125;int Deserialize(Student &amp;stu, const char* in, int count)&#123; int offset = 0; stu.name.append(in, count - sizeof(int)); offset += stu.name.length(); memcpy(&amp;stu.age, in + offset, sizeof(int)); return 0;&#125;int main()&#123; char buf[128]; int count = 0; Student stu1; stu1.name = "tangming"; stu1.age = 1024; count = Serialize(stu1, buf); Student stu2; Deserialize(stu2, buf, count); std::cout &lt;&lt; "name: " &lt;&lt; stu2.name &lt;&lt; std::endl; std::cout &lt;&lt; "age: " &lt;&lt; stu2.age &lt;&lt; std::endl; system("pause"); return 0;&#125; C++中常用的序列化方法主要有protobuf和Boost.Serialization。Google Protocol Buffers(protobuf)是Google内部使用的数据编码方式，用来替代XML进行数据交换。protobuf效率较高，但是数据对象必须预先定义，并使用protoc编译，适合要求效率，允许自定义类型的内部场合使用。Boost.Serialization可以创建或重建程序中的等效结构，并保存为二进制数据、文本数据、XML或者有用户自定义的其他文件。Boost.Serialization使用灵活简单，而且支持标准C++容器。 参考文章 &amp; 资源链接 最常用的两种C++序列化方案的使用心得]]></content>
+    <title>C/C++编程—序列化</title>
+    <url>/2019/10/16/cpp-serialization-introduction/</url>
+    <content><![CDATA[<p>在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为<strong>序列化</strong>，它的逆过程称为<strong>反序列化</strong>。</p>
+<a id="more"></a>
+<p>以下为一个简单的C++序列化程序：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Serialize</span><span class="params">(<span class="keyword">const</span> Student &amp;stu, <span class="keyword">char</span> out[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">memcpy</span>(out, stu.name.c_str(), stu.name.length());</span><br><span class="line">    count += stu.name.length();</span><br><span class="line">    <span class="built_in">memcpy</span>(out + count, &amp;stu.age, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    count += <span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Deserialize</span><span class="params">(Student &amp;stu, <span class="keyword">const</span> <span class="keyword">char</span>* in, <span class="keyword">int</span> count)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> offset = <span class="number">0</span>;</span><br><span class="line">    stu.name.append(in, count - <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    offset += stu.name.length();</span><br><span class="line">    <span class="built_in">memcpy</span>(&amp;stu.age, in + offset, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">128</span>];</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    Student stu1;</span><br><span class="line">    stu1.name = <span class="string">"tangming"</span>;</span><br><span class="line">    stu1.age = <span class="number">1024</span>;</span><br><span class="line">    count = Serialize(stu1, buf);</span><br><span class="line"></span><br><span class="line">    Student stu2;</span><br><span class="line">    Deserialize(stu2, buf, count);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"name: "</span> &lt;&lt; stu2.name &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"age: "</span> &lt;&lt; stu2.age &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>C++中常用的序列化方法主要有<code>protobuf</code>和<code>Boost.Serialization</code>。<a href="https://developers.google.com/protocol-buffers/docs/overview?csw=1" target="_blank" rel="noopener"><strong>Google Protocol Buffers(protobuf)</strong></a>是Google内部使用的数据编码方式，用来替代XML进行数据交换。<code>protobuf</code>效率较高，但是数据对象必须预先定义，并使用protoc编译，适合要求效率，允许自定义类型的内部场合使用。<a href="https://www.boost.org/doc/libs/1_68_0/libs/serialization/doc/index.html" target="_blank" rel="noopener"><strong>Boost.Serialization</strong></a>可以创建或重建程序中的等效结构，并保存为二进制数据、文本数据、XML或者有用户自定义的其他文件。<code>Boost.Serialization</code>使用灵活简单，而且支持标准C++容器。</p>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://cloud.tencent.com/developer/article/1342748" target="_blank" rel="noopener">最常用的两种C++序列化方案的使用心得</a></li>
+</ul>
+]]></content>
       <categories>
         <category>编程语言</category>
       </categories>
@@ -62,17 +170,231 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Intel MKL简介]]></title>
-    <url>%2F2019%2F10%2F15%2Fmath-mkl-introduction%2F</url>
-    <content type="text"><![CDATA[MKL是Intel公司出品的数学函数计算库，提供经过高度优化和大量线程化处理的计算函数，有C和Fortran接口。 MKL主要包含的内容如下： 基本线性代数子系统 稀疏基本线性代数子系统 线性代数库 可扩展线性代数库 稀疏求解器 矢量数学库 矢量统计库 傅里叶变换库 集群傅里叶变换库 1. BLASBLAS是基本线性代数子系统，提供向量与向量、向量与矩阵以及矩阵与矩阵的运算。BLAS Level1提供向量数据的加减、点乘等；BLAS Level2提供向量与举证的运算，如乘法运算；BLAS Level3提供矩阵与矩阵的运算，比如矩阵乘法。BLAS函数名结构为：&lt;character&gt;&lt;name&gt;&lt;mod&gt;()其中**&lt;character&gt;**表示代表数据类型： 参数 描述 s real, single precision c complex, single precision d real, double precision x complex, double precision 在BLAS Level1中，**&lt;name&gt;**表示的是运算的方式，如dot表示向量点乘，swap表示向量交换。在BLAS Level2和BLAS Level3中，**&lt;name&gt;**表示矩阵的类型。 参数 描述 ge 一般矩阵(general matrix) sb (general band matrix) sy (symmetric matrix) sp (symmetric matrix package storage) sb (symmetric band matrix) he (Hermitian matrix) hp (Hermitian matrix package storage) hb (Hermitian band matrix) tr (triangular matrix) tp (triangular matrix package storage) tb (triangular band matrix)]]></content>
+    <title>Intel MKL简介</title>
+    <url>/2019/10/15/math-mkl-introduction/</url>
+    <content><![CDATA[<p><a href="https://software.intel.com/en-us/mkl" target="_blank" rel="noopener"><strong>MKL</strong></a>是Intel公司出品的数学函数计算库，提供经过高度优化和大量线程化处理的计算函数，有C和Fortran接口。</p>
+<a id="more"></a>
+
+<p>MKL主要包含的内容如下：</p>
+<ul>
+<li>基本线性代数子系统</li>
+<li>稀疏基本线性代数子系统</li>
+<li>线性代数库</li>
+<li>可扩展线性代数库</li>
+<li>稀疏求解器</li>
+<li>矢量数学库</li>
+<li>矢量统计库</li>
+<li>傅里叶变换库</li>
+<li>集群傅里叶变换库</li>
+</ul>
+<h2 id="1-BLAS"><a href="#1-BLAS" class="headerlink" title="1. BLAS"></a>1. BLAS</h2><p>BLAS是基本线性代数子系统，提供向量与向量、向量与矩阵以及矩阵与矩阵的运算。BLAS Level1提供向量数据的加减、点乘等；BLAS Level2提供向量与举证的运算，如乘法运算；BLAS Level3提供矩阵与矩阵的运算，比如矩阵乘法。<br>BLAS函数命名规范：<code>&lt;character&gt;&lt;name&gt;&lt;mod&gt;()</code><br>其中<strong><code>&lt;character&gt;</code></strong>表示代表数据类型：</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">s</td>
+<td align="center">real,    single precision</td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td align="center">complex, single precision</td>
+</tr>
+<tr>
+<td align="center">d</td>
+<td align="center">real,    double precision</td>
+</tr>
+<tr>
+<td align="center">x</td>
+<td align="center">complex, double precision</td>
+</tr>
+</tbody></table>
+<p>在BLAS Level1中，<strong><code>&lt;name&gt;</code></strong>表示的是运算的方式，如<code>dot</code>表示向量点乘，<code>swap</code>表示向量交换。在BLAS Level2和BLAS Level3中，<strong><code>&lt;name&gt;</code></strong>表示矩阵的类型。</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ge</td>
+<td align="center">一般矩阵(general matrix)</td>
+</tr>
+<tr>
+<td align="center">sb</td>
+<td align="center">(general band matrix)</td>
+</tr>
+<tr>
+<td align="center">sy</td>
+<td align="center">(symmetric matrix)</td>
+</tr>
+<tr>
+<td align="center">sp</td>
+<td align="center">(symmetric matrix package storage)</td>
+</tr>
+<tr>
+<td align="center">sb</td>
+<td align="center">(symmetric band matrix)</td>
+</tr>
+<tr>
+<td align="center">he</td>
+<td align="center">(Hermitian matrix)</td>
+</tr>
+<tr>
+<td align="center">hp</td>
+<td align="center">(Hermitian matrix package storage)</td>
+</tr>
+<tr>
+<td align="center">hb</td>
+<td align="center">(Hermitian band matrix)</td>
+</tr>
+<tr>
+<td align="center">tr</td>
+<td align="center">(triangular matrix)</td>
+</tr>
+<tr>
+<td align="center">tp</td>
+<td align="center">(triangular matrix package storage)</td>
+</tr>
+<tr>
+<td align="center">tb</td>
+<td align="center">(triangular band matrix)</td>
+</tr>
+</tbody></table>
+<p><strong><code>&lt;mod&gt;</code></strong>提供了计算的其他描述信息。</p>
+<table>
+<thead>
+<tr>
+<th align="center">level</th>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">level1</td>
+<td align="center">c</td>
+<td align="center">conjugated vector</td>
+</tr>
+<tr>
+<td align="center">level1</td>
+<td align="center">u</td>
+<td align="center">unconjugated vector</td>
+</tr>
+<tr>
+<td align="center">level1</td>
+<td align="center">g</td>
+<td align="center">Givens rotation construction</td>
+</tr>
+<tr>
+<td align="center">level1</td>
+<td align="center">m</td>
+<td align="center">modified Givens rotation</td>
+</tr>
+<tr>
+<td align="center">level1</td>
+<td align="center">mg</td>
+<td align="center">modified Givens rotation construction</td>
+</tr>
+<tr>
+<td align="center">level2</td>
+<td align="center">mv</td>
+<td align="center">matrix-vector product</td>
+</tr>
+<tr>
+<td align="center">level2</td>
+<td align="center">sv</td>
+<td align="center">solving a system of linear equations with a single unknown vector</td>
+</tr>
+<tr>
+<td align="center">level2</td>
+<td align="center">r</td>
+<td align="center">rank-1 update of a matrix</td>
+</tr>
+<tr>
+<td align="center">level2</td>
+<td align="center">r2</td>
+<td align="center">rank-2 update of a matrix</td>
+</tr>
+<tr>
+<td align="center">level3</td>
+<td align="center">mm</td>
+<td align="center">matrix-matrix product</td>
+</tr>
+<tr>
+<td align="center">level3</td>
+<td align="center">sm</td>
+<td align="center">solving a system of linear equations with multiple unknown vectors</td>
+</tr>
+<tr>
+<td align="center">level3</td>
+<td align="center">rk</td>
+<td align="center">rank-k update of a matrix</td>
+</tr>
+<tr>
+<td align="center">level3</td>
+<td align="center">r2k</td>
+<td align="center">rank-2k update of a matrix</td>
+</tr>
+</tbody></table>
+<h2 id="2-Spare-BLAS"><a href="#2-Spare-BLAS" class="headerlink" title="2. Spare BLAS"></a>2. Spare BLAS</h2><p>与BLAS类似，分为Level 1，2，3级，分别对应稀疏向量或矩阵的运算。只不过利用过了稀疏向量和稀疏矩阵的特点：只存储向量或者矩阵中的非零元素。</p>
+<h2 id="3-LAPACK"><a href="#3-LAPACK" class="headerlink" title="3. LAPACK"></a>3. LAPACK</h2><p>根据操作主要分为两种功能：</p>
+<ul>
+<li>解线性方程组，矩阵分解，矩阵求逆等</li>
+<li>解决最小二乘问题，特征值和奇异值计算等</li>
+</ul>
+<h2 id="4-FFT"><a href="#4-FFT" class="headerlink" title="4. FFT"></a>4. FFT</h2><p>提供了多维快速傅里叶变换函数，支持离散傅里叶变换的一致性。</p>
+<h2 id="4-PDE"><a href="#4-PDE" class="headerlink" title="4. PDE"></a>4. PDE</h2><p>提供了解偏微分方程的工具。</p>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://blog.csdn.net/zb1165048017/article/details/70156844" target="_blank" rel="noopener">MKL学习——向量操作</a></li>
+<li><a href="https://blog.csdn.net/zb1165048017/article/details/70207812" target="_blank" rel="noopener">MKL学习——矩阵矩阵操作</a></li>
+</ul>
+]]></content>
       <categories>
         <category>数学计算</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[常用数学计算库介绍]]></title>
-    <url>%2F2019%2F10%2F15%2Fmath-library-introduction%2F</url>
-    <content type="text"><![CDATA[对于机器学习的很多问题来说，计算的瓶颈在于大规模以及频繁的矩阵预算。为了使机器学习算法运行得更高效，需要在代码中采用比较成熟的矩阵运算数学库。本文主要总结常见的矩阵运算库。 1. 基本数学库1.1 BLAS(Basic Linear Algebra Subprograms)BLAS是一个API标准，用以规范发布基础线性代数操作的数值库。Netlib用Fortran实现了BLAS的API接口，得到的库就叫BLAS。 1.2 LAPACK(Linear Algebra PACKage)LAPACK也是由Netlib用Fortran语言编写的，底层是BLAS，但是LAPACK的运行效率更高。LAPACK提供了丰富的工具函数用于矩阵运算，如解多元线性方程、线性方程组的最小平方解、计算特征向量、奇异值分解等。 2. 高级数学库2.1 EIGENEigen是一个线性算术的C++模板库，支持多平台，直接包含头文件就可以使用。TensorFlow就是基于Eigen的。底层： BLAS/LAPACK：支持所有基于F77的BLAS或LAPACK作为底层(EIGEN_USE_BLAS、EIGEN_USE_LAPACK) MKL：支持MKL作为底层(EIGEN_USE_MKL_ALL) CUDA：支持在CUDA kernels里使用CUDA OpenMP：多线程优化 2.2 Intel MKL(Math Kernel Library)MKL基于Intel C++和Fortran编译器构建而成，并利用OpenMP实现了线程化。MKL的算法能够平均分配数据和任务，充分利用多个核心和处理器，支持Windows/Linux。底层： BLAS/LAPACK BLACS：Basic Linear Algebra Communication Subprograms ScaLAPACK：面向集群的LAPACK分布式内存并行版本 DFTs：离散傅里叶变换 VML：矢量数学库 VSL：矢量统计学库 PDF：偏微分方程 BRNGs：Basic Random Number Generators 2.3 ACML(AMD Core Math Library)对于Intel CPU，使用MKL能获得较好的运算性能，而对于AMD CPU，使用的是ACML。在矩阵运算方面，ACML底层使用的也是BLAS,LAPACK等。底层： BLAS/LAPACK：针对AMD进行了优化 FFTs：快速傅里叶变化 RNG：随机数生成器 2.4 OpenBLASOpenBLAS是一个高性能多核 BLAS 库 2.5 CUDA Math LibraryCUDA Math Library是在GPU上的数学计算库，其计算性能远高于CPU上的数学计算库。底层： CUBLAS：是一个基于GPU的BLAS库，提供的计算函数都在GPU上执行。]]></content>
+    <title>常用数学计算库介绍</title>
+    <url>/2019/10/15/math-library-introduction/</url>
+    <content><![CDATA[<p>对于机器学习的很多问题来说，计算的瓶颈在于大规模以及频繁的矩阵预算。为了使机器学习算法运行得更高效，需要在代码中采用比较成熟的矩阵运算数学库。本文主要总结常见的矩阵运算库。</p>
+<a id="more"></a>
+
+<h2 id="1-基本数学库"><a href="#1-基本数学库" class="headerlink" title="1. 基本数学库"></a>1. 基本数学库</h2><h3 id="1-1-BLAS-Basic-Linear-Algebra-Subprograms"><a href="#1-1-BLAS-Basic-Linear-Algebra-Subprograms" class="headerlink" title="1.1 BLAS(Basic Linear Algebra Subprograms)"></a>1.1 BLAS(Basic Linear Algebra Subprograms)</h3><p><a href="http://www.netlib.org/blas/" target="_blank" rel="noopener"><strong>BLAS</strong></a>是一个API标准，用以规范发布基础线性代数操作的数值库。Netlib用Fortran实现了BLAS的API接口，得到的库就叫BLAS。</p>
+<h3 id="1-2-LAPACK-Linear-Algebra-PACKage"><a href="#1-2-LAPACK-Linear-Algebra-PACKage" class="headerlink" title="1.2 LAPACK(Linear Algebra PACKage)"></a>1.2 LAPACK(Linear Algebra PACKage)</h3><p><a href="http://www.netlib.org/lapack/" target="_blank" rel="noopener"><strong>LAPACK</strong></a>也是由Netlib用Fortran语言编写的，底层是BLAS，但是LAPACK的运行效率更高。LAPACK提供了丰富的工具函数用于矩阵运算，如解多元线性方程、线性方程组的最小平方解、计算特征向量、奇异值分解等。</p>
+<h2 id="2-高级数学库"><a href="#2-高级数学库" class="headerlink" title="2. 高级数学库"></a>2. 高级数学库</h2><h3 id="2-1-EIGEN"><a href="#2-1-EIGEN" class="headerlink" title="2.1 EIGEN"></a>2.1 EIGEN</h3><p><a href="http://eigen.tuxfamily.org/index.php?title=Main_Page" target="_blank" rel="noopener"><strong>Eigen</strong></a>是一个线性算术的C++模板库，支持多平台，直接包含头文件就可以使用。TensorFlow就是基于Eigen的。<br><strong>底层</strong>：</p>
+<ul>
+<li>BLAS/LAPACK：支持所有基于F77的BLAS或LAPACK作为底层(<code>EIGEN_USE_BLAS</code>、<code>EIGEN_USE_LAPACK</code>)</li>
+<li>MKL：支持MKL作为底层(<code>EIGEN_USE_MKL_ALL</code>)</li>
+<li>CUDA：支持在CUDA kernels里使用CUDA</li>
+<li>OpenMP：多线程优化</li>
+</ul>
+<h3 id="2-2-Intel-MKL-Math-Kernel-Library"><a href="#2-2-Intel-MKL-Math-Kernel-Library" class="headerlink" title="2.2 Intel MKL(Math Kernel Library)"></a>2.2 Intel MKL(Math Kernel Library)</h3><p><a href="https://software.intel.com/en-us/mkl" target="_blank" rel="noopener"><strong>MKL</strong></a>基于Intel C++和Fortran编译器构建而成，并利用OpenMP实现了线程化。MKL的算法能够平均分配数据和任务，充分利用多个核心和处理器，支持Windows/Linux。<br><strong>底层</strong>：</p>
+<ul>
+<li>BLAS/LAPACK</li>
+<li>BLACS：Basic Linear Algebra Communication Subprograms</li>
+<li>ScaLAPACK：面向集群的LAPACK分布式内存并行版本</li>
+<li>DFTs：离散傅里叶变换</li>
+<li>VML：矢量数学库</li>
+<li>VSL：矢量统计学库</li>
+<li>PDF：偏微分方程</li>
+<li>BRNGs：Basic Random Number Generators</li>
+</ul>
+<h3 id="2-3-ACML-AMD-Core-Math-Library"><a href="#2-3-ACML-AMD-Core-Math-Library" class="headerlink" title="2.3 ACML(AMD Core Math Library)"></a>2.3 ACML(AMD Core Math Library)</h3><p>对于Intel CPU，使用MKL能获得较好的运算性能，而对于AMD CPU，使用的是<a href="https://developer.amd.com/amd-aocl/amd-math-library-libm/" target="_blank" rel="noopener"><strong>ACML</strong></a>。在矩阵运算方面，ACML底层使用的也是BLAS,LAPACK等。<br><strong>底层</strong>：</p>
+<ul>
+<li>BLAS/LAPACK：针对AMD进行了优化</li>
+<li>FFTs：快速傅里叶变化</li>
+<li>RNG：随机数生成器</li>
+</ul>
+<h3 id="2-4-OpenBLAS"><a href="#2-4-OpenBLAS" class="headerlink" title="2.4 OpenBLAS"></a>2.4 OpenBLAS</h3><p><a href="https://www.openblas.net/" target="_blank" rel="noopener"><strong>OpenBLAS</strong></a>是一个高性能多核 BLAS 库</p>
+<h3 id="2-5-CUDA-Math-Library"><a href="#2-5-CUDA-Math-Library" class="headerlink" title="2.5 CUDA Math Library"></a>2.5 CUDA Math Library</h3><p><a href="https://developer.nvidia.com/cuda-math-library" target="_blank" rel="noopener"><strong>CUDA Math Library</strong></a>是在GPU上的数学计算库，其计算性能远高于CPU上的数学计算库。<br><strong>底层</strong>：</p>
+<ul>
+<li>CUBLAS：是一个基于GPU的BLAS库，提供的计算函数都在GPU上执行。</li>
+</ul>
+]]></content>
       <categories>
         <category>数学计算</category>
       </categories>
@@ -82,9 +404,20 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[C/C++编程—断言(Assert)]]></title>
-    <url>%2F2019%2F10%2F15%2Fcpp-assert%2F</url>
-    <content type="text"><![CDATA[断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。 一个断言通常含有两个参数：一个描述假设为真时的布尔表达式，一个断言为假时需要显示的信息。C++标准中的assert宏并不支持文本信息，可以使用C++宏改进ASSERT。 123456789#define ASSERT(condition, message)&#123; if(!(condition)) &#123; LogError("Assert failed:", #condition, message); exit(EXIT_FAILURE); &#125;&#125; 频繁的调用asset()会极大影响程序的性能，增加额外的开销。在调试结束以后，可以通过在包含#include &lt;assert.h&gt;的语句前插入#define NDEBUG来禁用assert()调用。 1234567891011#ifdef _DEBUG #define ASSERT(condition) if(!(condition)) &#123; fflush(stdout); fprintf(stderr,"\nAssert failed:%s, lint %u\n",__FILE__, __LINE__); &#125; #else#define ASSERT(condition) NULL#endif 参考文献 &amp; 资源链接 断言assert函数]]></content>
+    <title>C/C++编程—断言(Assert)</title>
+    <url>/2019/10/15/cpp-assert/</url>
+    <content><![CDATA[<p>断言是指在开发期间使用的、让程序运行时进行自检的代码。断言为真，表示程序运行正常，断言为假，则意味着程序中出现了意料之外的错误。</p>
+<a id="more"></a>
+<p>一个断言通常含有两个参数：一个描述假设为真时的布尔表达式，一个断言为假时需要显示的信息。<br>C++标准中的assert宏并不支持文本信息，可以使用C++宏改进ASSERT。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASSERT(condition, message)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!(condition))</span><br><span class="line">    &#123;</span><br><span class="line">        LogError(<span class="string">"Assert failed:"</span>,</span><br><span class="line">            #condition, message);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>频繁的调用<code>asset()</code>会极大影响程序的性能，增加额外的开销。在调试结束以后，可以通过在包含<code>#include &lt;assert.h&gt;</code>的语句前插入<code>#define NDEBUG</code>来禁用<code>assert()</code>调用。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> ASSERT(condition)</span></span><br><span class="line">    <span class="keyword">if</span>(!(condition))</span><br><span class="line">    &#123;</span><br><span class="line">        fflush(<span class="built_in">stdout</span>);</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">"\nAssert failed:%s, lint %u\n"</span>,__FILE__, __LINE__);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASSERT(condition) NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="http://c.biancheng.net/c/assert/" target="_blank" rel="noopener">断言assert函数</a></li>
+</ul>
+]]></content>
       <categories>
         <category>编程语言</category>
       </categories>
@@ -93,9 +426,83 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Redis C++客户端—Hiredis]]></title>
-    <url>%2F2019%2F10%2F14%2Fredis-hiredis-introduction%2F</url>
-    <content type="text"><![CDATA[Hiredis是Redis数据库一个轻量的C语言客户端库。它只是简单的提供了对redis操作语句支持的接口，并没有实现具体的操作语句的功能，因此可以很容易的使用该库和redis数据库进行交互。本文主要翻译自官方说明文档。 1. Hiredis编译Hiredis是用C写的Redis客户端，对Redis协议进行了简单的封装。除了支持发送命令和接收应答外，Hiredis还提供了独立于I/O的数据流解析操作，用于解析应答数据。在Windows平台上使用Hiredis，一般需要将源码编译生成库文件然后进行调用。在Visual Studio上编译Hiredis项目的时候会出现无法生成lib的问题，其Github库的issues#687提供了一种解决方案，测试可行。 同步连接：服务器与第一个请求建立连接并通信以后，第二个请求会被阻塞。异步连接：服务器可以同时响应多个请求 Hiredis提供了同步、异步以及回复解析三种API。 2. 同步API常用的同步API的函数有： 123redisContext *redisConnect(const char *ip, int port);void *redisCommand(redisContext *c, const char *format, ...);void freeReplyObject(void *reply); 2.1 连接Hiredis通过redisConnect创建一个redisContext来实现与Redis进行连接，context中包含了连接的信息。redisContext中包含有一个整形的err变量和一个字符类型的errstr变量，当创建连接失败，err为非零值，errstr为错误的表述。当使用redisConnect创建连接后，应该检查err参数以判断连接是否成功。 123456789101112redisContext* context = redisConnect("127.0.0.1",6379)if(context == NULL || context-&gt;err)&#123; if(context) &#123; printf("Connection Error: %s\n", context-&gt;errstr); &#125; else &#123; printf("Can't allocate redis context\n"); &#125;&#125; NOTE：redisContext是线程不安全的。 线程安全：多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。线程不安全：不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是脏数据。 2.2 发送命令有多种方法可以向Redis发送命令，这里介绍redisCommand，其采用的是类似于printf的格式。 12345678redisReply* reply;redisCommand(context,"SET key value");redisCommand(context,"SET key %s",value)redisCommand(context,"SET key:%s %s",mykey,value);// 传输二进制安全命令，使用`%b`进行格式化redisCommand(context,"SET key %b",value,(size_t)value_size);reply = redisCommand(context,"GET key"); NOTE：Windows下redisCommand返回的reply与用redisReply声明的的类型会不匹配，需要进行类型转换，reply = static_cast&lt;redisReply*&gt;(redisCommand(context, &quot;GET key&quot;));。 2.3 处理应答当redisCommand执行命令成功以后，会返回一个redisReply类型的返回值reply。当发生错误的时候，reply为NULL且context中的err的值会被改变。NOTE：一旦发生了错误，context就不能被重用，需要重新建立连接。reply对象中有一个type属性来标识不同的错误类型： REDIS_REPLY_STATUS：返回执行结果的状态，reply-&gt;str获取状态的描述信息，reply-&gt;len得到信息的长度。 REDIS_REPLY_ERROR：返回错误，通过reply-&gt;str获取错误的描述信息。 REDIS_REPLY_INTEGER：返回整形标识，通过reply-&gt;integer获得类型为long long的整型值。 REDIS_REPLY_NIL：返回NIL对象，说明不存在要访问的数据。 REDIS_REPLY_STRING：返回字符串标识，reply-&gt;str获取返回的字符串的值，reply-&gt;len得到字符串的长度。 REDIS_REPLY_ARRAY：返回包含多个reply的数据集，通过reply-&gt;elements获取reply的个数，每一个reply可以通过reply-&gt;element[..index..]索引得到。 NOTE：在执行完命令之后，必须要通过freeReplyObject()函数将reply对象释放掉。对于数组或者嵌套数组中的sub-reply，不需要进行嵌套释放。 2.4 清理连接断开连接并释放context： 1void redisFree(redisContext* context); redisFree函数会关闭网络套接字并且释放所有在创建连接时分配的资源。 2.5 发送多个命令参数redisCommandArgv函数可以用于传输多个命令参数，其函数原型为： 1void *redisCommandArgv(redisContext *c, int argc, const char **argv, const size_t *argvlen); argc表示参数的个数，argv是存储命令字符串的数组，argvlen为数组中每个元素的长度。为了方便可以将argvlen设置为NULL，函数将会使用strlen()函数来判断每个参数的长度。为了保证参数的二进制安全，还是应该提供argvlen的值。 2.6 管线如果使用redisCommand函数发送多次命令，需要每次发送后等待结果返回才能进行下一次发送。Redis的管线机制允许客户端一次性向服务端发送多个命令，Redis在接收到这些命令后按顺序进行处理，然后将请求的处理结果一次性返回给客户端。管线可以减少客户端与服务端之间的网络通信次数来提升Redis客户端发送多个命令时的性能。当redisCommand函数被调用，Hiredis先将命令格式化，被格式化的命令放入context的输出缓冲区(命令缓冲区)，然后发送到Redis执行，并将结果返回到输入缓冲区(结果缓冲区)。Hiredis提供了redisAppendCommand()函数来实现管线的命令发送方案。输出缓冲区是动态的，可以容纳任意数量的命令。 12void redisAppendCommand(redisContext *c, const char *format, ...);void redisAppendCommandArgv(redisContext *c, int argc, const char **argv, const size_t *argvlen); redisAppendCommand()函数被执行后，命令缓存到context的输出缓冲区，并不会立刻发送到Redis执行。当redisGetReply()被调用时，才会将输出缓冲区的命令一次性发送到Redis，并返回第一条命令的应答结果。redisGetReply()的返回值为REDIS_ERR或REDIS_OK。redisGetReply()的执行方式有两种： 输入缓冲区非空： 从出入缓冲区中解析一个reply并返回 如果没有reply可以被解析，执行2 输入缓冲区为空： 将整个输出缓冲区写入socket 从socket中读取命令直到有一个reply可以被解析 以下为一个简单的管线使用例程： 1234567redisReply *reply;redisAppendCommand(context,"SET foo bar");redisAppendCommand(context,"GET foo");redisGetReply(context,&amp;reply); // reply for SETfreeReplyObject(reply);redisGetReply(context,&amp;reply); // reply for GETfreeReplyObject(reply); redisGetReply()也可以用来实现一个阻塞的订阅： 1234567reply = redisCommand(context,"SUBSCRIBE foo");freeReplyObject(reply);while(redisGetReply(context,&amp;reply) == REDIS_OK) &#123; // consume message freeReplyObject(reply);&#125; NOTE：调用redisAppendCommand()函数的次数需要与调用redisGetReply()的次数要一致，否则会出现获取的Redis处理结果跟预期不一致的情况。 2.7 错误处理当函数调用不成功时，将会返回NULL或REDIS_ERR，context中的err字段会设置为以下常量之一： REDIS_ERR_IO：I/O错误，发生在创建连接时(尝试写入或者读取socket)。通过包含errno.h可以获取详细的错误信息。 REDIS_ERR_EOF：服务端关闭了连接，导致读取为空。 REDIS_ERR_PROTOCOL：服务端解析协议时出错。 REDIS_ERR_OTHER：其他错误类型，仅在无法解析连接目标主机名时使用。 3. 异步API// TODO 4. 回复解析APIHiredis提供了回复解析API，可以轻松的与高级语言绑定。回复解析API函数有： 1234redisReader *redisReaderCreate(void);void redisReaderFree(redisReader *reader);int redisReaderFeed(redisReader *reader, const char *buf, size_t len);int redisReaderGetReply(redisReader *reader, void **reply); //TODO 5. SSL/TLS支持SSL(Secure Socket Layer，完全套接字层)：用以保障在Internet上数据传输之安全，利用数据加密(Encryption)技术，可确保数据在网络上之传输过程中不会被截取。SSL协议位于TCP/IP协议与各种应用层协议之间，为数据通讯提供安全支持。SSL协议可分为两层： SSL记录协议(SSL Record Protocol)：它建立在可靠的传输协议(如TCP)之上，为高层协议提供数据封装、压缩、加密等基本功能的支持。 SSL握手协议(SSL Handshake Protocol)：它建立在SSL记录协议之上，用于在实际的数据传输开始前，通讯双方进行身份认证、协商加密算法、交换加密密钥等。 **TLS(Transport Layer Security，传输层安全协议)，用于两个应用程序之间提供保密性和数据完整性。TLS协议由两层组成：TLS记录协议(TLS Record)和TLS握手协议(TLS Handshake)。较低的层为TLS 记录协议，位于某个可靠的传输协议(例如TCP)上面。 参考文献 &amp; 资源链接 Redis C语言客户端库hiredis使用方法]]></content>
+    <title>Redis C++客户端—Hiredis</title>
+    <url>/2019/10/14/redis-hiredis-introduction/</url>
+    <content><![CDATA[<p>Hiredis是Redis数据库一个轻量的C语言客户端库。它只是简单的提供了对redis操作语句支持的接口，并没有实现具体的操作语句的功能，因此可以很容易的使用该库和redis数据库进行交互。本文主要翻译自官方说明文档。</p>
+<a id="more"></a>
+<h2 id="1-Hiredis编译"><a href="#1-Hiredis编译" class="headerlink" title="1. Hiredis编译"></a>1. Hiredis编译</h2><p>Hiredis是用C写的Redis客户端，对Redis协议进行了简单的封装。除了支持发送命令和接收应答外，Hiredis还提供了独立于I/O的数据流解析操作，用于解析应答数据。在Windows平台上使用Hiredis，一般需要将<a href="https://github.com/redis/hiredis" target="_blank" rel="noopener"><strong>源码</strong></a>编译生成库文件然后进行调用。在Visual Studio上编译Hiredis项目的时候会出现<strong>无法生成lib</strong>的问题，其Github库的<a href="https://github.com/redis/hiredis/issues/687" target="_blank" rel="noopener"><strong>issues#687</strong></a>提供了一种解决方案，测试可行。</p>
+<blockquote><p>同步连接：服务器与第一个请求建立连接并通信以后，第二个请求会被阻塞。<br>异步连接：服务器可以同时响应多个请求</p>
+</blockquote>
+<p>Hiredis提供了同步、异步以及回复解析三种API。</p>
+<h2 id="2-同步API"><a href="#2-同步API" class="headerlink" title="2. 同步API"></a>2. 同步API</h2><p>常用的同步API的函数有：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">redisContext *<span class="title">redisConnect</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *ip, <span class="keyword">int</span> port)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">redisCommand</span><span class="params">(redisContext *c, <span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">freeReplyObject</span><span class="params">(<span class="keyword">void</span> *reply)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-连接"><a href="#2-1-连接" class="headerlink" title="2.1 连接"></a>2.1 连接</h3><p>Hiredis通过<code>redisConnect</code>创建一个<code>redisContext</code>来实现与Redis进行连接，context中包含了连接的信息。<code>redisContext</code>中包含有一个整形的<code>err</code>变量和一个字符类型的<code>errstr</code>变量，当创建连接失败，<code>err</code>为非零值，<code>errstr</code>为错误的表述。当使用<code>redisConnect</code>创建连接后，应该检查<code>err</code>参数以判断连接是否成功。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">redisContext* context = redisConnect(<span class="string">"127.0.0.1"</span>,<span class="number">6379</span>)</span><br><span class="line"><span class="keyword">if</span>(context == <span class="literal">NULL</span> || context-&gt;err)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(context)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Connection Error: %s\n"</span>, context-&gt;errstr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Can't allocate redis context\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE：</strong><code>redisContext</code>是线程不安全的。</p>
+<blockquote><p><strong>线程安全：</strong>多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。<br><strong>线程不安全：</strong>不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是脏数据。</p>
+</blockquote>
+
+<h3 id="2-2-发送命令"><a href="#2-2-发送命令" class="headerlink" title="2.2 发送命令"></a>2.2 发送命令</h3><p>有多种方法可以向Redis发送命令，这里介绍<code>redisCommand</code>，其采用的是类似于<code>printf</code>的格式。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">redisReply* reply;</span><br><span class="line">redisCommand(context,<span class="string">"SET key value"</span>);</span><br><span class="line">redisCommand(context,<span class="string">"SET key %s"</span>,value)</span><br><span class="line">redisCommand(context,<span class="string">"SET key:%s %s"</span>,mykey,value);</span><br><span class="line"><span class="comment">// 传输二进制安全命令，使用`%b`进行格式化</span></span><br><span class="line">redisCommand(context,<span class="string">"SET key %b"</span>,value,(<span class="keyword">size_t</span>)value_size);</span><br><span class="line"></span><br><span class="line">reply = redisCommand(context,<span class="string">"GET key"</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE：</strong>Windows下<code>redisCommand</code>返回的<code>reply</code>与用<code>redisReply</code>声明的的类型会不匹配，需要进行类型转换，<code>reply = static_cast&lt;redisReply*&gt;(redisCommand(context, &quot;GET key&quot;));</code>。</p>
+<h3 id="2-3-处理应答"><a href="#2-3-处理应答" class="headerlink" title="2.3 处理应答"></a>2.3 处理应答</h3><p>当<code>redisCommand</code>执行命令成功以后，会返回一个<code>redisReply</code>类型的返回值reply。当发生错误的时候，reply为<code>NULL</code>且context中的<code>err</code>的值会被改变。<strong>NOTE：</strong>一旦发生了错误，context就不能被重用，需要重新建立连接。<br>reply对象中有一个<code>type</code>属性来标识不同的错误类型：</p>
+<ul>
+<li><strong><code>REDIS_REPLY_STATUS</code></strong>：返回执行结果的状态，<code>reply-&gt;str</code>获取状态的描述信息，<code>reply-&gt;len</code>得到信息的长度。</li>
+<li><strong><code>REDIS_REPLY_ERROR</code></strong>：返回错误，通过<code>reply-&gt;str</code>获取错误的描述信息。</li>
+<li><strong><code>REDIS_REPLY_INTEGER</code></strong>：返回整形标识，通过<code>reply-&gt;integer</code>获得类型为<code>long long</code>的整型值。</li>
+<li><strong><code>REDIS_REPLY_NIL</code></strong>：返回<code>NIL</code>对象，说明不存在要访问的数据。</li>
+<li><strong><code>REDIS_REPLY_STRING</code></strong>：返回字符串标识，<code>reply-&gt;str</code>获取返回的字符串的值，<code>reply-&gt;len</code>得到字符串的长度。</li>
+<li><strong><code>REDIS_REPLY_ARRAY</code></strong>：返回包含多个reply的数据集，通过<code>reply-&gt;elements</code>获取reply的个数，每一个reply可以通过<code>reply-&gt;element[..index..]</code>索引得到。</li>
+</ul>
+<p><strong>NOTE：</strong>在执行完命令之后，必须要通过<code>freeReplyObject()</code>函数将reply对象释放掉。对于数组或者嵌套数组中的sub-reply，不需要进行嵌套释放。</p>
+<h3 id="2-4-清理连接"><a href="#2-4-清理连接" class="headerlink" title="2.4 清理连接"></a>2.4 清理连接</h3><p>断开连接并释放context：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">redisFree</span><span class="params">(redisContext* context)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><code>redisFree</code>函数会关闭网络套接字并且释放所有在创建连接时分配的资源。</p>
+<h3 id="2-5-发送多个命令参数"><a href="#2-5-发送多个命令参数" class="headerlink" title="2.5 发送多个命令参数"></a>2.5 发送多个命令参数</h3><p><code>redisCommandArgv</code>函数可以用于传输多个命令参数，其函数原型为：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">redisCommandArgv</span><span class="params">(redisContext *c, <span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">size_t</span> *argvlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><code>argc</code>表示参数的个数，<code>argv</code>是存储命令字符串的数组，<code>argvlen</code>为数组中每个元素的长度。为了方便可以将<code>argvlen</code>设置为<code>NULL</code>，函数将会使用<code>strlen()</code>函数来判断每个参数的长度。为了保证参数的二进制安全，还是应该提供<code>argvlen</code>的值。</p>
+<h3 id="2-6-管线"><a href="#2-6-管线" class="headerlink" title="2.6 管线"></a>2.6 管线</h3><p>如果使用<code>redisCommand</code>函数发送多次命令，需要每次发送后等待结果返回才能进行下一次发送。Redis的管线机制允许客户端一次性向服务端发送多个命令，Redis在接收到这些命令后按顺序进行处理，然后将请求的处理结果一次性返回给客户端。管线可以减少客户端与服务端之间的网络通信次数来提升Redis客户端发送多个命令时的性能。<br>当<code>redisCommand</code>函数被调用，Hiredis先将命令格式化，被格式化的命令放入context的<strong>输出缓冲区</strong>(命令缓冲区)，然后发送到Redis执行，并将结果返回到<strong>输入缓冲区</strong>(结果缓冲区)。Hiredis提供了<code>redisAppendCommand()</code>函数来实现管线的命令发送方案。输出缓冲区是动态的，可以容纳任意数量的命令。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">redisAppendCommand</span><span class="params">(redisContext *c, <span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">redisAppendCommandArgv</span><span class="params">(redisContext *c, <span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">size_t</span> *argvlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><code>redisAppendCommand()</code>函数被执行后，命令缓存到context的输出缓冲区，并不会立刻发送到Redis执行。当<code>redisGetReply()</code>被调用时，才会将输出缓冲区的命令一次性发送到Redis，并返回第一条命令的应答结果。<code>redisGetReply()</code>的返回值为<code>REDIS_ERR</code>或<code>REDIS_OK</code>。<code>redisGetReply()</code>的执行方式有两种：</p>
+<ol>
+<li>输入缓冲区非空：<ul>
+<li>从出入缓冲区中解析一个reply并返回</li>
+<li>如果没有reply可以被解析，执行2</li>
+</ul>
+</li>
+<li>输入缓冲区为空：<ul>
+<li>将整个输出缓冲区写入socket</li>
+<li>从socket中读取命令直到有一个reply可以被解析</li>
+</ul>
+</li>
+</ol>
+<p>以下为一个简单的管线使用例程：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">redisReply *reply;</span><br><span class="line">redisAppendCommand(context,<span class="string">"SET foo bar"</span>);</span><br><span class="line">redisAppendCommand(context,<span class="string">"GET foo"</span>);</span><br><span class="line">redisGetReply(context,&amp;reply); <span class="comment">// reply for SET</span></span><br><span class="line">freeReplyObject(reply);</span><br><span class="line">redisGetReply(context,&amp;reply); <span class="comment">// reply for GET</span></span><br><span class="line">freeReplyObject(reply);</span><br></pre></td></tr></table></figure>
+<p><code>redisGetReply()</code>也可以用来实现一个阻塞的订阅：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">reply = redisCommand(context,<span class="string">"SUBSCRIBE foo"</span>);</span><br><span class="line">freeReplyObject(reply);</span><br><span class="line"><span class="keyword">while</span>(redisGetReply(context,&amp;reply) == REDIS_OK) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// consume message</span></span><br><span class="line">    freeReplyObject(reply);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE：</strong>调用<code>redisAppendCommand()</code>函数的次数需要与调用<code>redisGetReply()</code>的次数要一致，否则会出现获取的Redis处理结果跟预期不一致的情况。</p>
+<h3 id="2-7-错误处理"><a href="#2-7-错误处理" class="headerlink" title="2.7 错误处理"></a>2.7 错误处理</h3><p>当函数调用不成功时，将会返回<code>NULL</code>或<code>REDIS_ERR</code>，context中的<code>err</code>字段会设置为以下常量之一：</p>
+<ul>
+<li><strong><code>REDIS_ERR_IO</code></strong>：<code>I/O</code>错误，发生在创建连接时(尝试写入或者读取socket)。通过包含<code>errno.h</code>可以获取详细的错误信息。</li>
+<li><strong><code>REDIS_ERR_EOF</code></strong>：服务端关闭了连接，导致读取为空。</li>
+<li><strong><code>REDIS_ERR_PROTOCOL</code></strong>：服务端解析协议时出错。</li>
+<li><strong><code>REDIS_ERR_OTHER</code></strong>：其他错误类型，仅在无法解析连接目标主机名时使用。</li>
+</ul>
+<h2 id="3-异步API"><a href="#3-异步API" class="headerlink" title="3. 异步API"></a>3. 异步API</h2><p>// TODO</p>
+<h2 id="4-回复解析API"><a href="#4-回复解析API" class="headerlink" title="4. 回复解析API"></a>4. 回复解析API</h2><p>Hiredis提供了回复解析API，可以轻松的与高级语言绑定。回复解析API函数有：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">redisReader *<span class="title">redisReaderCreate</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">redisReaderFree</span><span class="params">(redisReader *reader)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">redisReaderFeed</span><span class="params">(redisReader *reader, <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">redisReaderGetReply</span><span class="params">(redisReader *reader, <span class="keyword">void</span> **reply)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>//TODO</p>
+<h2 id="5-SSL-TLS支持"><a href="#5-SSL-TLS支持" class="headerlink" title="5. SSL/TLS支持"></a>5. SSL/TLS支持</h2><blockquote><p><strong>SSL(Secure Socket Layer，完全套接字层)</strong>：用以保障在Internet上数据传输之安全，利用数据加密(Encryption)技术，可确保数据在网络上之传输过程中不会被截取。SSL协议位于TCP/IP协议与各种应用层协议之间，为数据通讯提供安全支持。<br>SSL协议可分为两层： SSL记录协议(SSL Record Protocol)：它建立在可靠的传输协议(如TCP)之上，为高层协议提供数据封装、压缩、加密等基本功能的支持。 SSL握手协议(SSL Handshake Protocol)：它建立在SSL记录协议之上，用于在实际的数据传输开始前，通讯双方进行身份认证、协商加密算法、交换加密密钥等。</p>
+</blockquote>
+<blockquote><p><strong>TLS(Transport Layer Security，传输层安全协议)</strong>，用于两个应用程序之间提供保密性和数据完整性。<br>TLS协议由两层组成：TLS记录协议(TLS Record)和TLS握手协议(TLS Handshake)。较低的层为TLS 记录协议，位于某个可靠的传输协议(例如TCP)上面。</p>
+</blockquote>
+
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://blog.csdn.net/chinawangfei/article/details/41644599" target="_blank" rel="noopener">Redis C语言客户端库hiredis使用方法</a></li>
+</ul>
+]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -105,9 +512,31 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[形态学变换]]></title>
-    <url>%2F2019%2F10%2F12%2Fcv-morphological-transformations%2F</url>
-    <content type="text"><![CDATA[形态学变换主要是对二值图像进行处理，需要两个参数：原始图像，以及结构元。结构元决定了操作的性质，基本的操作为腐蚀和膨胀，他们的变体构成了开运算，闭运算等。 1. 腐蚀把前景物体的边界腐蚀掉，但是前景仍然是白色的。卷积核沿着图像滑动，如果与卷积核对应的原图像的所有像素值都是1，那么中心元素就保持原来的像素值，否则就变为零。根据卷积核的大小靠近前景的所有像素都会被腐蚀掉（变为0），所以前景物体会变小，整幅图像的白色区域会减少。这对于去除白噪音很有用，也可以用来断开两个连在一块的物体。 123456789# Pythonimport cv2import numpy as npkernel = np.ones((5,5),np.uint8)erosion = cv2.erode(img,kernel,iterations=1)# C++kernel = getStructuringElement(shape,kernel_size[,anchor]);// shape:MORPH_RECT/MORPH_CROSS/MORPH_ELLIPSEerode(src,dst,kernel); 2. 膨胀与腐蚀相反，与卷积核对应的原图像的像素值中只要有一个是1，中心元素的像素值就是1。所以这个操作会增加图像中白色区域（前景）。一般在去噪音时先腐蚀再膨胀，因为腐蚀再去掉白噪音的同时，也会使前景对象变小，所以我们再膨胀。这时噪音已经被去除，不会再回来了，但是前景还在并会增加，膨胀也可以用来连接两个分开的物体。 12345# Pythondilation = cv2.dilate(img,kernel,iterations=1)# C++dilate(src,dst,kernel); 3. 开运算先进行腐蚀再进行膨胀就叫做开运算，用来去除噪声。 12345# Pythonopening = cv2.morpologyEx(img,cv2.MORPH_OPEN,kernel)# C++morpologyEx(src,dst,MORPH_OPEN,kernel); 4. 闭运算先腐蚀后膨胀，用来填充前景物体上的小洞。 12345# Pythonclosing = cv2.morpologyEx(img,cv2.MORPH_CLOSE,kernel)# C++morpologyEx(src,dst,MORPH_CLOSE,kernel); 5. 形态学梯度膨胀图与腐蚀图之差。 12345# Pythongradient = cv2.morpologyEx(img,cv2.MORPH_GRADIENT,kernel)# C++morpologyEx(src,dst,MORPH_GRADIENT,kernel); 6. 顶帽运算原图像与开运算之差。 12345# Pythontophat = cv2.morpologyEx(img,cv2.MORPH_TOPHAT,kernel)# C++morpologyEx(src,dst,MORPH_TOPHAT,kernel); 7. 黑帽运算闭图像与原图像之差。 12345# Pythonblackhat = cv2.morpologyEx(img,cv2.MORPH_BLACKHAT,kernel)# C++morpologyEx(src,dst,MORPH_BLACKHAT,kernel);]]></content>
+    <title>形态学变换</title>
+    <url>/2019/10/12/cv-morphological-transformations/</url>
+    <content><![CDATA[<p>形态学变换主要是对二值图像进行处理，需要两个参数：原始图像，以及结构元。结构元决定了操作的性质，基本的操作为腐蚀和膨胀，他们的变体构成了开运算，闭运算等。</p>
+<a id="more"></a>
+
+<h2 id="1-腐蚀"><a href="#1-腐蚀" class="headerlink" title="1. 腐蚀"></a>1. 腐蚀</h2><p>把前景物体的边界腐蚀掉，但是前景仍然是白色的。卷积核沿着图像滑动，如果与卷积核对应的原图像的所有像素值都是1，那么中心元素就保持原来的像素值，否则就变为零。根据卷积核的大小靠近前景的所有像素都会被腐蚀掉（变为0），所以前景物体会变小，整幅图像的白色区域会减少。这对于去除白噪音很有用，也可以用来断开两个连在一块的物体。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Python</span><br><span class="line">import cv2</span><br><span class="line">import numpy as np</span><br><span class="line">kernel = np.ones((5,5),np.uint8)</span><br><span class="line">erosion = cv2.erode(img,kernel,iterations=1)</span><br><span class="line"></span><br><span class="line"># C++</span><br><span class="line">kernel = getStructuringElement(shape,kernel_size[,anchor]);// shape:MORPH_RECT/MORPH_CROSS/MORPH_ELLIPSE</span><br><span class="line">erode(src,dst,kernel);</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-膨胀"><a href="#2-膨胀" class="headerlink" title="2. 膨胀"></a>2. 膨胀</h2><p>与腐蚀相反，与卷积核对应的原图像的像素值中只要有一个是1，中心元素的像素值就是1。所以这个操作会增加图像中白色区域（前景）。一般在去噪音时先腐蚀再膨胀，因为腐蚀再去掉白噪音的同时，也会使前景对象变小，所以我们再膨胀。这时噪音已经被去除，不会再回来了，但是前景还在并会增加，膨胀也可以用来连接两个分开的物体。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Python</span><br><span class="line">dilation = cv2.dilate(img,kernel,iterations=1)</span><br><span class="line"></span><br><span class="line"># C++</span><br><span class="line">dilate(src,dst,kernel);</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-开运算"><a href="#3-开运算" class="headerlink" title="3. 开运算"></a>3. 开运算</h2><p>先进行腐蚀再进行膨胀就叫做开运算，用来去除噪声。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Python</span><br><span class="line">opening = cv2.morpologyEx(img,cv2.MORPH_OPEN,kernel)</span><br><span class="line"></span><br><span class="line"># C++</span><br><span class="line">morpologyEx(src,dst,MORPH_OPEN,kernel);</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-闭运算"><a href="#4-闭运算" class="headerlink" title="4. 闭运算"></a>4. 闭运算</h2><p>先腐蚀后膨胀，用来填充前景物体上的小洞。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Python</span><br><span class="line">closing = cv2.morpologyEx(img,cv2.MORPH_CLOSE,kernel)</span><br><span class="line"></span><br><span class="line"># C++</span><br><span class="line">morpologyEx(src,dst,MORPH_CLOSE,kernel);</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-形态学梯度"><a href="#5-形态学梯度" class="headerlink" title="5. 形态学梯度"></a>5. 形态学梯度</h2><p>膨胀图与腐蚀图之差。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Python</span><br><span class="line">gradient = cv2.morpologyEx(img,cv2.MORPH_GRADIENT,kernel)</span><br><span class="line"></span><br><span class="line"># C++</span><br><span class="line">morpologyEx(src,dst,MORPH_GRADIENT,kernel);</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-顶帽运算"><a href="#6-顶帽运算" class="headerlink" title="6. 顶帽运算"></a>6. 顶帽运算</h2><p>原图像与开运算之差。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Python</span><br><span class="line">tophat = cv2.morpologyEx(img,cv2.MORPH_TOPHAT,kernel)</span><br><span class="line"></span><br><span class="line"># C++</span><br><span class="line">morpologyEx(src,dst,MORPH_TOPHAT,kernel);</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-黑帽运算"><a href="#7-黑帽运算" class="headerlink" title="7. 黑帽运算"></a>7. 黑帽运算</h2><p>闭图像与原图像之差。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Python</span><br><span class="line">blackhat = cv2.morpologyEx(img,cv2.MORPH_BLACKHAT,kernel)</span><br><span class="line"></span><br><span class="line"># C++</span><br><span class="line">morpologyEx(src,dst,MORPH_BLACKHAT,kernel);</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>计算机视觉</category>
       </categories>
@@ -116,17 +545,94 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Visual Studio编程问题集锦]]></title>
-    <url>%2F2019%2F10%2F12%2Fvs-programming-errors-summary%2F</url>
-    <content type="text"><![CDATA[本文主要记录Visual Studio使用过程中出现的问题以及相应的解决方法。 1. 编译 模块计算机类型 x64 与目标计算机类型 x86 冲突 出现此问题要在三个的地方进行确认： 项目右键-&gt;属性-&gt;链接器-&gt;高级-&gt;目标计算机：设置为MachineX64 (/MACHINE:X64) 项目右键-&gt;属性-&gt;链接器-&gt;命令行-&gt;其他选项：设置为/machine:X64 VS菜单栏-&gt;生成-&gt;配置管理器-&gt;活动解决方案平台：设置为x64 NOTE: 在进行一些开源项目的编译时，属性菜单中没有链接器 的属性，但是有库管理器 属性，可以在该属性下配置目标计算机和命令行的值。]]></content>
+    <title>Visual Studio编程问题集锦</title>
+    <url>/2019/10/12/vs-programming-errors-summary/</url>
+    <content><![CDATA[<p>本文主要记录Visual Studio使用过程中出现的问题以及相应的解决方法。</p>
+<a id="more"></a>
+<h2 id="1-编译"><a href="#1-编译" class="headerlink" title="1. 编译"></a>1. 编译</h2><ul>
+<li><p><strong>模块计算机类型 x64 与目标计算机类型 x86 冲突</strong></p>
+<p>  出现此问题要在三个的地方进行确认：</p>
+<ul>
+<li>项目右键-&gt;<em>属性</em>-&gt;<em>链接器</em>-&gt;<em>高级</em>-&gt;<em>目标计算机</em>：设置为<code>MachineX64 (/MACHINE:X64)</code></li>
+<li>项目右键-&gt;<em>属性</em>-&gt;<em>链接器</em>-&gt;<em>命令行</em>-&gt;<em>其他选项</em>：设置为<code>/machine:X64</code></li>
+<li>VS菜单栏-&gt;<em>生成</em>-&gt;<em>配置管理器</em>-&gt;<em>活动解决方案平台</em>：设置为<code>x64</code></li>
+</ul>
+<p>  <strong>NOTE:</strong> 在进行一些开源项目的编译时，属性菜单中没有<em>链接器</em> 的属性，但是有<em>库管理器</em> 属性，可以在该属性下配置目标计算机和命令行的值。</p>
+</li>
+</ul>
+]]></content>
       <categories>
         <category>开发工具</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[Redis简介]]></title>
-    <url>%2F2019%2F10%2F12%2Fredis-introduction%2F</url>
-    <content type="text"><![CDATA[Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型以及基本操作。 Redis(Remote Dictionary Server)是一个开源的高性能key-value数据库，它以字典结构存储数据，并允许其他应用通过TCP协议进行读取。Redis的数据都存储在内存中，因此在性能上相比较于硬盘存储的数据库有非常明显的优势。 1. Redis的安装1.1 Windows平台官网的Redis只有Linux版本的，但是Github上有Windows版的Redis【下载地址】。Windows的Redis有msi安装版，压缩包版和源码编译三种使用方式。 Redis的目录下主要有两类文件：应用文件和配置文件。 文件名 文件功能 redis-server 服务端应用，提供Redis服务 redis-cli 客户端程序，通过连接Redis服务并进行操作 redis-benchmark 性能测试，用来模拟同时由N个客户端发送M个SETs/GETs操作 redis-check-aof 更新日志检查 redis-check-dump 本地数据库检查 redis.windows.conf 配置文件，将Redis作为普通软件使用，命令行关闭则Redis关闭 redis.windows-service.conf 配置文件，将Redis作为系统服务进行配置 2. 配置和使用2.1 服务端命令Redis安装完成后需要进行启动才能使用，打开命令行，输入redis-server redis.windows.conf命令，即可启动Redis服务： 12345678910111213141516171819202122C:\Redis&gt;redis-server redis.windows.conf _._ _.-``__ &apos;&apos;-._ _.-`` `. `_. &apos;&apos;-._ Redis 3.2.100 (00000000/0) 64 bit.-`` .-```. ```\/ _.,_ &apos;&apos;-._( &apos; , .-` | `, ) Running in standalone mode|`-._`-...-` __...-.``-._|&apos;` _.-&apos;| Port: 6379| `-._ `._ / _.-&apos; | PID: 6660`-._ `-._ `-./ _.-&apos; _.-&apos;|`-._`-._ `-.__.-&apos; _.-&apos;_.-&apos;|| `-._`-._ _.-&apos;_.-&apos; | http://redis.io`-._ `-._`-.__.-&apos;_.-&apos; _.-&apos;|`-._`-._ `-.__.-&apos; _.-&apos;_.-&apos;|| `-._`-._ _.-&apos;_.-&apos; |`-._ `-._`-.__.-&apos;_.-&apos; _.-&apos; `-._ `-.__.-&apos; _.-&apos; `-._ _.-&apos; `-.__.-&apos;[6660] 12 Oct 11:17:05.019 # Server started, Redis version 3.2.100[6660] 12 Oct 11:17:05.028 * DB loaded from disk: 0.007 seconds[6660] 12 Oct 11:17:05.029 * The server is now ready to accept connections on port 6379 可以看到Redis已经打开了，使用这种方式的缺点是不能关闭命令行，否则Redis服务就会关闭。如果要开机启动Redis服务，需要将Redis安装成Windows服务。 12345678# 安装服务redis-server --service-install redis.windows.conf # 启动服务redis-server --service-start # 停止服务redis-server --service-stop # 卸载服务redis-server --service-uninstall 两种启动服务的方式根据个人喜好，或者基于开发环境或生产环境进行选择。 2.2 客户端命令另外打开一个命令行窗口，输入客户端使用命令redis-cli -h host -p port -a password就可以连接到Redis服务,host默认为127.0.0.1,port默认为6379。 1234567891011121314151617# 连接数据库服务C:\Redis&gt;redis-cli -h 127.0.0.1 -p 6379 #命令行输入127.0.0.1:6379&gt;# 写入数据127.0.0.1:6379&gt; set key value# 查询数据127.0.0.1:6379&gt; get key# 判断是否存在127.0.0.1:6379&gt; exists key# 删除127.0.0.1:6379&gt; del key# 查询数据类型127.0.0.1:6379&gt; type key# 关闭Redis服务127.0.0.1:6379&gt; shutdown# 数据库选择127.0.0.1:6379&gt; select db_num 2.3 Redis配置文件属性Redis配置文件中可以对数据库的属性进行配置，常用的配置参数如下： 123456789101112131415161718192021222324252627282930313233343536373839404142434445################################## NETWORK ######################################默认ip地址bind 127.0.0.1#Redis默认监听端口port 6379#客户端闲置多少秒后断开连接timeout 0################################# GENERAL ######################################是否作为守护进程运行,windows下不支持该属性daemonize no#日志显示级别loglevel notice#指定日志输出的文件名，默认输出到标准输出端口logfile &quot;&quot;#默认支持的数据库的数量databases 16################################ SNAPSHOTTING #################################持久化策略save &lt;seconds&gt; &lt;changes&gt;save 100 1 #当有一条数据被改变时，900s刷新到disk一次save 300 10 #当有10条数据被改变时，300s刷新到disk一次save 60 10000 #当有10000条数据被改变，60s刷新到disk一次#持久化数据保存的文件名dbfilename dump.db#持久化数据保存的路径dir ./################################# REPLICATION ##################################主从配置，设置该数据库为其他的从数据库slaveof &lt;masterip&gt; &lt;masterport&gt;#主服务器连接时需要的密码masterauth &lt;master-password&gt; ################################## SECURITY ####################################设置连接密码requirepass &lt;password&gt;################################### LIMITS #####################################最大客户连接数maxclients 10000#persistence-available [(yes)|no]#可使用的最大最大内存maxmemory &lt;bytes&gt;############################## APPEND ONLY MODE ################################是否开启日志功能appendonly no#AOF持久化策略appendfsync [always|everysec|no] 3. Redis数据浏览器RedisClient这个工具是Redis的客户端，专门用来浏览当前Redis中的所有数据。省去了查询Redis里面有哪些数据还需要输入命令行的繁琐和不便利。RedisClient可以直接在Github上进行下载，支持Windows、Linux和MacOS。操作简单，功能也很全，Github仓库里有详细的使用说明，非安装版使用命令java -jar redisclient-win32.x86_64.2.0.jar。 4. Redis编程4.1 PythonPython使用Redis非常简单，可以通过pip install redis在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。 123456789101112131415161718192021222324252627282930313233343536import cv2import redisimport structimport numpy as npdef toRedis(array): ''' Encode ndarry 'array' to bytes ''' # 1. get shape of Numpy array and encode h,w = array.shape shape = struct.pack('&gt;II',h,w) # '&gt;'表示大端，'I'表示4个字节的unsigned int，'II'表示8字节的unsigned int # 2. append the Numpy array as bytes to the shape encode = shape+array.tobytes() return encodedef fromRedis(encode): # 4. extract the shape of the Numpy array from the string h,w = struct.unpack('&gt;II',encode[:8]) # extract data and repopulate Numpy array, reshape to original shape array = np.frombuffer(encode,dtype=np.uint8,offset=8).reshape(h,w) return arrayif __name__=='__main__': r = redis.Redis(host='127.0.0.1',port=6379) img = cv2.imread('./oil11_2.bmp',cv2.IMREAD_GRAYSCALE) r.set('name','tangming') r.set('age',5) # 3. store the encoded array under supplied key r.set('image',toRedis(img)) print(r.get('name')) print(r.get('age')) array = fromRedis(r.get('image')) cv2.imshow('image',array) 4.2 C++用C++来操作Redis数据库，需要另外的Redis客户端库，常用的有hiredis、xredis和cpp_redis。其中hiredis使用简单，函数少，最接近Redis原始命令。cpp_redis需要C++11编译器的支持。 参考文献 &amp; 资源链接 microsoftarchive-redis Java Redis Client GUI Tool Redis源码解析 redis入门 Windows C++ Redis客户端 cpp_redis]]></content>
+    <title>Redis简介</title>
+    <url>/2019/10/12/redis-introduction/</url>
+    <content><![CDATA[<p>Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型以及基本操作。</p>
+<a id="more"></a>
+<p>Redis(Remote Dictionary Server)是一个开源的高性能key-value数据库，它以字典结构存储数据，并允许其他应用通过TCP协议进行读取。Redis的数据都存储在内存中，因此在性能上相比较于硬盘存储的数据库有非常明显的优势。</p>
+<h2 id="1-Redis的安装"><a href="#1-Redis的安装" class="headerlink" title="1. Redis的安装"></a>1. Redis的安装</h2><h3 id="1-1-Windows平台"><a href="#1-1-Windows平台" class="headerlink" title="1.1 Windows平台"></a>1.1 Windows平台</h3><p>官网的Redis只有Linux版本的，但是Github上有Windows版的Redis<a href="https://github.com/microsoftarchive/redis/releases" target="_blank" rel="noopener">【下载地址】</a>。Windows的Redis有msi安装版，压缩包版和源码编译三种使用方式。</p>
+<p>Redis的目录下主要有两类文件：应用文件和配置文件。</p>
+<table>
+<thead>
+<tr>
+<th align="left">文件名</th>
+<th align="left">文件功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">redis-server</td>
+<td align="left">服务端应用，提供Redis服务</td>
+</tr>
+<tr>
+<td align="left">redis-cli</td>
+<td align="left">客户端程序，通过连接Redis服务并进行操作</td>
+</tr>
+<tr>
+<td align="left">redis-benchmark</td>
+<td align="left">性能测试，用来模拟同时由N个客户端发送M个SETs/GETs操作</td>
+</tr>
+<tr>
+<td align="left">redis-check-aof</td>
+<td align="left">更新日志检查</td>
+</tr>
+<tr>
+<td align="left">redis-check-dump</td>
+<td align="left">本地数据库检查</td>
+</tr>
+<tr>
+<td align="left">redis.windows.conf</td>
+<td align="left">配置文件，将Redis作为普通软件使用，命令行关闭则Redis关闭</td>
+</tr>
+<tr>
+<td align="left">redis.windows-service.conf</td>
+<td align="left">配置文件，将Redis作为系统服务进行配置</td>
+</tr>
+</tbody></table>
+<h2 id="2-配置和使用"><a href="#2-配置和使用" class="headerlink" title="2. 配置和使用"></a>2. 配置和使用</h2><h3 id="2-1-服务端命令"><a href="#2-1-服务端命令" class="headerlink" title="2.1 服务端命令"></a>2.1 服务端命令</h3><p>Redis安装完成后需要进行启动才能使用，打开命令行，输入<code>redis-server redis.windows.conf</code>命令，即可启动Redis服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\Redis&gt;redis-server redis.windows.conf</span><br><span class="line">             _._</span><br><span class="line">        _.-``__ &apos;&apos;-._</span><br><span class="line">    _.-``    `.  `_.  &apos;&apos;-._           Redis 3.2.100 (00000000/0) 64 bit</span><br><span class="line">.-`` .-```.  ```\/    _.,_ &apos;&apos;-._</span><br><span class="line">(    &apos;      ,       .-`  | `,    )     Running in standalone mode</span><br><span class="line">|`-._`-...-` __...-.``-._|&apos;` _.-&apos;|     Port: 6379</span><br><span class="line">|    `-._   `._    /     _.-&apos;    |     PID: 6660</span><br><span class="line">`-._    `-._  `-./  _.-&apos;    _.-&apos;</span><br><span class="line">|`-._`-._    `-.__.-&apos;    _.-&apos;_.-&apos;|</span><br><span class="line">|    `-._`-._        _.-&apos;_.-&apos;    |           http://redis.io</span><br><span class="line">`-._    `-._`-.__.-&apos;_.-&apos;    _.-&apos;</span><br><span class="line">|`-._`-._    `-.__.-&apos;    _.-&apos;_.-&apos;|</span><br><span class="line">|    `-._`-._        _.-&apos;_.-&apos;    |</span><br><span class="line">`-._    `-._`-.__.-&apos;_.-&apos;    _.-&apos;</span><br><span class="line">    `-._    `-.__.-&apos;    _.-&apos;</span><br><span class="line">        `-._        _.-&apos;</span><br><span class="line">            `-.__.-&apos;</span><br><span class="line"></span><br><span class="line">[6660] 12 Oct 11:17:05.019 # Server started, Redis version 3.2.100</span><br><span class="line">[6660] 12 Oct 11:17:05.028 * DB loaded from disk: 0.007 seconds</span><br><span class="line">[6660] 12 Oct 11:17:05.029 * The server is now ready to accept connections on port 6379</span><br></pre></td></tr></table></figure>
+<p>可以看到Redis已经打开了，使用这种方式的缺点是不能关闭命令行，否则Redis服务就会关闭。如果要开机启动Redis服务，需要将Redis安装成Windows服务。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装服务</span><br><span class="line">redis-server --service-install redis.windows.conf </span><br><span class="line"># 启动服务</span><br><span class="line">redis-server --service-start </span><br><span class="line"># 停止服务</span><br><span class="line">redis-server --service-stop </span><br><span class="line"># 卸载服务</span><br><span class="line">redis-server --service-uninstall </span><br></pre></td></tr></table></figure>
+<p>两种启动服务的方式根据个人喜好，或者基于开发环境或生产环境进行选择。</p>
+<h3 id="2-2-客户端命令"><a href="#2-2-客户端命令" class="headerlink" title="2.2 客户端命令"></a>2.2 客户端命令</h3><p>另外打开一个命令行窗口，输入客户端使用命令<code>redis-cli -h host -p port -a password</code>就可以连接到Redis服务,<code>host</code>默认为<code>127.0.0.1</code>,<code>port</code>默认为<code>6379</code>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 连接数据库服务</span><br><span class="line">C:\Redis&gt;redis-cli -h 127.0.0.1 -p 6379 #命令行输入</span><br><span class="line">127.0.0.1:6379&gt;</span><br><span class="line"># 写入数据</span><br><span class="line">127.0.0.1:6379&gt; set key value</span><br><span class="line"># 查询数据</span><br><span class="line">127.0.0.1:6379&gt; get key</span><br><span class="line"># 判断是否存在</span><br><span class="line">127.0.0.1:6379&gt; exists key</span><br><span class="line"># 删除</span><br><span class="line">127.0.0.1:6379&gt; del key</span><br><span class="line"># 查询数据类型</span><br><span class="line">127.0.0.1:6379&gt; type key</span><br><span class="line"># 关闭Redis服务</span><br><span class="line">127.0.0.1:6379&gt; shutdown</span><br><span class="line"># 数据库选择</span><br><span class="line">127.0.0.1:6379&gt; select db_num</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-Redis配置文件属性"><a href="#2-3-Redis配置文件属性" class="headerlink" title="2.3 Redis配置文件属性"></a>2.3 Redis配置文件属性</h3><p>Redis配置文件中可以对数据库的属性进行配置，常用的配置参数如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">################################## NETWORK #####################################</span><br><span class="line">#默认ip地址</span><br><span class="line">bind 127.0.0.1</span><br><span class="line">#Redis默认监听端口</span><br><span class="line">port 6379</span><br><span class="line">#客户端闲置多少秒后断开连接</span><br><span class="line">timeout 0</span><br><span class="line">################################# GENERAL #####################################</span><br><span class="line">#是否作为守护进程运行,windows下不支持该属性</span><br><span class="line">daemonize no</span><br><span class="line">#日志显示级别</span><br><span class="line">loglevel notice</span><br><span class="line">#指定日志输出的文件名，默认输出到标准输出端口</span><br><span class="line">logfile &quot;&quot;</span><br><span class="line">#默认支持的数据库的数量</span><br><span class="line">databases 16</span><br><span class="line">################################ SNAPSHOTTING  ################################</span><br><span class="line">#持久化策略save &lt;seconds&gt; &lt;changes&gt;</span><br><span class="line">save 100 1    #当有一条数据被改变时，900s刷新到disk一次</span><br><span class="line">save 300 10   #当有10条数据被改变时，300s刷新到disk一次</span><br><span class="line">save 60 10000 #当有10000条数据被改变，60s刷新到disk一次</span><br><span class="line">#持久化数据保存的文件名</span><br><span class="line">dbfilename dump.db</span><br><span class="line">#持久化数据保存的路径</span><br><span class="line">dir ./</span><br><span class="line">################################# REPLICATION #################################</span><br><span class="line">#主从配置，设置该数据库为其他的从数据库</span><br><span class="line">slaveof &lt;masterip&gt; &lt;masterport&gt;</span><br><span class="line">#主服务器连接时需要的密码</span><br><span class="line">masterauth &lt;master-password&gt; </span><br><span class="line">################################## SECURITY ###################################</span><br><span class="line">#设置连接密码</span><br><span class="line">requirepass &lt;password&gt;</span><br><span class="line">################################### LIMITS ####################################</span><br><span class="line">#最大客户连接数</span><br><span class="line">maxclients 10000</span><br><span class="line">#</span><br><span class="line">persistence-available [(yes)|no]</span><br><span class="line">#可使用的最大最大内存</span><br><span class="line">maxmemory &lt;bytes&gt;</span><br><span class="line">############################## APPEND ONLY MODE ###############################</span><br><span class="line">#是否开启日志功能</span><br><span class="line">appendonly no</span><br><span class="line">#AOF持久化策略</span><br><span class="line">appendfsync [always|everysec|no]</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Redis数据浏览器"><a href="#3-Redis数据浏览器" class="headerlink" title="3. Redis数据浏览器"></a>3. Redis数据浏览器</h2><p>RedisClient这个工具是Redis的客户端，专门用来浏览当前Redis中的所有数据。省去了查询Redis里面有哪些数据还需要输入命令行的繁琐和不便利。<br>RedisClient可以直接在Github上进行<a href="https://github.com/caoxinyu/RedisClient" target="_blank" rel="noopener"><strong>下载</strong></a>，支持Windows、Linux和MacOS。操作简单，功能也很全，Github仓库里有详细的使用说明，非安装版使用命令<code>java -jar redisclient-win32.x86_64.2.0.jar</code>。<br><img src="/resources/images/redis_RedisClient.png" alt></p>
+<h2 id="4-Redis编程"><a href="#4-Redis编程" class="headerlink" title="4. Redis编程"></a>4. Redis编程</h2><h3 id="4-1-Python"><a href="#4-1-Python" class="headerlink" title="4.1 Python"></a>4.1 Python</h3><p>Python使用Redis非常简单，可以通过<code>pip install redis</code>在环境中安装编程需要的API。下面是一个简单的实例，利用Redis存储数值、字符串和图像。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">toRedis</span><span class="params">(array)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Encode ndarry 'array' to bytes</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="comment"># 1. get shape of Numpy array and encode</span></span><br><span class="line">    h,w = array.shape</span><br><span class="line">    shape = struct.pack(<span class="string">'&gt;II'</span>,h,w) <span class="comment"># '&gt;'表示大端，'I'表示4个字节的unsigned int，'II'表示8字节的unsigned int</span></span><br><span class="line">    <span class="comment"># 2. append the Numpy array as bytes to the shape</span></span><br><span class="line">    encode = shape+array.tobytes()</span><br><span class="line">    <span class="keyword">return</span> encode</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fromRedis</span><span class="params">(encode)</span>:</span></span><br><span class="line">    <span class="comment"># 4. extract the shape of the Numpy array from the string</span></span><br><span class="line">    h,w = struct.unpack(<span class="string">'&gt;II'</span>,encode[:<span class="number">8</span>])</span><br><span class="line">    <span class="comment"># extract data and repopulate Numpy array, reshape to original shape</span></span><br><span class="line">    array = np.frombuffer(encode,dtype=np.uint8,offset=<span class="number">8</span>).reshape(h,w)</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    r = redis.Redis(host=<span class="string">'127.0.0.1'</span>,port=<span class="number">6379</span>)</span><br><span class="line">    img = cv2.imread(<span class="string">'./oil11_2.bmp'</span>,cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    </span><br><span class="line">    r.set(<span class="string">'name'</span>,<span class="string">'tangming'</span>)</span><br><span class="line">    r.set(<span class="string">'age'</span>,<span class="number">5</span>)</span><br><span class="line">    <span class="comment"># 3. store the encoded array under supplied key</span></span><br><span class="line">    r.set(<span class="string">'image'</span>,toRedis(img))</span><br><span class="line"></span><br><span class="line">    print(r.get(<span class="string">'name'</span>))</span><br><span class="line">    print(r.get(<span class="string">'age'</span>))</span><br><span class="line">    array = fromRedis(r.get(<span class="string">'image'</span>))</span><br><span class="line">    cv2.imshow(<span class="string">'image'</span>,array)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-C"><a href="#4-2-C" class="headerlink" title="4.2 C++"></a>4.2 C++</h3><p>用C++来操作Redis数据库，需要另外的Redis客户端库，常用的有<a href="https://github.com/redis/hiredis" target="_blank" rel="noopener">hiredis</a>、<a href="https://gitee.com/0xsky/xredis/tree/master" target="_blank" rel="noopener">xredis</a>和<a href="https://github.com/cpp-redis/cpp_redis" target="_blank" rel="noopener">cpp_redis</a>。其中hiredis使用简单，函数少，最接近Redis原始命令。cpp_redis需要C++11编译器的支持。</p>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://github.com/microsoftarchive/redis/releases" target="_blank" rel="noopener">microsoftarchive-redis</a></li>
+<li><a href="https://github.com/caoxinyu/RedisClient" target="_blank" rel="noopener">Java Redis Client GUI Tool</a></li>
+<li><a href="https://blog.csdn.net/gqtcgq/article/category/5992975/1" target="_blank" rel="noopener">Redis源码解析</a></li>
+<li><a href="https://shiningdan.github.io/2017/05/26/Redis%E5%85%A5%E9%97%A8/" target="_blank" rel="noopener">redis入门</a></li>
+<li><a href="https://blog.csdn.net/calmreason/article/details/54881014" target="_blank" rel="noopener">Windows C++ Redis客户端 cpp_redis</a></li>
+</ul>
+]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -135,9 +641,26 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Redis内存模型]]></title>
-    <url>%2F2019%2F10%2F11%2Fredis-memory-model%2F</url>
-    <content type="text"><![CDATA[本文主要记录Redis的内存模型，包括内存的使用情况、内存分配器、简单动态字符串以及不同对象类型在内存中的编码方式等。 1. 内存统计在客户端可以通过info命令查看内存的使用情况。 1234567891011121314151617127.0.0.1:6379&gt; info memory# Memoryused_memory:13293448 #Redis分配器分配的内存总量used_memory_human:12.68M #used_memory_rss:13256520 #Redis进程占据操作系统的内存，除了used_memory之外还有本身运行内存以及内存碎片等used_memory_rss_human:12.64Mused_memory_peak:25839504used_memory_peak_human:24.64Mtotal_system_memory:0total_system_memory_human:0Bused_memory_lua:37888used_memory_lua_human:37.00Kmaxmemory:0maxmemory_human:0Bmaxmemory_policy:noevictionmem_fragmentation_ratio:1.00 #内存碎片比率mem_allocator:jemalloc-3.6.0 #Redis使用的内存分配器 Redis的内存占用主要分为以下几个部分： 数据：即使用键值对存储的数据，这部分内存统计在used_memory中 进程运行内存：Redis主进程本身运行需要的内存 缓冲内存：包括客户端缓冲内存、复制积压缓冲区、AOF缓冲区等。客户端缓冲内存存储客户端连接的输入输出缓冲；复制积压缓冲内存用于部分复制功能；AOF缓冲区用于进行AOF重写时保存最近的写入命令。 内存碎片：Redis再分配和回收物理内存过程中产生的无法有效利用的内存。 参考文献 &amp; 资源链接 如何阅读Redis源码 Redis设计与实现 Redis内存模型]]></content>
+    <title>Redis内存模型</title>
+    <url>/2019/10/11/redis-memory-model/</url>
+    <content><![CDATA[<p>本文主要记录Redis的内存模型，包括内存的使用情况、内存分配器、简单动态字符串以及不同对象类型在内存中的编码方式等。</p>
+<a id="more"></a>
+<h2 id="1-内存统计"><a href="#1-内存统计" class="headerlink" title="1. 内存统计"></a>1. 内存统计</h2><p>在客户端可以通过<code>info</code>命令查看内存的使用情况。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info memory</span><br><span class="line"># Memory</span><br><span class="line">used_memory:13293448 #Redis分配器分配的内存总量</span><br><span class="line">used_memory_human:12.68M #</span><br><span class="line">used_memory_rss:13256520 #Redis进程占据操作系统的内存，除了used_memory之外还有本身运行内存以及内存碎片等</span><br><span class="line">used_memory_rss_human:12.64M</span><br><span class="line">used_memory_peak:25839504</span><br><span class="line">used_memory_peak_human:24.64M</span><br><span class="line">total_system_memory:0</span><br><span class="line">total_system_memory_human:0B</span><br><span class="line">used_memory_lua:37888</span><br><span class="line">used_memory_lua_human:37.00K</span><br><span class="line">maxmemory:0</span><br><span class="line">maxmemory_human:0B</span><br><span class="line">maxmemory_policy:noeviction</span><br><span class="line">mem_fragmentation_ratio:1.00 #内存碎片比率</span><br><span class="line">mem_allocator:jemalloc-3.6.0 #Redis使用的内存分配器</span><br></pre></td></tr></table></figure>
+
+<p>Redis的内存占用主要分为以下几个部分：</p>
+<ul>
+<li>数据：即使用键值对存储的数据，这部分内存统计在<code>used_memory</code>中</li>
+<li>进程运行内存：Redis主进程本身运行需要的内存</li>
+<li>缓冲内存：包括客户端缓冲内存、复制积压缓冲区、AOF缓冲区等。客户端缓冲内存存储客户端连接的输入输出缓冲；复制积压缓冲内存用于部分复制功能；AOF缓冲区用于进行AOF重写时保存最近的写入命令。</li>
+<li>内存碎片：Redis再分配和回收物理内存过程中产生的无法有效利用的内存。</li>
+</ul>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="noopener">如何阅读Redis源码</a></li>
+<li><a href="http://redisbook.com/" target="_blank" rel="noopener">Redis设计与实现</a></li>
+<li><a href="https://www.cnblogs.com/kismetv/p/8654978.html#t21" target="_blank" rel="noopener">Redis内存模型</a></li>
+</ul>
+]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -146,55 +669,204 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[PyTorch模型]]></title>
-    <url>%2F2019%2F10%2F09%2Fpytorch-model-introduction%2F</url>
-    <content type="text"><![CDATA[本文主要记录PyTorch模型搭建，参数初始化,模型的保存和加载以及模型Fintune的相关内容。 1. 模型的搭建1.1 模型的定义PyTorch中进行模型定义需要注意的主要有三个部分： 模型类要继承nn.Module，让PyTorch知道这个类是模型类 在__init__()函数中定义模型需要用到的组件(如conv,pool,fc等) 在forward()函数中将定义的组件组装成需要的模型 1.2 nn.Sequetialtorch.nn.Sequetial是一个序列容器，能够将一系列的操作按照先后顺序封装起来，方便重复使用。 2. 模型权值的初始化模型定义完成后，通常还需要对模型的权值进行初始化之后才能开始训练。初始化的方法会直接影响到模型是否收敛。 2.1 权值初始化的流程权值的初始化分为两步： 定义一个初始化函数，在函数中设定什么层使用什么初始化方法，初始化方法在torch.nn.init中给出 实例化一个模型，执行该函数，即可完成初始化 2.2 常用的初始化方法PyTorch在torch.nn.init中提供了常用的初始化方法函数，主要分为两部分：Xavier,Kaiming系列和其他分布方法。 3. 模型Fintune一个良好的初始化权值可以加快模型的收敛，甚至可以提高模型的精度。在实际的应用中，我们通常用一个已经训练过的模型的权值作为模型的初始化参数，称之为模型Fintune，更广泛的叫做迁移学习。 Fintune的目的是让我们的新模型有一个较好的权重初始值，其流程主要分为三步： 训练并保存模型，得到一个预训练模型 加载模型，得到预训练模型的权值 初始化，将得到的权值对应放到新模型的不同层中 3.1 模型的保存和加载3.2 权值初始化]]></content>
+    <title>PyTorch模型</title>
+    <url>/2019/10/09/pytorch-model-introduction/</url>
+    <content><![CDATA[<p>本文主要记录PyTorch模型搭建，参数初始化,模型的保存和加载以及模型Fintune的相关内容。</p>
+<a id="more"></a>
+
+<h2 id="1-模型的搭建"><a href="#1-模型的搭建" class="headerlink" title="1. 模型的搭建"></a>1. 模型的搭建</h2><h3 id="1-1-模型的定义"><a href="#1-1-模型的定义" class="headerlink" title="1.1 模型的定义"></a>1.1 模型的定义</h3><p>PyTorch中进行模型定义需要注意的主要有三个部分：</p>
+<ul>
+<li>模型类要继承<code>nn.Module</code>，让PyTorch知道这个类是模型类</li>
+<li>在<code>__init__()</code>函数中定义模型需要用到的组件(如conv,pool,fc等)</li>
+<li>在<code>forward()</code>函数中将定义的组件组装成需要的模型</li>
+</ul>
+<h3 id="1-2-nn-Sequetial"><a href="#1-2-nn-Sequetial" class="headerlink" title="1.2 nn.Sequetial"></a>1.2 <code>nn.Sequetial</code></h3><p><code>torch.nn.Sequetial</code>是一个序列容器，能够将一系列的操作按照先后顺序封装起来，方便重复使用。</p>
+<h2 id="2-模型权值的初始化"><a href="#2-模型权值的初始化" class="headerlink" title="2. 模型权值的初始化"></a>2. 模型权值的初始化</h2><p>模型定义完成后，通常还需要对模型的权值进行初始化之后才能开始训练。初始化的方法会直接影响到模型是否收敛。</p>
+<h3 id="2-1-权值初始化的流程"><a href="#2-1-权值初始化的流程" class="headerlink" title="2.1 权值初始化的流程"></a>2.1 权值初始化的流程</h3><p>权值的初始化分为两步：</p>
+<ul>
+<li>定义一个初始化函数，在函数中设定什么层使用什么初始化方法，初始化方法在<code>torch.nn.init</code>中给出</li>
+<li>实例化一个模型，执行该函数，即可完成初始化</li>
+</ul>
+<h3 id="2-2-常用的初始化方法"><a href="#2-2-常用的初始化方法" class="headerlink" title="2.2 常用的初始化方法"></a>2.2 常用的初始化方法</h3><p>PyTorch在<code>torch.nn.init</code>中提供了常用的初始化方法函数，主要分为两部分：<strong>Xavier,Kaiming系列</strong>和<strong>其他分布方法</strong>。</p>
+<h2 id="3-模型Fintune"><a href="#3-模型Fintune" class="headerlink" title="3. 模型Fintune"></a>3. 模型Fintune</h2><p>一个良好的初始化权值可以加快模型的收敛，甚至可以提高模型的精度。在实际的应用中，我们通常用一个已经训练过的模型的权值作为模型的初始化参数，称之为模型Fintune，更广泛的叫做迁移学习。</p>
+<p>Fintune的目的是让我们的新模型有一个较好的权重初始值，其流程主要分为三步：</p>
+<ul>
+<li>训练并保存模型，得到一个预训练模型</li>
+<li>加载模型，得到预训练模型的权值</li>
+<li>初始化，将得到的权值对应放到新模型的不同层中</li>
+</ul>
+<h3 id="3-1-模型的保存和加载"><a href="#3-1-模型的保存和加载" class="headerlink" title="3.1 模型的保存和加载"></a>3.1 模型的保存和加载</h3><h3 id="3-2-权值初始化"><a href="#3-2-权值初始化" class="headerlink" title="3.2 权值初始化"></a>3.2 权值初始化</h3>]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[CVPR2019医学图像处理论文集]]></title>
-    <url>%2F2019%2F10%2F09%2Fpapers-about-medical-image-analysis-at-cvpr2019%2F</url>
-    <content type="text"><![CDATA[参考文献 &amp; 资源链接 CVPR2019医学影像分析文集]]></content>
+    <title>CVPR2019医学图像处理论文集</title>
+    <url>/2019/10/09/paper-reading-medical-image-analysis-at-cvpr2019/</url>
+    <content><![CDATA[<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/3-YpBL02QY8PmlTiCVmJiQ" target="_blank" rel="noopener">CVPR2019医学影像分析文集</a></li>
+</ul>
+]]></content>
       <categories>
-        <category>论文笔记</category>
+        <category>论文阅读</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[CUDA—内存模型]]></title>
-    <url>%2F2019%2F10%2F09%2Fcuda-memory-model%2F</url>
-    <content type="text"><![CDATA[现代计算机的内存结构主要有：寄存器(Registers)、缓存(Caches)、主存(Main Memory)和硬盘存储(Disk Memory)。速度最快的是寄存器，接着是缓存，然后是主存储器，常见的就是内存条，最后是硬盘。GPU和CPU的内存设计有着相似的准则和模型，CUDA编程模型将内存层次结构很好的呈现给开发者，让我们能显式的控制其行为。 GPU中内存设备有寄存器、共享内存、本地内存、常量内存、纹理内存、全局内存，各种内存都有自己的作用域、生命周期和缓存行为。 参考文章 &amp; 资源链接 CUDA内存模型概述]]></content>
+    <title>CUDA—内存模型</title>
+    <url>/2019/10/09/cuda-memory-model/</url>
+    <content><![CDATA[<p>现代计算机的内存结构主要有：寄存器(Registers)、缓存(Caches)、主存(Main Memory)和硬盘存储(Disk Memory)。速度最快的是寄存器，接着是缓存，然后是主存储器，常见的就是内存条，最后是硬盘。GPU和CPU的内存设计有着相似的准则和模型，CUDA编程模型将内存层次结构很好的呈现给开发者，让我们能显式的控制其行为。</p>
+<a id="more"></a>
+
+<p>GPU中内存设备有<strong>寄存器</strong>、<strong>共享内存</strong>、<strong>本地内存</strong>、<strong>常量内存</strong>、<strong>纹理内存</strong>、<strong>全局内存</strong>，各种内存都有自己的作用域、生命周期和缓存行为。</p>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://face2ai.com/CUDA-F-4-1-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0/" target="_blank" rel="noopener">CUDA内存模型概述</a></li>
+</ul>
+]]></content>
       <categories>
-        <category>CUDA编程</category>
+        <category>GPU编程</category>
       </categories>
       <tags>
         <tag>CUDA</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[CUDA—编程模型]]></title>
-    <url>%2F2019%2F10%2F08%2Fcuda-programming-model%2F</url>
-    <content type="text"><![CDATA[本文主要记录CUDA的内存分配、释放，主机与设备的数据传输，固定内存等内容 在标准的CUDA应用程序中，通常有以下几个步骤： 在Device上分配内存 将数据从Host复制到Device 在GPU上通过核函数对数据进行计算 将数据从Device复制到Host 释放分配的设备内存 其中，Device即GPU，Host即CPU，核函数即Kernel (the function that runs on GPU)。 1. 内存管理内存管理在串行程序中非常常见，寄存器和栈的内存由机器自己管理，堆空间由用户控制分配和释放。CUDA提供API可以分配管理Device上的内存，也可以管理Host上的内存。 标准C函数 CUDA C函数 说明 malloc cudaMalloc 内存分配 memcpy cudaMemcpy 内存复制 memset cudaMemset 内存设置 free cudaFree 内存释放 通常来讲，对于一维数组，在GPU中进行内存分配和数据拷贝使用的是cudaMalloc和cudaMemcpy函数，但是对于二维或者三维矩而言，使用cudaMalloc并不能得到最佳性能。原因是对于2D和3D内存，对齐是一个很重要的性质。cudaMallocPitch和cudaMalloc3D这两个函数能够保证分配的内存是合理对齐的，满足物理上的内存访问，可以确保对行进行访问的时候具有最优的效率。除此之外，对于数组内存的复制应当使用cudaMemcpy2D和cudaMemcpy3D来实现。 NOTE: cudaMallocPitch在分配行空间的时候会进行内存补齐，使得每一行的总的大小为128的整数倍，分配的总内存要大于实际所需的内存，我们在访问某一行的某个元素时，按照a[pitch*row+col]来访问。因此，在使用cudaMallocPitch的时候一定要返回pitch，只有这样才能访问二维数组的元素。当需要将这个二维数组从Device复制到Host的时候，如果使用cudaMemcpy不仅复制了数组的元素，也复制了补齐的内存，cudaMemcpy2D会跳过补齐的内存，只复制有效的数组元素。 2. Host/Device数据传输在CUDA应用的步骤中，数据的传输是必须的同时也是算法性能的瓶颈，相对于计算过程而言，数据的传输过程十分的耗费时间。优化数据传输的方式主要有三种： 尽量减少Host和Device之间数据的传输 使用CUDA内存优化技巧。比如Pinned Memory，Shared Memory，Constant Memory，使用流来掩盖内存延迟等【使用固定内存获得更高的数据传输带宽】 将多个小的数据传输合并为一次大的数据传输，这样可以消除每次传输的大部分开销 2.1 固定内存(Pinned Memory)在CPU与GPU协同计算过程中，主机内存默认时分页(pageable)内存，分页内存需要先转换为固定(Pinned)内存，然后进行主机与设备之间的内存拷贝。在CUDA C/C++中可以通过cudaMallocHost()或cudaHostAlloc()函数开辟固定内存并进行直接访问，从而提高Device和Host之间数据传输的效率。CUDA开辟的固定内存通过cudaFreeHost函数进行释放。 NOTE: 固定内存的分配有可能会失败，所以要进行错误检查。 12345cudaError_t status = cudaMallocHost((void**)&amp;h_PinnedMem, size);if(status != cudaSuccess)&#123; printf("Error in allocating pinned host memory");&#125; 2.2 合并小规模的数据传输因为每次传输都会产生额外的开销，所以最好将多个小规模的数据传输合并为单独的一次数据传输。可以使用临时的数组，然后将要传输的数据填充该数组，数组最好为固定内存的数组。 3. 核函数//TODO 参考文章 &amp; 资源链接 CUDA编程之快速入门 CUDA编程模型概述 Hands-On-GPU-Accelerated-Computer-Vision-with-OpenCV-and-CUDA How to Optimize Data Transfers in CUDA C/C++]]></content>
+    <title>CUDA—编程模型</title>
+    <url>/2019/10/08/cuda-programming-model/</url>
+    <content><![CDATA[<p>本文主要记录CUDA的内存分配、释放，主机与设备的数据传输，固定内存等内容</p>
+<a id="more"></a>
+<p>在标准的CUDA应用程序中，通常有以下几个步骤：</p>
+<ul>
+<li>在Device上分配内存</li>
+<li>将数据从Host复制到Device</li>
+<li>在GPU上通过核函数对数据进行计算</li>
+<li>将数据从Device复制到Host</li>
+<li>释放分配的设备内存</li>
+</ul>
+<p>其中，Device即GPU，Host即CPU，核函数即Kernel (the function that runs on GPU)。</p>
+<h2 id="1-内存管理"><a href="#1-内存管理" class="headerlink" title="1. 内存管理"></a>1. 内存管理</h2><p>内存管理在串行程序中非常常见，寄存器和栈的内存由机器自己管理，堆空间由用户控制分配和释放。CUDA提供API可以分配管理Device上的内存，也可以管理Host上的内存。</p>
+<table>
+<thead>
+<tr>
+<th align="center">标准C函数</th>
+<th align="center">CUDA C函数</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">malloc</td>
+<td align="center">cudaMalloc</td>
+<td align="center">内存分配</td>
+</tr>
+<tr>
+<td align="center">memcpy</td>
+<td align="center">cudaMemcpy</td>
+<td align="center">内存复制</td>
+</tr>
+<tr>
+<td align="center">memset</td>
+<td align="center">cudaMemset</td>
+<td align="center">内存设置</td>
+</tr>
+<tr>
+<td align="center">free</td>
+<td align="center">cudaFree</td>
+<td align="center">内存释放</td>
+</tr>
+</tbody></table>
+<p>通常来讲，对于一维数组，在GPU中进行内存分配和数据拷贝使用的是<code>cudaMalloc</code>和<code>cudaMemcpy</code>函数，但是对于二维或者三维矩而言，使用<code>cudaMalloc</code>并不能得到最佳性能。原因是对于2D和3D内存，<strong>对齐</strong>是一个很重要的性质。<code>cudaMallocPitch</code>和<code>cudaMalloc3D</code>这两个函数能够保证分配的内存是合理对齐的，满足物理上的内存访问，可以确保对行进行访问的时候具有最优的效率。除此之外，对于数组内存的复制应当使用<code>cudaMemcpy2D</code>和<code>cudaMemcpy3D</code>来实现。</p>
+<p><strong>NOTE:</strong> <code>cudaMallocPitch</code>在分配行空间的时候会进行内存补齐，使得每一行的总的大小为128的整数倍，分配的总内存要大于实际所需的内存，我们在访问某一行的某个元素时，按照<code>a[pitch*row+col]</code>来访问。因此，在使用<code>cudaMallocPitch</code>的时候一定要返回pitch，只有这样才能访问二维数组的元素。当需要将这个二维数组从Device复制到Host的时候，如果使用<code>cudaMemcpy</code>不仅复制了数组的元素，也复制了补齐的内存，<code>cudaMemcpy2D</code>会跳过补齐的内存，只复制有效的数组元素。</p>
+<h2 id="2-Host-Device数据传输"><a href="#2-Host-Device数据传输" class="headerlink" title="2. Host/Device数据传输"></a>2. Host/Device数据传输</h2><p>在CUDA应用的步骤中，数据的传输是必须的同时也是算法性能的瓶颈，相对于计算过程而言，数据的传输过程十分的耗费时间。优化数据传输的方式主要有三种：</p>
+<ul>
+<li>尽量减少Host和Device之间数据的传输</li>
+<li>使用CUDA内存优化技巧。比如Pinned Memory，Shared Memory，Constant Memory，使用流来掩盖内存延迟等【使用固定内存获得更高的数据传输带宽】</li>
+<li>将多个小的数据传输合并为一次大的数据传输，这样可以消除每次传输的大部分开销</li>
+</ul>
+<h3 id="2-1-固定内存-Pinned-Memory"><a href="#2-1-固定内存-Pinned-Memory" class="headerlink" title="2.1 固定内存(Pinned Memory)"></a>2.1 固定内存(Pinned Memory)</h3><p>在CPU与GPU协同计算过程中，主机内存默认时分页(pageable)内存，分页内存需要先转换为固定(Pinned)内存，然后进行主机与设备之间的内存拷贝。在CUDA C/C++中可以通过<code>cudaMallocHost()</code>或<code>cudaHostAlloc()</code>函数开辟固定内存并进行直接访问，从而提高Device和Host之间数据传输的效率。CUDA开辟的固定内存通过<code>cudaFreeHost</code>函数进行释放。</p>
+<p><strong>NOTE:</strong> 固定内存的分配有可能会失败，所以要进行错误检查。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cudaError_t status = cudaMallocHost((<span class="keyword">void</span>**)&amp;h_PinnedMem, size);</span><br><span class="line"><span class="keyword">if</span>(status != cudaSuccess)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Error in allocating pinned host memory"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-合并小规模的数据传输"><a href="#2-2-合并小规模的数据传输" class="headerlink" title="2.2 合并小规模的数据传输"></a>2.2 合并小规模的数据传输</h3><p>因为每次传输都会产生额外的开销，所以最好将多个小规模的数据传输合并为单独的一次数据传输。可以使用临时的数组，然后将要传输的数据填充该数组，数组最好为固定内存的数组。</p>
+<h2 id="3-核函数"><a href="#3-核函数" class="headerlink" title="3. 核函数"></a>3. 核函数</h2><p>//TODO</p>
+<h2 id="4-CUDA内核运行时间测量"><a href="#4-CUDA内核运行时间测量" class="headerlink" title="4. CUDA内核运行时间测量"></a>4. CUDA内核运行时间测量</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cudaEvent_t start1;</span><br><span class="line">cudaEventCreate(&amp;start1);</span><br><span class="line">cudaEvent_t stop1;</span><br><span class="line">cudaEventCreate(&amp;stop1);</span><br><span class="line">cudaEventRecord(start1, <span class="literal">NULL</span>);</span><br><span class="line"><span class="comment">// 需要测时间的核函数</span></span><br><span class="line">cudaEventRecord(stop1, <span class="literal">NULL</span>);</span><br><span class="line">cudaEventSynchronize(stop1);</span><br><span class="line"><span class="keyword">float</span> msecTotal1 = <span class="number">0.0f</span>;</span><br><span class="line">cudaEventElapsedTime(&amp;msecTotal1,start1,stop1);</span><br></pre></td></tr></table></figure>
+
+<p>CPU运行时间测量</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">long</span> start_time = GetTickCount();</span><br><span class="line"><span class="comment">// 需要测试时间的代码</span></span><br><span class="line"><span class="keyword">long</span> end_time = GetTickCount();</span><br><span class="line"><span class="keyword">long</span> duration = end_time-start_time;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://www.cnblogs.com/skyfsm/p/9673960.html" target="_blank" rel="noopener">CUDA编程之快速入门</a></li>
+<li><a href="https://face2ai.com/cuda-f-2-0-cuda%e7%bc%96%e7%a8%8b%e6%a8%a1%e5%9e%8b%e6%a6%82%e8%bf%b01/" target="_blank" rel="noopener">CUDA编程模型概述</a></li>
+<li><a href="https://github.com/PacktPublishing/Hands-On-GPU-Accelerated-Computer-Vision-with-OpenCV-and-CUDA" target="_blank" rel="noopener">Hands-On-GPU-Accelerated-Computer-Vision-with-OpenCV-and-CUDA</a></li>
+<li><a href="https://devblogs.nvidia.com/how-optimize-data-transfers-cuda-cc/" target="_blank" rel="noopener">How to Optimize Data Transfers in CUDA C/C++</a></li>
+</ul>
+]]></content>
       <categories>
-        <category>CUDA编程</category>
+        <category>GPU编程</category>
       </categories>
       <tags>
         <tag>CUDA</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[医学图像处理资源汇总]]></title>
-    <url>%2F2019%2F10%2F03%2Fawsome-medical-image-processing%2F</url>
-    <content type="text"><![CDATA[汇总分类医学图像处理相关的数据、论文以及学习资源。 医学图像数据资源 Chest X-ray Dataset Open-Access Medical Image Repositories CVonline:Image Datebase–Biological/Medical CT-based Atlas of Head and Neck Cornell Vision and Image Analysis Group Public Databases Medical Imaging Datasets MICCAI2018 PET Radiomics Challenges TCIA Collections IXI Dataset OSSIS Data Mandibular CT Dataset Collection 甲状腺结节 Thyroid Segmentation in Ultrasonography Dataset DDTI:An open access database of thyroid ultrasound images TDID (Thyroid Digital Image Database)]]></content>
+    <title>医学图像处理资源汇总</title>
+    <url>/2019/10/03/awsome-medical-image-processing/</url>
+    <content><![CDATA[<p>汇总分类医学图像处理相关的数据、论文以及学习资源。</p>
+<a id="more"></a>
+<h2 id="医学图像数据资源"><a href="#医学图像数据资源" class="headerlink" title="医学图像数据资源"></a>医学图像数据资源</h2><ul>
+<li><a href="https://www.nih.gov/news-events/news-releases/nih-clinical-center-provides-one-largest-publicly-available-chest-x-ray-datasets-scientific-community" target="_blank" rel="noopener">Chest X-ray Dataset</a></li>
+<li><a href="http://www.aylward.org/notes/open-access-medical-image-repositories" target="_blank" rel="noopener">Open-Access Medical Image Repositories</a></li>
+<li><a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/Imagedbase.htm#biomed" target="_blank" rel="noopener">CVonline:Image Datebase–Biological/Medical</a></li>
+<li><a href="http://www.spl.harvard.edu/publications/item/view/2271" target="_blank" rel="noopener">CT-based Atlas of Head and Neck</a></li>
+<li><a href="http://www.via.cornell.edu/databases/" target="_blank" rel="noopener">Cornell Vision and Image Analysis Group Public Databases</a></li>
+<li><a href="https://github.com/sfikas/medical-imaging-datasets" target="_blank" rel="noopener">Medical Imaging Datasets</a></li>
+<li><a href="https://www.kaggle.com/c/pet-radiomics-challenges/data" target="_blank" rel="noopener">MICCAI2018 PET Radiomics Challenges</a></li>
+<li><a href="https://www.cancerimagingarchive.net/" target="_blank" rel="noopener">TCIA Collections</a></li>
+<li><a href="http://brain-development.org/ixi-dataset/" target="_blank" rel="noopener">IXI Dataset</a></li>
+<li><a href="http://www.oasis-brains.org/#dictionary" target="_blank" rel="noopener">OSSIS Data</a></li>
+<li><a href="https://figshare.com/articles/Mandibular_CT_Dataset_Collection/6167726" target="_blank" rel="noopener">Mandibular CT Dataset Collection</a></li>
+<li><a href="https://data.mendeley.com/datasets/rscbjbr9sj/3" target="_blank" rel="noopener">Large Dataset of Labeled Optical Coherence Tomography (OCT) and Chest X-Ray Images</a></li>
+<li><a href="https://camelyon17.grand-challenge.org/Data/" target="_blank" rel="noopener">CAMELYON17</a></li>
+</ul>
+<h3 id="甲状腺结节"><a href="#甲状腺结节" class="headerlink" title="甲状腺结节"></a>甲状腺结节</h3><ul>
+<li><a href="http://opencas.webarchiv.kit.edu/?q=node/29" target="_blank" rel="noopener">Thyroid Segmentation in Ultrasonography Dataset</a></li>
+<li><a href="http://cimalab.intec.co/?lang=en&mod=project&id=31" target="_blank" rel="noopener">DDTI:An open access database of thyroid ultrasound images</a></li>
+<li><a href="http://cimalab.intec.co/?lang=en&mod=program&id=5" target="_blank" rel="noopener">TDID (Thyroid Digital Image Database)</a></li>
+</ul>
+]]></content>
       <categories>
         <category>医学图像处理</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[PyTorch简介]]></title>
-    <url>%2F2019%2F10%2F03%2Fpytorch-introduction%2F</url>
-    <content type="text"><![CDATA[PyTorch是基于torch的Python开源机器学习库，本文主要记录PyTorch的基本数据类型以及自动求导机制。 PyTorch是一个基于Python的科学计算包，主要提供以下两种服务： 作为NumPy的替代品，使用GPU的强大计算力（通过张量实现） 提供最大的灵活性和高速的深度学习研究平台（包含自动求导系统的深度神经网络） 1. 张量张量(Tensor)是PyTorch里面基础的运算单元，与NumPy的ndarry相同，都表示的是一个数据类型相同的多维矩阵。与ndarry的最大区别就是，Tensor可以在GPU上运行，ndarry只能在CPU上运行。张量本质上是一个矩阵，就存在着创建、索引、算数操作、逻辑操作以及维度操作等方法以及数据类型等属性。 1.1 基本类型Tensor的基本数据类型有五种： 32位浮点型 64位浮点型 16位整型 32位整型 64位整型除了数值类型外，还有byte型和char型。 2. 自动求导(Autograd)深度学习的算法本质是通过反向传播求导数，PyTorch的autograd的模块则实现了此功能。在Tensor上的所有操作，autograd都能为其自动提供微分，避免手动计算导数的复杂过程。在张量创建时，通过设置requires_grad为True来标识该张量需要进行自动求导，PyTorch会记录该张量的每一步操作并自动计算。 2.1 扩展Autograd如果需要自定义扩展autograd的功能，就需要扩展Function类。Function使用autograd来计算结果和梯度，并对操作历史进行编码。在Function类中，最重要的方法就是forward()和backward()，它们分别代表前向传播和后向传播。一个自定义的Function需要以下三个方法： __init__：Function的构造函数，其中定义操作需要的额外参数 forward()：执行前向传播的计算代码 backward()：执行后向传播的计算代码 NOTE: 方法必须是静态方法，所以在函数前面啊要加上@staticmethod。 参考文章 &amp; 资源链接 PyTorch学习笔记]]></content>
+    <title>PyTorch简介</title>
+    <url>/2019/10/03/pytorch-introduction/</url>
+    <content><![CDATA[<p>PyTorch是基于torch的Python开源机器学习库，本文主要记录PyTorch的基本数据类型以及自动求导机制。</p>
+<a id="more"></a>
+<p>PyTorch是一个基于Python的科学计算包，主要提供以下两种服务：</p>
+<ul>
+<li>作为NumPy的替代品，使用GPU的强大计算力（通过张量实现）</li>
+<li>提供最大的灵活性和高速的深度学习研究平台（包含自动求导系统的深度神经网络）</li>
+</ul>
+<h2 id="1-张量"><a href="#1-张量" class="headerlink" title="1. 张量"></a>1. 张量</h2><p><strong>张量</strong>(Tensor)是PyTorch里面基础的运算单元，与NumPy的ndarry相同，都表示的是一个数据类型相同的多维矩阵。与ndarry的最大区别就是，Tensor可以在GPU上运行，ndarry只能在CPU上运行。<br>张量本质上是一个矩阵，就存在着创建、索引、算数操作、逻辑操作以及维度操作等方法以及数据类型等属性。</p>
+<h3 id="1-1-基本类型"><a href="#1-1-基本类型" class="headerlink" title="1.1 基本类型"></a>1.1 基本类型</h3><p>Tensor的基本数据类型有五种：</p>
+<ul>
+<li>32位浮点型</li>
+<li>64位浮点型</li>
+<li>16位整型</li>
+<li>32位整型</li>
+<li>64位整型<br>除了数值类型外，还有byte型和char型。</li>
+</ul>
+<h2 id="2-自动求导-Autograd"><a href="#2-自动求导-Autograd" class="headerlink" title="2. 自动求导(Autograd)"></a>2. 自动求导(Autograd)</h2><p>深度学习的算法本质是通过反向传播求导数，PyTorch的autograd的模块则实现了此功能。在Tensor上的所有操作，autograd都能为其自动提供微分，避免手动计算导数的复杂过程。<br>在张量创建时，通过设置<code>requires_grad</code>为<code>True</code>来标识该张量需要进行自动求导，PyTorch会记录该张量的每一步操作并自动计算。</p>
+<h3 id="2-1-扩展Autograd"><a href="#2-1-扩展Autograd" class="headerlink" title="2.1 扩展Autograd"></a>2.1 扩展Autograd</h3><p>如果需要自定义扩展autograd的功能，就需要扩展Function类。Function使用autograd来计算结果和梯度，并对操作历史进行编码。在Function类中，最重要的方法就是<code>forward()</code>和<code>backward()</code>，它们分别代表前向传播和后向传播。<br>一个自定义的Function需要以下三个方法：</p>
+<ul>
+<li><code>__init__</code>：Function的构造函数，其中定义操作需要的额外参数</li>
+<li><code>forward()</code>：执行前向传播的计算代码</li>
+<li><code>backward()</code>：执行后向传播的计算代码</li>
+</ul>
+<p><strong>NOTE:</strong> 方法必须是静态方法，所以在函数前面啊要加上<code>@staticmethod</code>。</p>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://heary.cn/posts/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_blank" rel="noopener">PyTorch学习笔记</a></li>
+</ul>
+]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
@@ -203,9 +875,60 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[PyTorch数据的加载和预处理]]></title>
-    <url>%2F2019%2F10%2F02%2Fpytorch-data-loader-and-preprocess%2F</url>
-    <content type="text"><![CDATA[PyTorch通过torch.utils.data对一般常用的数据加载进行了封装，可以很容易地实现多线程数据预读和批量加载。torchvision中包含了常用的图像数据集，可以通过torchvision.datasets进行调用。 Pytorch读取图片的基本流程： 通过定义Dataset的子类定义如何通过索引读取图片及其标签； 通过DataLoder触发Dataset的子类去读取图片及其标签。 1. DatasetPyTorch读取图片，主要是通过Dataset类。Dataset作为所有datasets的基类存在，所有的datasets子类都需要继承它，并且实现__len__和__getitem__这两个成员函数，前者返回数据集的大小，后者支持对数据集进行整数索引。构建一个Dataset子类的基本流程： 1. __init__:初始化，在初始化函数中将准备好的获取图片的路径和标签存储到list中，其一个元素对应一个样本的路径和标签。初始化中还会初始化transform，transform是一个Compose类型，里面有一个list，其中定义了各种对图像进行处理的操作。 2. __getitem__:从list中获取图片的路径和标签，然后对图片进行读取，对图像进行预处理之后返回。 1234567891011121314import torch.utils.data as Datasetimport pandasclass MyDataset(Datasets): def __init__(self,csv_file,transform,target_transform): self.files = pandas.read_cvs(csv_file) # 获取图片数据的索引 self.transform = transform self.target_transform = target_transform def __getitem__(self,idx): # get a sample: img, label 获取图像和标签 if self.transform is not None: img = self.transform(img) return img,label def __len__(self): return len(self.files) 2. DataLoderDataset的子类主要定义了如何通过索引读取图片及其标签，以及对图片的预处理操作。但是，触发Dataset的读取操作是通过DataLoder实现的。DataLoder的参数有： dataset(Dataset)：加载的数据集 batch_size(int,optional’)：每个batch加载多少个样本 shuffel(bool,optional)：设置为True时每个epoch会打乱数据 sampler(Sampler,optional)：定义从数据集中提取样本的策略 num_workers(int,optional)：用多少个子进程加载数据 collate_fn(callable,optional) pin_memory(bool,optional) drop_last(bool,optional)：如果数据集不能被batch_size整除，，设置为True会删除最后一个不完整的batch。 3. torchvisiontorchvision是PyTorch中专门处理图像的库，其中包含了目前流行的图像数据集、模型结构和常用的图片转换工具。 3.1 torchvision.datasetstorchvision.datasets中包含了以下数据集：MNIST,COCO,LSUN Classification,ImageFolder,Imagenet-12,CIFAR10 and CIFAR100以及STL10。我们可以直接使用其中的数据集，示例如下： 123456import torchvision.datasets as datasetstrainset = datasets.MNIST(root='./data', # 表示MNIST数据的加载目录 train=True, # 表示是否加载数据库的训练集，false的时候加载测试集 tranform=None， # 是否对数据进行预处理 target_transform=None, download=True) # 表示是否自动下载MNIST数据集，并把数据集放在root下 3.2 torchvision.modelstorchvision中不仅提供了常用的图片数据集，还提供了训练好的模型，可以在加载之后直接使用。torchvision.models中包含的模型结构有AlexNet,VGG,ResNet,SqueezeNet及DenseNet。可以使用随机初始化的权重来创建这些模型，也可以使用预训练的模型。示例如下： 12345import torchvision.models as models# 随机初始化权重创建模型alexnet = models.AlexNet()# 使用预训练模型resnet18 = models.ResNet18(pretrained=True) 3.3 torchvision.transformstorchvision.transforms中提供了一般的图像转换操作，用于数据处理和数据增强。transform的方法主要分为四大类： 裁剪(Crop) 中心裁剪：transforms.CenterCrop(size) 随机裁剪：transforms.RandomCrop(size,padding=0) 随机裁剪再Resize：transforms.RandomResizedCrop(size,interpolation=2) 翻转和旋转(Flip and Rotation) 随机水平翻转：transforms.RandomHorizontalFlip 图像变换 标准化：transforms.Normalize(mean,std) 填充：transforms.Pad(padding,fill=0) 对transform操作 组合多个transform：transforms.Compose(transforms) 参考文章 &amp; 资源链接 PyTorch中文文档 PyTorch Handbook]]></content>
+    <title>PyTorch数据的加载和预处理</title>
+    <url>/2019/10/02/pytorch-data-loader-and-preprocess/</url>
+    <content><![CDATA[<p>PyTorch通过<code>torch.utils.data</code>对一般常用的数据加载进行了封装，可以很容易地实现多线程数据预读和批量加载。<code>torchvision</code>中包含了常用的图像数据集，可以通过<code>torchvision.datasets</code>进行调用。</p>
+<a id="more"></a>
+<p>Pytorch读取图片的基本流程：</p>
+<ul>
+<li>通过定义<code>Dataset</code>的子类定义如何通过索引读取图片及其标签；</li>
+<li>通过<code>DataLoder</code>触发<code>Dataset</code>的子类去读取图片及其标签。</li>
+</ul>
+<h2 id="1-Dataset"><a href="#1-Dataset" class="headerlink" title="1. Dataset"></a>1. Dataset</h2><p>PyTorch读取图片，主要是通过<code>Dataset</code>类。<code>Dataset</code>作为所有datasets的基类存在，所有的datasets子类都需要继承它，并且实现<code>__len__</code>和<code>__getitem__</code>这两个成员函数，前者返回数据集的大小，后者支持对数据集进行整数索引。<br>构建一个Dataset子类的基本流程：<br>    1. <code>__init__</code>:初始化，在初始化函数中将准备好的获取图片的路径和标签存储到list中，其一个元素对应一个样本的路径和标签。初始化中还会初始化<code>transform</code>，<code>transform</code>是一个Compose类型，里面有一个list，其中定义了各种对图像进行处理的操作。<br>    2. <code>__getitem__</code>:从list中获取图片的路径和标签，然后对图片进行读取，对图像进行预处理之后返回。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.utils.data <span class="keyword">as</span> Dataset</span><br><span class="line"><span class="keyword">import</span> pandas</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDataset</span><span class="params">(Datasets)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,csv_file,transform,target_transform)</span>:</span></span><br><span class="line">        self.files = pandas.read_cvs(csv_file) <span class="comment"># 获取图片数据的索引</span></span><br><span class="line">        self.transform = transform</span><br><span class="line">        self.target_transform = target_transform</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self,idx)</span>:</span></span><br><span class="line">        <span class="comment"># get a sample: img, label 获取图像和标签</span></span><br><span class="line">        <span class="keyword">if</span> self.transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            img = self.transform(img)</span><br><span class="line">        <span class="keyword">return</span> img,label</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.files)</span><br></pre></td></tr></table></figure>
+<h2 id="2-DataLoder"><a href="#2-DataLoder" class="headerlink" title="2. DataLoder"></a>2. DataLoder</h2><p><code>Dataset</code>的子类主要定义了如何通过索引读取图片及其标签，以及对图片的预处理操作。但是，触发<code>Dataset</code>的读取操作是通过<code>DataLoder</code>实现的。<code>DataLoder</code>的参数有：</p>
+<ul>
+<li>dataset(Dataset)：加载的数据集</li>
+<li>batch_size(int,optional’)：每个batch加载多少个样本</li>
+<li>shuffel(bool,optional)：设置为<code>True</code>时每个epoch会打乱数据</li>
+<li>sampler(Sampler,optional)：定义从数据集中提取样本的策略</li>
+<li>num_workers(int,optional)：用多少个子进程加载数据</li>
+<li>collate_fn(callable,optional)</li>
+<li>pin_memory(bool,optional)</li>
+<li>drop_last(bool,optional)：如果数据集不能被batch_size整除，，设置为<code>True</code>会删除最后一个不完整的batch。</li>
+</ul>
+<h2 id="3-torchvision"><a href="#3-torchvision" class="headerlink" title="3. torchvision"></a>3. torchvision</h2><p><code>torchvision</code>是PyTorch中专门处理图像的库，其中包含了目前流行的图像数据集、模型结构和常用的图片转换工具。  </p>
+<h3 id="3-1-torchvision-datasets"><a href="#3-1-torchvision-datasets" class="headerlink" title="3.1 torchvision.datasets"></a>3.1 torchvision.datasets</h3><p><code>torchvision.datasets</code>中包含了以下数据集：<code>MNIST</code>,<code>COCO</code>,<code>LSUN Classification</code>,<code>ImageFolder</code>,<code>Imagenet-12</code>,<code>CIFAR10 and CIFAR100</code>以及<code>STL10</code>。<br>我们可以直接使用其中的数据集，示例如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torchvision.datasets <span class="keyword">as</span> datasets</span><br><span class="line">trainset = datasets.MNIST(root=<span class="string">'./data'</span>, <span class="comment"># 表示MNIST数据的加载目录</span></span><br><span class="line">                        train=<span class="literal">True</span>,      <span class="comment"># 表示是否加载数据库的训练集，false的时候加载测试集</span></span><br><span class="line">                        tranform=<span class="literal">None</span>，  <span class="comment"># 是否对数据进行预处理</span></span><br><span class="line">                        target_transform=<span class="literal">None</span>,</span><br><span class="line">                        download=<span class="literal">True</span>)   <span class="comment"># 表示是否自动下载MNIST数据集，并把数据集放在root下  </span></span><br></pre></td></tr></table></figure>  
+<h3 id="3-2-torchvision-models"><a href="#3-2-torchvision-models" class="headerlink" title="3.2 torchvision.models"></a>3.2 torchvision.models</h3><p>torchvision中不仅提供了常用的图片数据集，还提供了训练好的模型，可以在加载之后直接使用。<code>torchvision.models</code>中包含的模型结构有<code>AlexNet</code>,<code>VGG</code>,<code>ResNet</code>,<code>SqueezeNet</code>及<code>DenseNet</code>。<br>可以使用随机初始化的权重来创建这些模型，也可以使用预训练的模型。示例如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torchvision.models <span class="keyword">as</span> models</span><br><span class="line"><span class="comment"># 随机初始化权重创建模型</span></span><br><span class="line">alexnet = models.AlexNet()</span><br><span class="line"><span class="comment"># 使用预训练模型</span></span><br><span class="line">resnet18 = models.ResNet18(pretrained=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-torchvision-transforms"><a href="#3-3-torchvision-transforms" class="headerlink" title="3.3 torchvision.transforms"></a>3.3 torchvision.transforms</h3><p><code>torchvision.transforms</code>中提供了一般的图像转换操作，用于数据处理和数据增强。transform的方法主要分为四大类：</p>
+<ul>
+<li><strong>裁剪(Crop)</strong><ul>
+<li>中心裁剪：transforms.CenterCrop(size)</li>
+<li>随机裁剪：transforms.RandomCrop(size,padding=0)</li>
+<li>随机裁剪再Resize：transforms.RandomResizedCrop(size,interpolation=2)</li>
+</ul>
+</li>
+<li><strong>翻转和旋转(Flip and Rotation)</strong><ul>
+<li>随机水平翻转：transforms.RandomHorizontalFlip</li>
+</ul>
+</li>
+<li><strong>图像变换</strong><ul>
+<li>标准化：transforms.Normalize(mean,std)</li>
+<li>填充：transforms.Pad(padding,fill=0)</li>
+</ul>
+</li>
+<li><strong>对transform操作</strong><ul>
+<li>组合多个<code>transform</code>：transforms.Compose(transforms)</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://pytorch-cn.readthedocs.io/zh/latest/torchvision/torchvision/" target="_blank" rel="noopener">PyTorch中文文档</a></li>
+<li><a href="https://github.com/zergtant/pytorch-handbook" target="_blank" rel="noopener">PyTorch Handbook</a></li>
+</ul>
+]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
@@ -214,17 +937,51 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[深度学习资源汇总]]></title>
-    <url>%2F2019%2F10%2F01%2Fawsome-deep-learning%2F</url>
-    <content type="text"><![CDATA[汇总分类深度学习相关的数据、论文以及学习资源。 深度学习框架 Pytorch中文网 天池TIANCHI Awesome-PyTorch-Chinese Pytorch中文手册(pytorch-handbook) TensorFlow2.0 Handbook 论文及书籍资源 A Recipe for Training Neural Networks 数据资源代码资源]]></content>
+    <title>深度学习资源汇总</title>
+    <url>/2019/10/01/awsome-deep-learning/</url>
+    <content><![CDATA[<p>汇总分类深度学习相关的数据、论文以及学习资源。</p>
+<a id="more"></a>
+<h2 id="深度学习框架"><a href="#深度学习框架" class="headerlink" title="深度学习框架"></a>深度学习框架</h2><ul>
+<li><a href="https://www.pytorchtutorial.com/" target="_blank" rel="noopener">Pytorch中文网</a></li>
+<li><a href="https://tianchi.aliyun.com/home/" target="_blank" rel="noopener">天池TIANCHI</a></li>
+<li><a href="https://github.com/INTERMT/Awesome-PyTorch-Chinese" target="_blank" rel="noopener">Awesome-PyTorch-Chinese</a></li>
+<li><a href="https://github.com/zergtant/pytorch-handbook" target="_blank" rel="noopener">Pytorch中文手册(pytorch-handbook)</a></li>
+<li><a href="https://tf.wiki/index.html" target="_blank" rel="noopener">TensorFlow2.0 Handbook</a></li>
+<li><a href="https://pytorch.apachecn.org/docs/1.2/" target="_blank" rel="noopener">PyTorch 1.2 中文文档 &amp; 教程</a></li>
+</ul>
+<h2 id="论文及书籍资源"><a href="#论文及书籍资源" class="headerlink" title="论文及书籍资源"></a>论文及书籍资源</h2><ul>
+<li><a href="https://karpathy.github.io/2019/04/25/recipe/" target="_blank" rel="noopener">A Recipe for Training Neural Networks</a></li>
+<li><a href="https://github.com/huaxz1986/deep_learning_notes" target="_blank" rel="noopener">deeplearningbook学习笔记</a></li>
+</ul>
+<h2 id="数据资源"><a href="#数据资源" class="headerlink" title="数据资源"></a>数据资源</h2><h2 id="代码资源"><a href="#代码资源" class="headerlink" title="代码资源"></a>代码资源</h2>]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[C/C++编程—C程序的内存布局]]></title>
-    <url>%2F2019%2F10%2F01%2Fcpp-memory-layout%2F</url>
-    <content type="text"><![CDATA[C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——栈区、堆区、数据区和代码区(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。 一个可执行文件分为映像和运行两种状态。在编译链接后形成的映像中，只包含代码段(Code)、只读数据段(RO data)和读写数据段(RW data)。在程序运行前的加载过程中，将动态生成未初始化数据段(BSS)，在程序运行时将动态生成堆(Heap)和栈(Stack)区域。 1. 静态区域(全局区域)1.1 代码段代码段由程序中执行的机器代码组成。在C语言中，程序语言进行编译后，形成机器代码。在程序执行过程中，CPU的程序计数器指向代码段的每一条机器代码，并由处理器依次运行。 1.2 只读数据段(RO data，即常量区)只读数据区存储的是程序中使用的一些不会被更改的数据，如字符串常量。程序运行结束后由系统进行释放。 1.3 读写数据段(RW data)存放已初始化的全局变量和静态变量（在程序生命周期中地址不变），这些变量占用存储器的空间，在程序执行时要位于可读写区域且被初始化。 1.4 未初始化数据段(BSS-Block Started by Symbol)未初始化数据是在程序声明，但是没有初始化的变量，这些变量在程序运行之前不需要占用存储器的空间。BSS段的变量只有名称和大小，没有值。 2. 动态区域2.1 堆(Heap) 堆内存只在程序运行时出现，一般由程序员分配和释放（C语言中使用malloc/free，C++中使用new/delete），区别于数据结构中的堆。 操作系统中有一个记录内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请的空间的堆结点，然后将该结点从链表中移除，并将该结点的内存分配给程序，多余的部分重新放回空闲链表中。 在windows下，堆是由低地址向高地址扩展的结构，是不连续的内存区域。 2.1 栈(Stack) 栈内存只在程序运行时出现，由系统编译器自动分配和释放，存放函数的参数值、内部的局部变量以及返回值等。 只要栈的剩余空间大于所申请的空间，系统将为程序提供内存。在windows下，栈是由高地址向低地址扩展的结构，是一块连续的内存区域。 参考文章 &amp; 资源链接 C程序的内存布局 C语言内存分布图]]></content>
+    <title>C/C++编程—内存布局与内存管理</title>
+    <url>/2019/10/01/cpp-memory-layout-and-management/</url>
+    <content><![CDATA[<p>C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——<strong>栈区、堆区、数据区和代码区</strong>(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。</p>
+<a id="more"></a>
+<p>一个可执行文件分为<strong>映像</strong>和<strong>运行</strong>两种状态。在编译链接后形成的映像中，只包含<code>代码段(Code)</code>、<code>只读数据段(RO data)</code>和<code>读写数据段(RW data)</code>。在程序运行前的加载过程中，将动态生成<code>未初始化数据段(BSS)</code>，在程序运行时将动态生成<code>堆(Heap)</code>和<code>栈(Stack)</code>区域。</p>
+<h2 id="1-内存布局"><a href="#1-内存布局" class="headerlink" title="1. 内存布局"></a>1. 内存布局</h2><h3 id="1-1-静态区域-全局区域"><a href="#1-1-静态区域-全局区域" class="headerlink" title="1.1 静态区域(全局区域)"></a>1.1 静态区域(全局区域)</h3><h4 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h4><p>代码段由程序中执行的机器代码组成。在C语言中，程序语言进行编译后，形成机器代码。在程序执行过程中，CPU的程序计数器指向代码段的每一条机器代码，并由处理器依次运行。</p>
+<h4 id="只读数据段-RO-data，即常量区"><a href="#只读数据段-RO-data，即常量区" class="headerlink" title="只读数据段(RO data，即常量区)"></a>只读数据段(RO data，即常量区)</h4><p>只读数据区存储的是程序中使用的一些不会被更改的数据，如字符串常量。程序运行结束后由系统进行释放。</p>
+<h4 id="读写数据段-RW-data"><a href="#读写数据段-RW-data" class="headerlink" title="读写数据段(RW data)"></a>读写数据段(RW data)</h4><p>存放已初始化的全局变量和静态变量（在程序生命周期中地址不变），这些变量占用存储器的空间，在程序执行时要位于可读写区域且被初始化。</p>
+<h4 id="未初始化数据段-BSS-Block-Started-by-Symbol"><a href="#未初始化数据段-BSS-Block-Started-by-Symbol" class="headerlink" title="未初始化数据段(BSS-Block Started by Symbol)"></a>未初始化数据段(BSS-Block Started by Symbol)</h4><p>未初始化数据是在程序声明，但是没有初始化的变量，这些变量在程序运行之前不需要占用存储器的空间。BSS段的变量只有名称和大小，没有值。</p>
+<h3 id="1-2-动态区域"><a href="#1-2-动态区域" class="headerlink" title="1.2 动态区域"></a>1.2 动态区域</h3><h4 id="堆-Heap"><a href="#堆-Heap" class="headerlink" title="堆(Heap)"></a>堆(Heap)</h4><ul>
+<li>堆内存只在程序运行时出现，一般由程序员分配和释放（C语言中使用malloc/free，C++中使用new/delete），区别于数据结构中的堆。  </li>
+<li>操作系统中有一个记录内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请的空间的堆结点，然后将该结点从链表中移除，并将该结点的内存分配给程序，多余的部分重新放回空闲链表中。  </li>
+<li>在windows下，堆是由低地址向高地址扩展的结构，是不连续的内存区域。  </li>
+</ul>
+<h4 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈(Stack)"></a>栈(Stack)</h4><ul>
+<li>栈内存只在程序运行时出现，由系统编译器自动分配和释放，存放函数的参数值、内部的局部变量以及返回值等。  </li>
+<li>只要栈的剩余空间大于所申请的空间，系统将为程序提供内存。在windows下，栈是由高地址向低地址扩展的结构，是一块连续的内存区域。</li>
+</ul>
+<h2 id="2-内存管理"><a href="#2-内存管理" class="headerlink" title="2. 内存管理"></a>2. 内存管理</h2><h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://blog.csdn.net/gatieme/article/details/43567433" target="_blank" rel="noopener">C程序的内存布局</a></li>
+<li><a href="https://blog.csdn.net/yanbober/article/details/8713250" target="_blank" rel="noopener">C语言内存分布图</a></li>
+</ul>
+]]></content>
       <categories>
         <category>编程语言</category>
       </categories>
@@ -233,33 +990,90 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[计算机视觉资源汇总]]></title>
-    <url>%2F2019%2F09%2F30%2Fawsome-computer-vision%2F</url>
-    <content type="text"><![CDATA[汇总分类计算机视觉相关的数据、论文以及学习资源。 图像和视频数据资源 CVonline:Image Datebase 学习资源 OpenCV-Python中文教程 论文及书籍资源 Paper_Reading_List：关于图像处理论文的总结]]></content>
+    <title>计算机视觉资源汇总</title>
+    <url>/2019/09/30/awsome-computer-vision/</url>
+    <content><![CDATA[<p>汇总分类计算机视觉相关的数据、论文以及学习资源。</p>
+<a id="more"></a>
+<h2 id="图像和视频数据资源"><a href="#图像和视频数据资源" class="headerlink" title="图像和视频数据资源"></a>图像和视频数据资源</h2><ul>
+<li><a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/Imagedbase.htm" target="_blank" rel="noopener">CVonline:Image Datebase</a></li>
+</ul>
+<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><ul>
+<li><a href="https://www.kancloud.cn/aollo/aolloopencv/269602" target="_blank" rel="noopener">OpenCV-Python中文教程</a></li>
+</ul>
+<h2 id="论文及书籍资源"><a href="#论文及书籍资源" class="headerlink" title="论文及书籍资源"></a>论文及书籍资源</h2><ul>
+<li><a href="https://github.com/ArcherFMY/Paper_Reading_List" target="_blank" rel="noopener">Paper_Reading_List</a>：关于图像处理论文的总结</li>
+</ul>
+]]></content>
       <categories>
         <category>计算机视觉</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[C/C++资源汇总]]></title>
-    <url>%2F2019%2F09%2F30%2Fawsome-c-and-cpp%2F</url>
-    <content type="text"><![CDATA[汇总C/C++编程相关的数据、论文以及学习资源。 学习资源 C++11 FAQ中文版 C/C++语言和标准库参考]]></content>
-      <tags>
-        <tag>C/C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[机器学习资源汇总]]></title>
-    <url>%2F2019%2F09%2F30%2Fawsome-machine-learning%2F</url>
-    <content type="text"><![CDATA[汇总分类机器学习相关的数据、论文以及学习资源。 学习资源 机器学习笔记 主要分为六个部分：激活函数、梯度下降、参数、正则化、模型介绍和使用技巧。]]></content>
+    <title>机器学习资源汇总</title>
+    <url>/2019/09/30/awsome-machine-learning/</url>
+    <content><![CDATA[<p>汇总分类机器学习相关的数据、论文以及学习资源。</p>
+<a id="more"></a>
+
+<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><ul>
+<li><a href="https://createmomo.github.io/" target="_blank" rel="noopener">机器学习笔记</a> 主要分为六个部分：激活函数、梯度下降、参数、正则化、模型介绍和使用技巧。</li>
+</ul>
+]]></content>
       <categories>
         <category>机器学习</category>
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[Github+Hexo搭建个人网站]]></title>
-    <url>%2F2019%2F09%2F30%2Fhexo-building-personal-website%2F</url>
-    <content type="text"><![CDATA[Hexo+Github应该是目前搭建个人博客使用最广的方式，本文主要记录利用Hexo+Github搭建静态博客以及一些配置相关的问题。 1. 准备工作 下载并安装node.js【下载地址】 安装node.js会默认安装npm，安装完成后，在命令行中输入命令验证Hexo的环境是否搭建完成。 12node -v # 输出node.js的版本号npm -v # 输出npm的版本号 下载安装git【下载地址】 2. 创建本地静态博客 新建一个文件夹用于存放blog文件 进入该文件夹内，使用npm命令安装Hexo，输入:npm install -g hexo-cli(下载静态网站的相关文件) 右键运行git，输入:hexo init(初始化静态网站的架构) 在命令行中输入命令，验证静态网站是否完成 12hexo generate # 本地生成静态文件hexo serve # 启动本地服务 打开浏览器，访问https://localhost:4000 3. 将博客与Github关联 在Github上创建yourname.github.io项目 打开本地blog文件夹内的_config.yml配置文件，并设置其中的deploy属性： 1234deploy: type: git repository: https://github.com/yourname/yourname.github.io.git branch: master 运行：npm install hexo-deployer-git --save 运行：hexo generate 运行：hexo deploy # 将本地静态文件发布到Github打开浏览器，访问https://yourname.github.io 参考文章 &amp; 资源链接 Hexo官方网站 NexT主题 Next主题增加Gitment评论系统 Hexo Next主题博客功能完善 Markdown入门参考 最完美的Hexo多电脑同步方法 Hexo博客搭建之在文章中插入图片]]></content>
+    <title>C/C++资源汇总</title>
+    <url>/2019/09/30/awsome-c-and-cpp/</url>
+    <content><![CDATA[<p>汇总C/C++编程相关的数据、论文以及学习资源。</p>
+<a id="more"></a>
+<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><ul>
+<li><a href="https://wizardforcel.gitbooks.io/cpp-11-faq/content/88.html" target="_blank" rel="noopener">C++11 FAQ中文版</a></li>
+<li><a href="https://docs.microsoft.com/zh-cn/cpp/cpp/c-cpp-language-and-standard-libraries?view=vs-2015" target="_blank" rel="noopener">C/C++语言和标准库参考</a></li>
+<li><a href="https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/" target="_blank" rel="noopener">Google  C++ 风格指南</a></li>
+</ul>
+<h2 id="代码资源"><a href="#代码资源" class="headerlink" title="代码资源"></a>代码资源</h2><ul>
+<li><a href="https://github.com/TheAlgorithms/C-Plus-Plus" target="_blank" rel="noopener">All Algorithms implemented in C++</a>：用C++实现的代码，在该用户下还有用其他语言实现算法的代码，如Python,C,Java等。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Github+Hexo搭建个人网站</title>
+    <url>/2019/09/30/hexo-building-personal-website/</url>
+    <content><![CDATA[<p>Hexo+Github应该是目前搭建个人博客使用最广的方式，本文主要记录利用Hexo+Github搭建静态博客以及一些配置相关的问题。</p>
+<a id="more"></a>
+
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h2><ul>
+<li>下载并安装node.js<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">【下载地址】</a><br>  安装node.js会默认安装npm，安装完成后，在命令行中输入命令验证Hexo的环境是否搭建完成。  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">node -v # 输出node.js的版本号</span><br><span class="line">npm -v  # 输出npm的版本号</span><br></pre></td></tr></table></figure></li>
+<li>下载安装git<a href="https://git-scm.com/download" target="_blank" rel="noopener">【下载地址】</a></li>
+</ul>
+<h2 id="2-创建本地静态博客"><a href="#2-创建本地静态博客" class="headerlink" title="2. 创建本地静态博客"></a>2. 创建本地静态博客</h2><ul>
+<li>新建一个文件夹用于存放blog文件</li>
+<li>进入该文件夹内，使用npm命令安装Hexo，输入:<code>npm install -g hexo-cli</code>(下载静态网站的相关文件)</li>
+<li>右键运行git，输入:<code>hexo init</code>(初始化静态网站的架构)</li>
+<li>在命令行中输入命令，验证静态网站是否完成  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo generate # 本地生成静态文件</span><br><span class="line">hexo serve    # 启动本地服务</span><br></pre></td></tr></table></figure>
+打开浏览器，访问<code>https://localhost:4000</code></li>
+</ul>
+<h2 id="3-将博客与Github关联"><a href="#3-将博客与Github关联" class="headerlink" title="3. 将博客与Github关联"></a>3. 将博客与Github关联</h2><ul>
+<li>在Github上创建yourname.github.io项目</li>
+<li>打开本地blog文件夹内的_config.yml配置文件，并设置其中的deploy属性：  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">	type: git</span><br><span class="line">	repository: https://github.com/yourname/yourname.github.io.git</span><br><span class="line">	branch: master</span><br></pre></td></tr></table></figure></li>
+<li>运行：<code>npm install hexo-deployer-git --save</code></li>
+<li>运行：<code>hexo generate</code></li>
+<li>运行：<code>hexo deploy # 将本地静态文件发布到Github</code><br>打开浏览器，访问<code>https://yourname.github.io</code></li>
+</ul>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo官方网站</a></li>
+<li><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">NexT主题</a></li>
+<li><a href="https://aoenian.github.io/2019/04/14/next-theme-gitment/" target="_blank" rel="noopener">Next主题增加Gitment评论系统</a></li>
+<li><a href="https://silencezhou.github.io/2018/08/07/Next%E4%B8%BB%E9%A2%98%E5%8D%9A%E5%AE%A2%E5%8A%9F%E8%83%BD%E5%AE%8C%E5%96%84/" target="_blank" rel="noopener">Hexo Next主题博客功能完善</a></li>
+<li><a href="http://xianbai.me/learn-md/index.html" target="_blank" rel="noopener">Markdown入门参考</a></li>
+<li><a href="https://ricky.moe/2017/01/13/hexo-perfect-synchronize/" target="_blank" rel="noopener">最完美的Hexo多电脑同步方法</a></li>
+<li><a href="https://yanyinhong.github.io/2017/05/02/How-to-insert-image-in-hexo-post/" target="_blank" rel="noopener">Hexo博客搭建之在文章中插入图片</a></li>
+</ul>
+]]></content>
       <categories>
         <category>开发工具</category>
       </categories>
