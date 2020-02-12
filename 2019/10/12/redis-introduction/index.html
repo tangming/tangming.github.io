@@ -17,7 +17,7 @@
 
 <link rel="stylesheet" href="/css/main.css?v=7.4.0">
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Helvetica:300,300italic,400,400italic,700,700italic|Brush Script MT:300,300italic,400,400italic,700,700italic|Input Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
 
 
@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型以及基本操作。">
+  <meta name="description" content="Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型、基本操作以及相关概念。">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis简介">
 <meta property="og:url" content="http://yoursite.com/2019/10/12/redis-introduction/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型以及基本操作。">
+<meta property="og:description" content="Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型、基本操作以及相关概念。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/resources/images/redis_RedisClient.png">
-<meta property="og:updated_time" content="2019-10-18T03:34:59.204Z">
+<meta property="og:updated_time" content="2019-10-24T05:11:59.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis简介">
-<meta name="twitter:description" content="Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型以及基本操作。">
+<meta name="twitter:description" content="Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型、基本操作以及相关概念。">
 <meta name="twitter:image" content="http://yoursite.com/resources/images/redis_RedisClient.png">
   <link rel="canonical" href="http://yoursite.com/2019/10/12/redis-introduction/">
 
@@ -311,7 +311,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-18 11:34:59" itemprop="dateModified" datetime="2019-10-18T11:34:59+08:00">2019-10-18</time>
+                <time title="Modified: 2019-10-24 13:11:59" itemprop="dateModified" datetime="2019-10-24T13:11:59+08:00">2019-10-24</time>
               </span>
             
           
@@ -340,7 +340,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型以及基本操作。</p>
+        <p>Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型、基本操作以及相关概念。</p>
 <a id="more"></a>
 <p>Redis(Remote Dictionary Server)是一个开源的高性能key-value数据库，它以字典结构存储数据，并允许其他应用通过TCP协议进行读取。Redis的数据都存储在内存中，因此在性能上相比较于硬盘存储的数据库有非常明显的优势。</p>
 <h2 id="1-Redis的安装"><a href="#1-Redis的安装" class="headerlink" title="1. Redis的安装"></a>1. Redis的安装</h2><h3 id="1-1-Windows平台"><a href="#1-1-Windows平台" class="headerlink" title="1.1 Windows平台"></a>1.1 Windows平台</h3><p>官网的Redis只有Linux版本的，但是Github上有Windows版的Redis<a href="https://github.com/microsoftarchive/redis/releases" target="_blank" rel="noopener">【下载地址】</a>。Windows的Redis有msi安装版，压缩包版和源码编译三种使用方式。</p>
@@ -348,36 +348,36 @@
 <table>
 <thead>
 <tr>
-<th align="left">文件名</th>
+<th align="center">文件名</th>
 <th align="left">文件功能</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">redis-server</td>
+<td align="center">redis-server</td>
 <td align="left">服务端应用，提供Redis服务</td>
 </tr>
 <tr>
-<td align="left">redis-cli</td>
+<td align="center">redis-cli</td>
 <td align="left">客户端程序，通过连接Redis服务并进行操作</td>
 </tr>
 <tr>
-<td align="left">redis-benchmark</td>
+<td align="center">redis-benchmark</td>
 <td align="left">性能测试，用来模拟同时由N个客户端发送M个SETs/GETs操作</td>
 </tr>
 <tr>
-<td align="left">redis-check-aof</td>
+<td align="center">redis-check-aof</td>
 <td align="left">更新日志检查</td>
 </tr>
 <tr>
-<td align="left">redis-check-dump</td>
+<td align="center">redis-check-dump</td>
 <td align="left">本地数据库检查</td>
 </tr>
 <tr>
-<td align="left">redis.windows.conf</td>
+<td align="center">redis.windows.conf</td>
 <td align="left">配置文件，将Redis作为普通软件使用，命令行关闭则Redis关闭</td>
 </tr>
 <tr>
-<td align="left">redis.windows-service.conf</td>
+<td align="center">redis.windows-service.conf</td>
 <td align="left">配置文件，将Redis作为系统服务进行配置</td>
 </tr>
 </tbody></table>
@@ -403,6 +403,7 @@
 <li><a href="https://blog.csdn.net/gqtcgq/article/category/5992975/1" target="_blank" rel="noopener">Redis源码解析</a></li>
 <li><a href="https://shiningdan.github.io/2017/05/26/Redis%E5%85%A5%E9%97%A8/" target="_blank" rel="noopener">redis入门</a></li>
 <li><a href="https://blog.csdn.net/calmreason/article/details/54881014" target="_blank" rel="noopener">Windows C++ Redis客户端 cpp_redis</a></li>
+<li><a href="http://redisdoc.com/persistence/index.html" target="_blank" rel="noopener">Redis 命令参考</a></li>
 </ul>
 
     </div>
@@ -429,8 +430,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/10/11/redis-memory-model/" rel="next" title="Redis内存模型">
-                  <i class="fa fa-chevron-left"></i> Redis内存模型
+                <a href="/2019/10/03/awsome-medical-image-processing/" rel="next" title="医学图像处理资源汇总">
+                  <i class="fa fa-chevron-left"></i> 医学图像处理资源汇总
                 </a>
               
             </div>
@@ -512,7 +513,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -525,7 +526,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -538,7 +539,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>

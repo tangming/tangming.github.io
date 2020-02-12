@@ -1,6 +1,460 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python资源汇总</title>
+    <url>/2019/12/09/awsome-python/</url>
+    <content><![CDATA[<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><ul>
+<li><a href="https://github.com/jackfrued/Python-100-Days" target="_blank" rel="noopener">Python - 100天从新手到大师</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C/C++编程—数据类型</title>
+    <url>/2019/12/09/cpp-data-type/</url>
+    <content><![CDATA[<p>C++提供了种类丰富的内置数据类型和用户自定义数据类型，本文主要记录C++中的数据类型，包括七种基本数据类型，以及指针、数组、枚举、结构体等复合数据类型</p>
+<a id="more"></a>
+
+<p><img src="/resources/XMind/cpp-data-type.png" alt></p>
+<h2 id="1-数组的初始化"><a href="#1-数组的初始化" class="headerlink" title="1. 数组的初始化"></a>1. 数组的初始化</h2><p>C/C++中数组的初始化方法多，规则也比较混乱，使用时容易出现错误。对数组进行初始化的方法通常有三种：<strong>初始化列表</strong>、<strong>memset()函数</strong>、<strong>for循环</strong>。</p>
+<h3 id="1-1-静态数组的初始化"><a href="#1-1-静态数组的初始化" class="headerlink" title="1.1 静态数组的初始化"></a>1.1 静态数组的初始化</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> arr_A[] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;; <span class="comment">// 初始化列表，数组长度等于初始化列表长度</span></span><br><span class="line"><span class="keyword">int</span> arr_B[cnt];</span><br><span class="line"><span class="built_in">memset</span>(arr_B,<span class="number">1</span>,cnt*size0f(<span class="keyword">int</span>)); <span class="comment">// memset()初始化数组为指定的值</span></span><br><span class="line"><span class="keyword">int</span> arr_C[rows*cols];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; i++)    <span class="comment">// for循环进行初始化</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; cols; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        arr_C[i * cols + j] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE:</strong></p>
+<ul>
+<li>初始化列表中元素的个数小于数组长度时，不足的元素补以默认值<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> arr_A[<span class="number">5</span>]= &#123;<span class="number">1</span>&#125;; <span class="comment">// 等同于arr_A[5]=&#123;1,0,0,0,0&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>数组创建后不进行初始化，数组中的元素（全局数组和静态数组默认初始化为0）为随机值</li>
+<li>对于数组不能进行赋值操作，只能对数组元素进行赋值。如果要将一个数组赋给另一个数组，可以采用循环赋值或者借助<code>memcpy()</code>函数</li>
+</ul>
+<h3 id="1-2-动态数组的初始化"><a href="#1-2-动态数组的初始化" class="headerlink" title="1.2 动态数组的初始化"></a>1.2 动态数组的初始化</h3><p>动态数组的初始化遵循静态数组初始化的规则，除此之外，动态数组的初始化还有一种新的语法。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>* pArr1 = <span class="keyword">new</span> <span class="keyword">int</span>[cnt]&#123;<span class="number">0</span>&#125;; <span class="comment">// 将动态数组初始化为0,需要调用delete[] pArr1进行内存释放</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span>* pArr2 = <span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[cnt]&#123;<span class="string">"str"</span>&#125;;</span><br><span class="line"><span class="keyword">int</span>* pArr3 = <span class="keyword">new</span> <span class="keyword">int</span>[cnt];</span><br><span class="line"><span class="built_in">memset</span>(pArr3,<span class="number">1</span>,<span class="keyword">sizeof</span>(pArr3));</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span>* pArr4 = <span class="keyword">new</span> <span class="keyword">int</span>[cnt](); <span class="comment">// 数组初始化为0，括号内不能写其他值，只能初始化为0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-二维数组的定义和初始化"><a href="#1-3-二维数组的定义和初始化" class="headerlink" title="1.3 二维数组的定义和初始化"></a>1.3 二维数组的定义和初始化</h3><h4 id="静态二维数组"><a href="#静态二维数组" class="headerlink" title="静态二维数组"></a>静态二维数组</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> Arr_A[<span class="number">2</span>][<span class="number">3</span>] = &#123; &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;,&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125; &#125;; <span class="comment">// 等同于int Arr_A[2][3]=&#123;1,2,3,4,5,6&#125;</span></span><br><span class="line"><span class="keyword">int</span> arr[rows][cols];</span><br></pre></td></tr></table></figure>
+
+<h4 id="动态二维数组"><a href="#动态二维数组" class="headerlink" title="动态二维数组"></a>动态二维数组</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">  <span class="comment">// 申请空间</span></span><br><span class="line">    <span class="keyword">int</span>** arr = <span class="keyword">new</span> <span class="keyword">int</span>*[rows];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        arr[i] = <span class="keyword">new</span> <span class="keyword">int</span>[cols];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放空间</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span>[] arr[i];</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">delete</span>[] arr;</span><br></pre></td></tr></table></figure>
+
+<h4 id="利用std-vector创建二维数组"><a href="#利用std-vector创建二维数组" class="headerlink" title="利用std::vector创建二维数组"></a>利用std::vector创建二维数组</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; arr(rows,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(cols));</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; cols; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        arr[i][j] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://haoqchen.site/2018/09/09/string-and-char/" target="_blank" rel="noopener">C++字符串处理总结（char、string）</a></li>
+<li><a href="http://c.biancheng.net/view/1407.html" target="_blank" rel="noopener">C++结构体完全攻略</a></li>
+<li><a href="https://www.runoob.com/cplusplus/cpp-arrays.html" target="_blank" rel="noopener">C++ 数组</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python编程—面向对象</title>
+    <url>/2019/12/08/python-class/</url>
+    <content><![CDATA[<p>本文主要记录Python中支持面向对象编程的特性、类的定义、封装、继承等概念。</p>
+<a id="more"></a>
+<h2 id="1-类的定义及实例化"><a href="#1-类的定义及实例化" class="headerlink" title="1. 类的定义及实例化"></a>1. 类的定义及实例化</h2><p>面向对象编程是通过类来实现的，类提供了一种组合数据和操作的方法。Python中定义一个类的基本语法如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span> <span class="comment"># 创建了一个Student类</span></span><br><span class="line">    school = <span class="string">'SCU'</span> <span class="comment"># 类变量</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name)</span>:</span> <span class="comment"># 初始化函数</span></span><br><span class="line">        self.name = name <span class="comment"># 实例变量</span></span><br><span class="line">        self.course = []</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printName</span><span class="params">(self)</span>:</span> <span class="comment"># 实例方法</span></span><br><span class="line">        print(self.name)</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printGrade</span><span class="params">(cls,grade)</span>:</span> <span class="comment"># 类方法</span></span><br><span class="line">        print(grade)</span><br></pre></td></tr></table></figure>
+<p>类支持两种操作：<strong>属性引用</strong>和<strong>实例化</strong>。</p>
+<ul>
+<li>属性引用，使用的是Python中属性引用的标准语法，即<code>obj.var</code>。<code>Student.school</code>和<code>Student.printName</code>是有效的属性引用，分别返回一个字符串对象和一个函数对象。</li>
+<li>实例化，类的实例化使用函数表示法，即<code>stu=Student(&#39;lihua&#39;)</code>，创建了类的实例并将其分配给局部变量<code>stu</code>。类有一个<code>__init__()</code>构造方法，该方法在类实例化时会自动调用。</li>
+</ul>
+<h2 id="2-类的变量和方法"><a href="#2-类的变量和方法" class="headerlink" title="2. 类的变量和方法"></a>2. 类的变量和方法</h2><h3 id="2-1-类变量和实例变量"><a href="#2-1-类变量和实例变量" class="headerlink" title="2.1 类变量和实例变量"></a>2.1 类变量和实例变量</h3><ul>
+<li><strong>类变量</strong>：类内部定义的变量，其属于类，可以通过类直接访问，所有实例都可以访问，类似于C++中的静态成员变量。</li>
+<li><strong>实例变量</strong>：以<code>self</code>开头定义的变量，<code>self</code>代表类的实例，实例变量属于特定的实例。</li>
+</ul>
+<p><strong>NOTE:</strong>实例变量的访问优先级高于类变量，所以当实例变量和类变量同名时，优先访问实例变量，屏蔽对类变量的访问。</p>
+<h3 id="2-2-类方法、实例方法和静态方法"><a href="#2-2-类方法、实例方法和静态方法" class="headerlink" title="2.2 类方法、实例方法和静态方法"></a>2.2 类方法、实例方法和静态方法</h3><p>在类的内部，通过使用<code>def</code>关键字来定义方法。在类内部定义的方法分为三种：实例方法、类方法和静态方法。</p>
+<ul>
+<li><strong>实例方法</strong>：类内部定义的没有装饰器且第一个参数为<code>self</code>的方法。可通过实例直接访问，如果要通过类访问，需要将实例作为参数传入。<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">stu.printName() <span class="comment"># 实例访问，输出：lihua</span></span><br><span class="line">Student.printName(stu) <span class="comment"># 类访问，必须传入实例对象，输出：lihua</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>类方法</strong>：类内部定义的以<code>@classmethod</code>装饰的方法，其第一个参数为<code>cls</code>，表示将类对象本身传入方法。可以通过类直接访问，不需要实例化。类方法的一个主要用途是<strong>定义多个构造器来对类进行初始化</strong>。<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Student.printGrade(<span class="string">'grade 2019'</span>) <span class="comment"># 可以通过类直接访问，输出：grade 2019</span></span><br><span class="line">stu.printGrade(<span class="string">'grade 2016'</span>) <span class="comment"># 可以通过实例进行访问，输出：grade 2016</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>静态方法</strong>：类内部定义的以<code>@staticmethod</code>装饰的方法。实例和类都可对其进行直接访问，与类方法不同在于<strong>静态方法不需要传入参数<code>cls</code></strong>。</li>
+</ul>
+<h3 id="2-3-property使用"><a href="#2-3-property使用" class="headerlink" title="2.3 property使用"></a>2.3 property使用</h3><p>Python中property的作用有两个：</p>
+<ul>
+<li>作为装饰器<code>@property</code>将类方法转为类变量<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">stu.printName <span class="comment"># 作为属性而不是方法进行访问，输出：lihua</span></span><br></pre></td></tr></table></figure></li>
+<li>property重新实现setter和getter方法</li>
+</ul>
+<h3 id="2-4-属性和方法的访问限制"><a href="#2-4-属性和方法的访问限制" class="headerlink" title="2.4 属性和方法的访问限制"></a>2.4 属性和方法的访问限制</h3><p>在Python中，类的访问权限有公开和私有两种：</p>
+<ul>
+<li>public：公开访问，正常的函数和变量名都是公开的，可以被外部访问</li>
+<li>private：私有访问权限，通过在属性名和方法名前面加双下划线<code>__</code>进行标识。私有化后的属性和函数只能在类的内部访问</li>
+</ul>
+<h2 id="3-继承"><a href="#3-继承" class="headerlink" title="3. 继承"></a>3. 继承</h2><p>Python中类的继承有<strong>单继承</strong>和<strong>多继承</strong>两种方式，派生类定义的一般格式如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DerevedClass</span><span class="params">(BaseClass1[,BaseClass2,BaseClass3])</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-继承实现的原理"><a href="#3-1-继承实现的原理" class="headerlink" title="3.1 继承实现的原理"></a>3.1 继承实现的原理</h3><p>对于定义的每一个类，Python会计算出一个方法解析顺序(MRO)列表，这个MRO列表是一个简单的线性顺序表，里面存储的是基类对象。MRO列表遵循如下准则：</p>
+<ul>
+<li>派生类会先于基类被检查</li>
+<li>多个基类会根据它们在列表中顺序被检查</li>
+<li>如果基类有相同的方法名，子类中使用时未加指定，Python从左至右进行搜索基类中是否包含该方法，并选择第一个遇到的基类</li>
+</ul>
+<h3 id="3-2-派生类中调用基类的方法"><a href="#3-2-派生类中调用基类的方法" class="headerlink" title="3.2 派生类中调用基类的方法"></a>3.2 派生类中调用基类的方法</h3><p>在派生类中往往需要重用基类的方法，实现的方法有两种：</p>
+<ul>
+<li>通过属性引用的方式，即<code>BaseClass.func()</code></li>
+<li>通过<code>super()</code>方法，<code>super()</code>依赖于继承，即使没有直接继承关系，<code>super()</code>仍然按照MRO继续查找<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().test()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'from class B'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(A,B)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">c = C()</span><br><span class="line">c.test() <span class="comment"># 输出：from class B</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/30223570" target="_blank" rel="noopener">Python入门 类class提高篇</a></li>
+<li><a href="https://www.kancloud.cn/noahs/python/937922" target="_blank" rel="noopener">继承-派生和组合</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python编程—函数</title>
+    <url>/2019/12/07/python-function/</url>
+    <content><![CDATA[<p>使用<code>def</code>定义函数是Python程序的基础，本文主要记录Python中函数定义与使用，包括函数参数，装饰器，生成器和迭代器等相关内容。</p>
+<a id="more"></a>
+<h2 id="1-函数定义"><a href="#1-函数定义" class="headerlink" title="1. 函数定义"></a>1. 函数定义</h2><p>Python中定义函数使用关键字<code>def</code>，一般格式如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_name</span><span class="params">(args)</span>:</span></span><br><span class="line">    statement_block</span><br><span class="line">    <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-函数参数"><a href="#2-函数参数" class="headerlink" title="2. 函数参数"></a>2. 函数参数</h2><p>Python中函数可使用的参数类型有：</p>
+<ul>
+<li><strong>普通参数</strong>：普通参数必须以正确的顺序传入函数，调用时的数量必须和声明时一样。</li>
+<li><strong>默认参数</strong>：默认参数是指在函数定义时，给该参数指定了一个默认值。调用函数时，如果没有传入该参数的指定值就使用默认值。<strong>默认参数必须在非默认参数之后</strong>。</li>
+<li><strong>关键参数</strong>：在函数调用时指定了参数名的参数就叫关键参数。正常情况下，给函数传递参数要按顺序，关键参数可以不按顺序，但是<strong>关键参数必须放在普通参数之后</strong>，即关键参数之后的参数必须以关键参数的形式出现。</li>
+<li><strong>非固定参数</strong>：函数定义时不确定传入的参数个数，就可以使用非固定参数。非固定参数必须放在普通参数之后定义。<blockquote><p><strong>非固定参数</strong>：非固定参数通过<code>*</code>操作符来进行表示</p>
+<ul>
+<li><code>*args</code>：元组类型的非固定参数，即参数以元组的形式导入</li>
+<li><code>**args</code>：字典类型的非固定参数，即参数以字典的形式导入</li>
+</ul>
+<p><strong>NOTE:</strong>定义函数时，<code>*</code>可以单独出现，但是单独出现的<code>*</code>之后的参数必须用关键参数传入。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">student</span><span class="params">(name, age,*args,**kwargs)</span>:</span></span><br><span class="line">    print(name, age,args,kwargs)</span><br><span class="line"></span><br><span class="line">stu = student(<span class="string">'lihua'</span>,<span class="number">25</span>,<span class="string">'cpp'</span>,<span class="string">'python'</span>,gender=<span class="string">'male'</span>,country=<span class="string">'CN'</span>) </span><br><span class="line">    <span class="comment"># 输出：lihua 25 ('cpp', 'python') &#123;'gender': 'male', 'country': 'CN'&#125;</span></span><br></pre></td></tr></table></figure></blockquote>
+
+
+</li>
+</ul>
+<h2 id="3-参数传递"><a href="#3-参数传递" class="headerlink" title="3. 参数传递"></a>3. 参数传递</h2><p>Python中数据类型分为可变和不可变，因此函数的参数传递也分为传递可变对象和传递不可变对象：</p>
+<ul>
+<li><strong>传递不可变对象</strong>：类似于C++的值传递</li>
+<li><strong>传递可变对象</strong>：类似于C++的引用传递</li>
+</ul>
+<h2 id="4-匿名函数"><a href="#4-匿名函数" class="headerlink" title="4. 匿名函数"></a>4. 匿名函数</h2><p>匿名函数就是不需要通过<code>def</code>显式的指定函数名的函数，Python中使用lambda来创建匿名函数。<br>lambda函数的一般格式如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lambda</span> [arg1[,arg2,...,argn]]:statement_block</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE：</strong></p>
+<ul>
+<li>lambda只是一个表达式，函数体简单，只能封装简单的逻辑语句</li>
+<li>lambda有自己的命名空间，只能访问参数列表中的函数</li>
+<li>lambda只能写一行语句</li>
+</ul>
+<h2 id="5-迭代器与生成器"><a href="#5-迭代器与生成器" class="headerlink" title="5. 迭代器与生成器"></a>5. 迭代器与生成器</h2><h3 id="5-1-迭代器"><a href="#5-1-迭代器" class="headerlink" title="5.1 迭代器"></a>5.1 迭代器</h3><p>迭代器是一种可以将可迭代对象(如列表，元组，字典等)循环输出的工具。迭代器从集合的第一个元素开始访问，直到所有元素访问结束。迭代器有两个基本的方法：<code>iter()</code>和<code>next()</code>，<code>iter()</code>函数可以将可迭代对象转为迭代器，迭代器可以被<code>next()</code>函数调用并不断返回下一个数据，直到没有数据时抛出<code>StopIteration</code>异常<br><strong>NOTE:</strong></p>
+<ul>
+<li>可迭代对象：可以直接作用于<code>for</code>循环的对象统称为可迭代对象，可以通过<code>isinstance(obj,Iterable)</code>判断一个对象是否是可迭代对象</li>
+<li>可作用于<code>next()</code>函数的对象都是迭代器</li>
+<li><code>StopIteration</code>异常用于标识迭代的完成，防止无限循环的情况</li>
+</ul>
+<h3 id="5-2-生成器"><a href="#5-2-生成器" class="headerlink" title="5.2 生成器"></a>5.2 生成器</h3><p>在Python中，包含了<code>yield</code>关键字的函数被称为生成器。与普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，即生成器就是一个迭代器。<br>在调用生成器运行的过程中，每次遇到<code>yield</code>时函数会暂停保存当前所有的运行信息，返回<code>yield</code>的值，并在下一次执行<code>next()</code>函数时从当前位置继续运行。<br><code>yield</code>可以理解成一个特殊的<code>return</code>。<code>return</code>返回的是一个值，下次调用该函数时重新开始，<code>yield</code>返回的是一个生成器，下次调用函数会继续从上一次<code>yield</code>后的地方继续运行。</p>
+<h2 id="6-函数装饰器"><a href="#6-函数装饰器" class="headerlink" title="6. 函数装饰器"></a>6. 函数装饰器</h2><p>通常情况下，需要对现有的函数增加新的功能，应该遵循开放封闭原则，即已经实现的代码修改封闭，对功能扩展开放。装饰器的作用就是<strong>在不修改原函数的情况下添加新的功能</strong>。</p>
+<blockquote><p><strong>Note:</strong>函数装饰器用到的知识点：</p>
+<ul>
+<li>在Python中，函数也是一个对象<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">student</span><span class="params">(name, age)</span>:</span></span><br><span class="line">    print(name, age)</span><br><span class="line">stu = student <span class="comment"># 此时函数没有小括号，并不是在调用函数，而是将函数对象赋值给一个变量</span></span><br><span class="line">stu(<span class="string">'lihua'</span>,<span class="number">25</span>) <span class="comment"># 输出：lihua 25</span></span><br></pre></td></tr></table></figure></li>
+<li>可以在函数中定义另外的函数，即进行函数嵌套</li>
+<li>函数对象可以作为返回输出，也可以作为参数传递给另外一个函数</li>
+<li>@语法糖，放在函数开始定义的地方，可以省略最后一步再次赋值的操作</li>
+</ul>
+</blockquote>
+
+<p>为了实现在不修改原函数的情况下添加新的功能，装饰器将原函数作为参数传递到装饰器函数中，装饰器函数中定义了一个嵌套函数来对原函数进行功能扩充，并在装饰器函数中将嵌套函数对象作为返回值进行返回。装饰器相当于高阶函数(将函数作为参数)和嵌套函数的结合，其依然是函数。装饰器的一般格式如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 装饰器函数<span class="params">(传入的函数)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 执行的嵌套函数<span class="params">(传入函数的参数)</span>:</span></span><br><span class="line">        装饰器语句</span><br><span class="line">        ...</span><br><span class="line">        传入的函数(传入函数的参数)</span><br><span class="line">        ...</span><br><span class="line">        装饰器语句</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> 返回的嵌套函数</span><br><span class="line"></span><br><span class="line"><span class="meta">@装饰器函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> 原函数<span class="params">(args)</span>:</span></span><br><span class="line">    原函数体</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<h3 id="6-1-装饰器执行流程"><a href="#6-1-装饰器执行流程" class="headerlink" title="6.1 装饰器执行流程"></a>6.1 装饰器执行流程</h3><ul>
+<li>执行装饰器函数，并将原函数作为参数传递给装饰器函数</li>
+<li>装饰器函数执行完毕之后将嵌套函数对象赋值给原函数的函数名，即原函数被更新替换成了嵌套函数</li>
+</ul>
+<h3 id="6-2-functools-wraps"><a href="#6-2-functools-wraps" class="headerlink" title="6.2 functools.wraps"></a>6.2 functools.wraps</h3><p>装饰器内的函数替代了原函数，但是原函数的元信息没有被赋值装饰器函数内部，可以通过使用<code>@functools.wraps</code>装饰修饰器内的函数，就可以将原函数的属性值赋值给装饰器函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args,**kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">return</span> inner   </span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://www.kancloud.cn/noahs/python/904906" target="_blank" rel="noopener">装饰器知识</a></li>
+<li><a href="https://www.runoob.com/w3cnote/python-func-decorators.html" target="_blank" rel="noopener">Python 函数装饰器</a></li>
+<li><a href="https://www.kancloud.cn/kancloud/python3-cookbook/47412" target="_blank" rel="noopener">Python3 CookBook中文版</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python编程—流程控制</title>
+    <url>/2019/12/07/python-flow-control/</url>
+    <content><![CDATA[<p>Python中只有条件和循环两种流程控制语句，本文主要记录两种条件控制的语法和机制。</p>
+<a id="more"></a>
+<h2 id="1-条件控制"><a href="#1-条件控制" class="headerlink" title="1. 条件控制"></a>1. 条件控制</h2><p>Python中if语句的一般形式为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> condition_1:</span><br><span class="line">    statement_block1</span><br><span class="line"><span class="keyword">elif</span> condition_2:</span><br><span class="line">    statement_block2</span><br><span class="line"><span class="keyword">else</span> condition_3:</span><br><span class="line">    statement_block3</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE:</strong></p>
+<ul>
+<li>Python中用<code>elif</code>替换了<code>else if</code></li>
+<li>每个条件后面要使用<code>:</code>，表示满足条件后要执行的语句块，语句块通过缩进来进行划分</li>
+<li>Python中没有switch-case语句</li>
+</ul>
+<h2 id="2-循环语句"><a href="#2-循环语句" class="headerlink" title="2. 循环语句"></a>2. 循环语句</h2><h3 id="2-1-while循环"><a href="#2-1-while循环" class="headerlink" title="2.1 while循环"></a>2.1 while循环</h3><p>Python中while语句的一般形式为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> condition:</span><br><span class="line">    statemet</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> condition:</span><br><span class="line">    statement</span><br><span class="line"><span class="keyword">else</span>: <span class="comment"># condition为False时执行</span></span><br><span class="line">    additional_statement</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-for循环"><a href="#2-2-for循环" class="headerlink" title="2.2 for循环"></a>2.2 for循环</h3><p>Python的for循环可以遍历任何序列，如字符串，列表等<br>for循环的一般格式为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> variable <span class="keyword">in</span> sequence:</span><br><span class="line">    statement_block1</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    statement_block2</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE:</strong></p>
+<ul>
+<li>需要遍历数组序列，可以使用<code>range()</code>函数</li>
+<li>需要遍历列表的每个元素及其索引号时，可以使用<code>enumerate()</code>函数</li>
+</ul>
+<blockquote><p>可直接用于for循环的数据类型有以下两种类型：</p>
+<ul>
+<li>可迭代对象，如<code>List</code>，<code>Tuple</code>，<code>Dict</code>，<code>Set</code>和<code>String</code>等</li>
+<li>生成器</li>
+</ul>
+</blockquote>
+
+<h3 id="2-3-break-continue和pass"><a href="#2-3-break-continue和pass" class="headerlink" title="2.3 break, continue和pass"></a>2.3 break, continue和pass</h3><ul>
+<li><code>continue</code>：结束本次循环，进入下一轮循环</li>
+<li><code>break</code>：结束整个循环</li>
+<li><code>pass</code>：空语句，不做任何事情，一般用作占位语句</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python编程—数据类型</title>
+    <url>/2019/12/07/python-datatypes/</url>
+    <content><![CDATA[<p>Python提供了大量的内置数据结构，包括列表，集合以及字典等，本文主要记录这些基本数据类型的使用。</p>
+<a id="more"></a>
+<p>Python中的标准数据类型主要有：</p>
+<ul>
+<li>数值(Number)</li>
+<li>字符串(String)</li>
+<li>列表(List)</li>
+<li>元组(Tuple)</li>
+<li>字典(Dict)</li>
+<li>集合(Set)</li>
+<li>其他(Others)：Byte，Boolean，None</li>
+</ul>
+<p><strong>Note:</strong>在Python中，类型是属于对象的，变量只是一个对象的引用，没有类型。例如</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">b=<span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>[1,2,3,4]</code>是List类型，变量a没有类型，它只是一个指向List类型对象的引用。<br>在Python中，String, Tuples和Number是不可变对象，而List，Dict和Set是可变对象</p>
+<ul>
+<li><strong>不可变对象</strong>：变量b重新赋值实际上是生成一个新的对象，再让b指向新对象，原来对象被丢弃，不是改变b的值</li>
+<li><strong>可变对象</strong>：变量a指向的对象的元素被修改，a没有改变</li>
+</ul>
+<h2 id="1-数值"><a href="#1-数值" class="headerlink" title="1. 数值"></a>1. 数值</h2><p>Python支持三种不同类型的数值类型</p>
+<ul>
+<li><strong>整型(int)</strong><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=<span class="number">10</span></span><br><span class="line">b=<span class="number">0x10</span> <span class="comment"># 16</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>浮点型(float)</strong><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=<span class="number">1.2</span></span><br><span class="line">b=<span class="number">.5</span>     <span class="comment"># 0.5</span></span><br><span class="line">c=<span class="number">.314e1</span> <span class="comment"># 3.14</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>复数(complex)</strong><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=<span class="number">1</span>+<span class="number">2j</span></span><br><span class="line">b=complex(<span class="number">1</span>,<span class="number">2</span>) <span class="comment"># 1+2j</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="1-1-数据类型转换"><a href="#1-1-数据类型转换" class="headerlink" title="1.1 数据类型转换"></a>1.1 数据类型转换</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">int-&gt;float</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">float(<span class="number">1</span>)  <span class="comment"># 1.0</span></span><br><span class="line">a=<span class="number">1</span>/<span class="number">1</span>     <span class="comment"># 1.0</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">float-&gt;int</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">int(<span class="number">3.14</span>)  <span class="comment"># 3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-算数运算"><a href="#1-2-算数运算" class="headerlink" title="1.2 算数运算"></a>1.2 算数运算</h3><ul>
+<li>加，减，乘，除，求余：<code>+</code>,<code>-</code>,<code>*</code>,<code>/</code>,<code>%</code></li>
+<li>幂运算：<code>**</code></li>
+<li>取整除，即取商的整数部分：<code>//</code></li>
+<li>数学函数：<code>abs()</code>,<code>ceil()</code>,<code>exp()</code>,<code>floor()</code>,<code>max()</code>,<code>min()</code>,<code>log()</code>,<code>pow()</code>,<code>sqrt()</code>等</li>
+<li>三角函数：<code>sin()</code>,<code>cos()</code>,<code>tan()</code>,<code>radians()</code>,<code>degrees()</code>等</li>
+<li>数学常量：<code>pi</code>,<code>e</code></li>
+</ul>
+<blockquote><p><strong>Note:</strong>关于比较运算<code>==</code>和<code>is</code>：</p>
+<ul>
+<li><code>==</code>是比较两个对象的内容是否相等，默认调用对象的<code>__eq()__</code>方法</li>
+<li><code>is</code>比较的是两个对象的id是否相等，即是否是同一个对象，也就是是否指向同一个内存地址</li>
+</ul>
+</blockquote>
+
+<h2 id="2-字符串"><a href="#2-字符串" class="headerlink" title="2. 字符串"></a>2. 字符串</h2><p>字符串是Python中最常用的数据类型，可以使用引号(<code>&#39;</code>或<code>&quot;</code>)来进行创建。Python可以使用三引号创建字符串，该字符串可以跨行，可以包含换行符、制表符以及其他特殊字符。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">str1 = <span class="string">'string1'</span></span><br><span class="line">str2 = <span class="string">"string2"</span></span><br><span class="line"></span><br><span class="line">str3 = <span class="string">"""This is a long string, you can use enter. \n</span></span><br><span class="line"><span class="string"> \t Tab has been used."""</span> </span><br><span class="line"> print(str3)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-字符串运算符"><a href="#2-1-字符串运算符" class="headerlink" title="2.1 字符串运算符"></a>2.1 字符串运算符</h3><ul>
+<li><code>+</code>：字符串拼接</li>
+<li><code>*</code>：重复输出字符串，如<code>str1*2</code>输出结果为<code>string1string1</code></li>
+<li><code>[]</code>：通过索引获取字符串中的字符</li>
+<li><code>[:]</code>：截取字符串中的一部分，遵循<strong>左闭右开</strong>原则</li>
+<li><code>in</code>和<code>not in</code>：成员运算符，字符串中是否包含给定字符</li>
+<li><code>r/R</code>：原始字符串，不进行转义等操作</li>
+<li><code>%</code>：字符串格式化</li>
+</ul>
+<h3 id="2-2-字符串格式化"><a href="#2-2-字符串格式化" class="headerlink" title="2.2 字符串格式化"></a>2.2 字符串格式化</h3><ul>
+<li>C风格字符串格式化</li>
+<li>字符串格式化函数：<code>str.format()</code><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># C-style</span></span><br><span class="line">print(<span class="string">"My name is %s, % years old"</span> % (<span class="string">'String'</span>,<span class="number">100</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># str.format()</span></span><br><span class="line"><span class="string">"&#123;&#125; &#123;&#125;"</span>.format(<span class="string">"hello"</span>, <span class="string">"world"</span>)    <span class="comment"># 不设置指定位置，按默认顺序</span></span><br><span class="line"><span class="string">"&#123;0&#125; &#123;1&#125;"</span>.format(<span class="string">"hello"</span>, <span class="string">"world"</span>)  <span class="comment"># 设置指定位置</span></span><br><span class="line"></span><br><span class="line"><span class="string">"姓名：&#123;name&#125;, 年龄: &#123;age&#125;"</span>.format(name=<span class="string">"string"</span>, age=<span class="string">"100)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 通过列表设置参数</span></span><br><span class="line"><span class="string">my_list = ['string','male']</span></span><br><span class="line"><span class="string">"</span>姓名：&#123;<span class="number">0</span>[<span class="number">0</span>]&#125;, 性别: &#123;<span class="number">0</span>[<span class="number">1</span>]&#125;<span class="string">".format(my_list)</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="2-3-数据类型转换"><a href="#2-3-数据类型转换" class="headerlink" title="2.3 数据类型转换"></a>2.3 数据类型转换</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">int(<span class="string">'1'</span>)       <span class="comment"># 1</span></span><br><span class="line">float(<span class="string">'3.14'</span>)  <span class="comment"># 3.14</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-列表"><a href="#3-列表" class="headerlink" title="3. 列表"></a>3. 列表</h2><p>列表是Python中最基本的数据结构，列表中的数据项可以具有不同的类型。列表的基本形式为一个方括号，其中的元素通过<code>,</code>进行分隔。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">list_2s = [[<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>)] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-列表操作符"><a href="#3-1-列表操作符" class="headerlink" title="3.1 列表操作符"></a>3.1 列表操作符</h3><ul>
+<li><code>+</code>：列表组合</li>
+<li><code>*</code>：重复</li>
+<li><code>[]</code>：通过索引获取列表中的元素，并可以进行修改</li>
+<li><code>[:]</code>：截取列表中的一部分元素，遵循<strong>左闭右开</strong>原则</li>
+<li><code>[::]</code>：列表切片，除了起始索引和结束索引，还有步长，步长为负，反向索引</li>
+<li><code>in</code>和<code>not in</code>：成员运算符，列表中是否包含给定元素</li>
+<li><code>len(list)</code>：列表元素个数</li>
+<li><code>max(list)</code>和<code>min(list)</code>：返回列表元素最大/最小值</li>
+<li><code>list(tuple)</code>：将元组转换为列表</li>
+</ul>
+<blockquote><p><strong>列表推导表达式</strong>：<br>[表达式 for 变量 in 列表 [if 条件]]</p>
+</blockquote>
+
+<h3 id="3-2-列表包含的方法"><a href="#3-2-列表包含的方法" class="headerlink" title="3.2 列表包含的方法"></a>3.2 列表包含的方法</h3><ul>
+<li><p><code>list.append(obj)</code>：在列表末尾添加新的元素</p>
+</li>
+<li><p><code>list.insert(idx,obj)</code>：在列表特定位置插入新的元素</p>
+</li>
+<li><p><code>list.extended(seq)</code>：在列表末尾添加另一个序列的值</p>
+</li>
+<li><p><code>list.pop(idx=-1)</code>：移除列表中特定位置的元素(默认是最后一个元素)，并且返回该元素</p>
+</li>
+<li><p><code>list.remove(obj)</code>：移除列表中某个值的第一个匹配项</p>
+</li>
+<li><p><code>list.clear()</code>：移除列表中所有值</p>
+<blockquote><p><code>del list[idx]</code>可以删除列表指定位置或者指定范围内的值，也可以删除整个列表。与<code>pop()</code>不同之处在于，<code>del</code>不会返回删除的值。</p>
+</blockquote>
+</li>
+<li><p><code>list.count(obj)</code>：统计某个值在列表中出现的次数</p>
+</li>
+<li><p><code>list.index(obj)</code>：索引某个值在列表中第一次出现的位置</p>
+</li>
+<li><p><code>list.sort(key=None,reverse=False)</code>：对原列表进行排序</p>
+</li>
+<li><p><code>list.reverse()</code>：反向原列表中的元素</p>
+</li>
+<li><p><code>list.copy()</code>：复制列表</p>
+</li>
+</ul>
+<h2 id="4-元组"><a href="#4-元组" class="headerlink" title="4. 元组"></a>4. 元组</h2><p>Python中的元组与列表类似，不同之处在于：</p>
+<ul>
+<li>元组的元素不能修改</li>
+<li>元组使用小括号，列表使用中括号<blockquote><p><strong>Note:</strong>元组中包含一个元素时，需要在元素后面添加<code>,</code>，否则括号会被当做运算符使用</p>
+</blockquote>
+
+</li>
+</ul>
+<h3 id="元组的操作符"><a href="#元组的操作符" class="headerlink" title="元组的操作符"></a>元组的操作符</h3><p>元组的操作符与列表的操作符大致相同，不同之处在于：</p>
+<ul>
+<li><code>[]</code>：通过索引获取列表中的元素，但是不可以对元素进行修改</li>
+<li><code>tuple(list)</code>：将列表转换为元组</li>
+</ul>
+<h2 id="5-字典"><a href="#5-字典" class="headerlink" title="5. 字典"></a>5. 字典</h2><p>字典是另一种可变容器类型，可以存储任意类型的对象。字典的基本格式为一个花括号，字典的键和值对用<code>:</code>进行分割，每个对之间用<code>,</code>分割。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict=&#123;key1:val1,key2:val2&#125;</span><br></pre></td></tr></table></figure>
+<p>字典具有以下特性：</p>
+<ul>
+<li>字典中的键是唯一的，值可以重复</li>
+<li>字典中的键必须是不可变的，因此可以是字符串、数字或者元组，不能是列表，值可以取任何数据类型</li>
+<li>字典中的键值必须要同时进行初始化</li>
+</ul>
+<h3 id="5-1-字典的操作符"><a href="#5-1-字典的操作符" class="headerlink" title="5.1 字典的操作符"></a>5.1 字典的操作符</h3><ul>
+<li><code>[key]</code>：通过键来访问字典中的值，并可以进行修改和删除(<code>del dict[key]</code>)</li>
+<li><code>in</code>和<code>not in</code>：成员运算符，字典中是否包含给定的键</li>
+<li><code>len(dict)</code>：返回字典中元素的个数</li>
+<li><code>str(dict)</code>：以可以打印的字符串形式输出字典</li>
+<li><code>type(var)</code>：返回输入变量的类型</li>
+</ul>
+<blockquote><p><strong>字典推导表达式</strong>：<br>    [key:value for 变量 in 迭代器 [if 条件]]</p>
+</blockquote>
+
+<h3 id="5-2-字典的函数"><a href="#5-2-字典的函数" class="headerlink" title="5.2 字典的函数"></a>5.2 字典的函数</h3><ul>
+<li><code>dict.keys()</code>和<code>dict.values()</code>：返回的是一个迭代器，可以通过<code>list()</code>转换为列表</li>
+<li><code>dict.get(key,default=None)</code>：获取指定键的值，没有值返回defaule值</li>
+<li><code>dict.setdefault(key,default=None)</code>：获取指定键的值，如果键不存在，添加键并将其值设为default值</li>
+<li><code>dict.pop(key[,default=None])</code>：删除指定键的值，并返回该值。key必须给出，否则返回default值</li>
+<li><code>dict.update(dict2)</code>：将字典dict2的键值对更新到dict中</li>
+<li><code>dict.fromkeys(seq[,value])</code>：创建一个新的字典，以序列中的元素作为字典的键，并将值初始化为value，默认为None</li>
+<li><code>dict.items()</code>：返回一个元组组成的列表，每个元组包含了一个键值对</li>
+<li><code>dict.popitem()</code>：返回并删除字典中的最后一个键值对</li>
+<li><code>dict.clear()</code>：删除字典内所有元素</li>
+<li><code>dict.copy()</code>：返回字典的浅拷贝</li>
+</ul>
+<blockquote><ul>
+<li><strong>直接赋值(=)</strong>：赋值引用，指向同一个对象</li>
+<li><strong>浅拷贝(copy)</strong>：拷贝父对象，不会拷贝对象内部的子对象，因此两个字典子对象的值是同一个对象<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict1=&#123;<span class="string">'a'</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],<span class="string">'b'</span>:<span class="number">2</span>&#125; <span class="comment"># dict1['a']的值是一个子对象，dict1['b']的值是一个父对象</span></span><br><span class="line">dict2=dict1.copy()          <span class="comment"># dict2['a']的值和dict1['a']的值指向的是同一个对象</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>深拷贝(deepcopy)</strong>：完全拷贝了父对象及子对象，需要<code>import copy</code></li>
+</ul>
+</blockquote>
+
+<h2 id="6-集合"><a href="#6-集合" class="headerlink" title="6. 集合"></a>6. 集合</h2><p>集合是一个无序的不重复元素序列，可以使用<code>{}</code>和<code>set()</code>函数来创建集合，创建格式：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">set1 = &#123;val1,val2,...&#125;</span><br><span class="line">set2 = set(val)</span><br></pre></td></tr></table></figure>
+<blockquote><p><strong>Note:</strong>创建一个空的集合只能使用<code>set()</code>，因为<code>{}</code>是用来创建一个空的字典的语法描述。</p>
+</blockquote>
+
+<h3 id="6-1-集合的操作符"><a href="#6-1-集合的操作符" class="headerlink" title="6.1 集合的操作符"></a>6.1 集合的操作符</h3><ul>
+<li><code>&amp;</code>,<code>|</code>,<code>-</code>,<code>^</code>：集合的交集，并集，差集和对称差集</li>
+<li><code>==</code>,<code>!=</code>：判断集合是否相等</li>
+<li><code>&gt;=</code>,<code>&lt;=</code>：包含和被包含</li>
+<li><code>len(set)</code>：返回集合中元素的个数</li>
+<li><code>in</code>：判断元素是否在集合中<blockquote><p><strong>Note:</strong>因为集合是无序的，所以不能进行索引操作</p>
+</blockquote>
+
+</li>
+</ul>
+<h3 id="6-2-集合的函数"><a href="#6-2-集合的函数" class="headerlink" title="6.2 集合的函数"></a>6.2 集合的函数</h3><ul>
+<li><p><code>set.add(obj)</code>：为集合添加元素，若添加的元素已经存在，则不进行任何操作</p>
+</li>
+<li><p><code>set.update(obj)</code>：为集合添加元素或集合到当先集合中</p>
+</li>
+<li><p><code>set.remove(obj)</code>：移除指定的元素，元素不存在时会发生错误</p>
+</li>
+<li><p><code>set.discard(obj)</code>：移除指定的元素，元素不存在也不会发生错误</p>
+</li>
+<li><p><code>set.pop()</code>：随机移除一个元素，并返回移除的元素</p>
+</li>
+<li><p><code>set.clear()</code>：移除集合中所有元素</p>
+</li>
+<li><p><code>set.intersection(set1,set2,...,etc)</code>：计算两个或者多个集合的交集，并返回新的集合</p>
+</li>
+<li><p><code>set.intersection_update(set1,set2,...,etc)</code>：计算两个或者多个集合的交集，并在原始集合上移除不同的元素</p>
+</li>
+<li><p><code>set.union(set1,set2,...,etc)</code>：计算两个或多个集合的并集，并返回新的集合</p>
+</li>
+<li><p><code>set.difference(set1)</code>：计算包含在set中但是不包含在set1中的元素，并返回新的集合</p>
+</li>
+<li><p><code>set.difference_update(set1)</code>：计算包含在set中但是不包含在set1中的元素，并在set上移除相同的元素</p>
+</li>
+<li><p><code>set.symmetric_difference(set1)</code>：计算两个集合中所有不重复的元素，并返回新的集合</p>
+</li>
+<li><p><code>set.symmetric_difference_update(set1)</code>：移除当前集合中所有相同的元素，并将另一个集合中不同的元素插入到当前集合</p>
+</li>
+<li><p><code>set.isdisjoint(set1)</code>：判断两个集合是否包含相同的元素，没有则返回True</p>
+</li>
+<li><p><code>set.issubset(set1)</code>：判断集合set的所有元素是否都包含在集合set1中，是则返回True</p>
+</li>
+<li><p><code>set.issupersubset(set1)</code>：判断集合set1的所有元素是否都包含在集合set中，是则返回True</p>
+</li>
+<li><p><code>set.copy()</code>：用于复制一个集合</p>
+</li>
+</ul>
+<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
+<li><a href="https://www.runoob.com/python3/python3-number.html" target="_blank" rel="noopener">Python3 教程</a></li>
+<li><a href="https://blog.csdn.net/kongsuhongbaby/article/details/83903948" target="_blank" rel="noopener">python3：数字/字符串之间的转换</a></li>
+<li><a href="https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html" target="_blank" rel="noopener">Python 直接赋值、浅拷贝和深度拷贝解析</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>交叉熵损失函数</title>
     <url>/2019/10/17/ml-cross-entropy-loss-function/</url>
     <content><![CDATA[<p>交叉熵损失函数(逻辑回归)：<br>$$<br>J(\theta)=-\frac{1}{N}\sum_{i=1}^{N}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))<br>$$<br>$J(\theta)$对$\theta$的偏导数(用于诸如梯度下降法等优化算法的参数更新)：<br>$$\frac{\partial}{\partial\theta_j}J(\theta)=\frac{1}{N}\sum_{i=1}^{N}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}$$</p>
@@ -27,42 +481,6 @@
       <tags>
         <tag>交叉熵</tag>
         <tag>损失函数</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C/C++编程—资源管理机制与智能指针</title>
-    <url>/2019/10/16/cpp-resources-management/</url>
-    <content><![CDATA[<p>C++中最常使用的资源就是内存，其他常见的还包括文件句柄、互斥锁(mutex lock)、数据库连接、以及网络socket等。在计算机系统中，这些系统资源是有限的，所以在使用完资源后必须要进行释放。本文主要记录C++中的资源管理的机制RAII(Resource Acquisition Is Initialization)以及智能指针。</p>
-<a id="more"></a>
-<h2 id="1-C-资源管理"><a href="#1-C-资源管理" class="headerlink" title="1. C++资源管理"></a>1. C++资源管理</h2><p>我们在使用系统资源时，都必须遵循一个步骤：<code>申请资源</code>-&gt;<code>使用资源</code>-&gt;<code>释放资源</code>。资源只有申请后才能使用，使用完成后必须要释放，如果不释放就会造成资源泄露。比如，我们使用<code>malloc/new</code>开辟的内存资源，必须要通过<code>free/delete</code>进行释放，否则就会造成内存泄漏。所以，在编程的时候<code>malloc</code>和<code>free</code>、<code>new</code>和<code>delete</code>总是匹配的。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">FILE* file = fopen(fn,<span class="string">'r'</span>); <span class="comment">// 申请文件句柄资源</span></span><br><span class="line"><span class="comment">// 使用资源</span></span><br><span class="line"><span class="keyword">if</span>(!f()) <span class="keyword">return</span>; <span class="comment">// f()失败，返回</span></span><br><span class="line"><span class="comment">// ... </span></span><br><span class="line"><span class="keyword">if</span>(!g()) <span class="keyword">return</span>; <span class="comment">// g()失败，返回</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">fclose(file); <span class="comment">// 释放资源</span></span><br></pre></td></tr></table></figure>
-<p>在上述代码中，存在着因某些操作失败而提前返回的现象，这时就会跳过资源释放的操作，造成<strong>资源泄露</strong>。对于简单的代码可以在不同的位置重复书写释放资源的代码，如果项目中有异常处理或者需要管理的资源有多个，重复书写资源释放的代码会造成代码冗余且后期难以维护。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">FILE* file = fopen(fn,<span class="string">'r'</span>); <span class="comment">// 申请资源</span></span><br><span class="line"><span class="comment">// 使用资源</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!f()) &#123;fclose(file); <span class="keyword">return</span>;&#125; <span class="comment">// f()失败，返回</span></span><br><span class="line">    <span class="comment">// ... </span></span><br><span class="line">    <span class="keyword">if</span>(!g()) &#123;fclose(file); <span class="keyword">return</span>;&#125; <span class="comment">// g()失败，返回</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(...)</span><br><span class="line">&#123;</span><br><span class="line">    fclose(file);</span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fclose(file); <span class="comment">// 释放资源</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-RAII机制"><a href="#2-RAII机制" class="headerlink" title="2. RAII机制"></a>2. RAII机制</h2><p>在C++中，定义在栈上的局部对象的创建和销毁是由系统自动完成的。我们在某个作用域中定义和使用局部对象，当控制流程超出作用域的控制范围时，系统会自动调用析构函数来销毁该对象。</p>
-<p>RAII是C++语言中一种资源管理的常用规范，其基本思路是<strong>用类来封装资源，在类的构造函数中获取资源，在类的析构函数中释放资源</strong>。使用的时候，把资源管理类实例化为一个对象，当类超出作用域的时候，就会调用类的析构函数对资源进行释放。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandle</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    FileHandle(<span class="keyword">char</span> <span class="keyword">const</span>* fn, <span class="keyword">char</span> <span class="keyword">const</span>* t)&#123; f = fopen(fn,t);&#125;</span><br><span class="line">    ~FileHandle()&#123;fclose(f);&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    FileHandle(FileHandle <span class="keyword">const</span>&amp;); <span class="comment">//复制构造函数</span></span><br><span class="line">    FileHandle&amp; operate= (FileHandle <span class="keyword">const</span>&amp;);<span class="comment">//赋值运算符</span></span><br><span class="line">    FILE* f;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>FileHandle类的构造函数调用fopen()获取资源；FileHandle类的析构函数调用fclose()释放资源。FileHandle对象代表的是资源，不具有拷贝语义，因此需要<strong>将复制构造函数和赋值运算符声明为私有成员</strong>，这样可以避免在进行资源对象作为参数传递时发生值的复制，造成访问冲突。</p>
-<h2 id="3-智能指针"><a href="#3-智能指针" class="headerlink" title="3. 智能指针"></a>3. 智能指针</h2><p>智能指针就是RAII的实现范例，主要用于管理在堆上分配的内存。在C++中，我们创建一个指向某个对象的普通指针，在使用完这个指针之后需要进行删除，否则会造成一个悬挂指针，导致内存泄漏。智能指针将普通的指针封装为一个栈对象，当栈兑现过的生命周期结束以后，会在析构函数中释放掉申请的内存，防止内存泄漏。</p>
-<p>智能指针和普通指针的区别在于智能指针实际上是对普通指针加了一层封装机制，这样的一层封装机制的目的是为了使得智能指针可以方便的管理一个对象的生命期。</p>
-<p><strong>NOTE:</strong> C++11的智能指针的构造函数都有<code>explicit</code>关键词修饰，表明它<strong>不能被隐式的进行类型转换</strong>。</p>
-<p>C++11中有三个智能指针：<code>unique_ptr</code>、<code>shared_ptr</code>和<code>weak_ptr</code>。C98中有一个智能指针<code>auto_ptr</code>，已被<code>unique_ptr</code>取代。</p>
-<h3 id="3-1-unique-ptr"><a href="#3-1-unique-ptr" class="headerlink" title="3.1 unique_ptr"></a>3.1 unique_ptr</h3><p><code>unique_prt</code>是一个独享所有权的智能指针，其功能是保证同一时间内只有一个智能指针指向该对象。</p>
-<h3 id="3-2-shared-ptr"><a href="#3-2-shared-ptr" class="headerlink" title="3.2 shared_ptr"></a>3.2 shared_ptr</h3><p><code>shared_ptr</code>实现了共享式拥有概念，即多个智能指针指向同一个对象，该对象和其资源会在<strong>最后一个引用被销毁</strong>时进行释放。<code>shared_ptr</code>使用了计数机制来表明资源被几个指针共享，调用<code>release()</code>可以释放当前指针的所有权。可以通过<code>use_count()</code>函数来查看资源被引用的个数，当新增一个引用时，引用计数加1，当过期时引用计数减1，当引用计数为0时，智能指针会自动释放引用的内存资源。</p>
-<p><strong>NOTE:</strong>智能指针依然存在这内存泄漏的可能性，当两个对象互相使用一个<code>shared_ptr</code>成员变量指向对方，会造成循环引用，使得引用计数失效，从而导致内存泄漏。</p>
-<h3 id="3-3-weak-ptr"><a href="#3-3-weak-ptr" class="headerlink" title="3.3 weak_ptr"></a>3.3 weak_ptr</h3><p>为了解决<code>shared_ptr</code>循环引用导致的内存泄漏问题，C++引入了<code>weak_ptr</code>。<code>weak_ptr</code>的构造函数不会修改引用计数的值，从而不会对对象的内存进行管理，类似于一个普通指针，但不指向引用计数的共享内存。其功能时检测到所管理的对象是否已经释放，从而避免非法访问。<br><code>weak_ptr</code>相当于<code>shared_ptr</code>的辅助指针，所以主要的智能指针只有<code>shared_ptr</code>和<code>unique_ptr</code>。</p>
-<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
-<li><a href="https://www.cnblogs.com/Braveliu/p/3287966.html" target="_blank" rel="noopener">RAII用法详解</a></li>
-<li><a href="https://docs.microsoft.com/zh-cn/cpp/cpp/smart-pointers-modern-cpp?view=vs-2015" target="_blank" rel="noopener">智能指针</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>编程语言</category>
-      </categories>
-      <tags>
-        <tag>C/C++</tag>
-        <tag>RAII</tag>
-        <tag>内存管理</tag>
       </tags>
   </entry>
   <entry>
@@ -152,13 +570,25 @@
   <entry>
     <title>C/C++编程—序列化</title>
     <url>/2019/10/16/cpp-serialization-introduction/</url>
-    <content><![CDATA[<p>在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为<strong>序列化</strong>，它的逆过程称为<strong>反序列化</strong>。</p>
+    <content><![CDATA[<p>在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为<strong>序列化</strong>，它的逆过程称为<strong>反序列化</strong>。本文主要记录通过Boost.Serialization进行序列化的相关内容。</p>
 <a id="more"></a>
 <p>以下为一个简单的C++序列化程序：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Serialize</span><span class="params">(<span class="keyword">const</span> Student &amp;stu, <span class="keyword">char</span> out[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">memcpy</span>(out, stu.name.c_str(), stu.name.length());</span><br><span class="line">    count += stu.name.length();</span><br><span class="line">    <span class="built_in">memcpy</span>(out + count, &amp;stu.age, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    count += <span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Deserialize</span><span class="params">(Student &amp;stu, <span class="keyword">const</span> <span class="keyword">char</span>* in, <span class="keyword">int</span> count)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> offset = <span class="number">0</span>;</span><br><span class="line">    stu.name.append(in, count - <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    offset += stu.name.length();</span><br><span class="line">    <span class="built_in">memcpy</span>(&amp;stu.age, in + offset, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">128</span>];</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    Student stu1;</span><br><span class="line">    stu1.name = <span class="string">"tangming"</span>;</span><br><span class="line">    stu1.age = <span class="number">1024</span>;</span><br><span class="line">    count = Serialize(stu1, buf);</span><br><span class="line"></span><br><span class="line">    Student stu2;</span><br><span class="line">    Deserialize(stu2, buf, count);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"name: "</span> &lt;&lt; stu2.name &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"age: "</span> &lt;&lt; stu2.age &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>C++中常用的序列化方法主要有<code>protobuf</code>和<code>Boost.Serialization</code>。<a href="https://developers.google.com/protocol-buffers/docs/overview?csw=1" target="_blank" rel="noopener"><strong>Google Protocol Buffers(protobuf)</strong></a>是Google内部使用的数据编码方式，用来替代XML进行数据交换。<code>protobuf</code>效率较高，但是数据对象必须预先定义，并使用protoc编译，适合要求效率，允许自定义类型的内部场合使用。<a href="https://www.boost.org/doc/libs/1_68_0/libs/serialization/doc/index.html" target="_blank" rel="noopener"><strong>Boost.Serialization</strong></a>可以创建或重建程序中的等效结构，并保存为二进制数据、文本数据、XML或者有用户自定义的其他文件。<code>Boost.Serialization</code>使用灵活简单，而且支持标准C++容器。</p>
-<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<h2 id="1-Boost-Serialization"><a href="#1-Boost-Serialization" class="headerlink" title="1. Boost.Serialization"></a>1. Boost.Serialization</h2><p>Boost.Serialization来自标准Boost安装包，具有轻量、代码可移植、可以序列化STL容器和其他常用模板库的优点。与其他Boost库不同的是，Serialization并不是一个只包含头文件的库，因此需要对其进行编译。<br>Serialization库把存档和类型的序列化进行了分离，意味着任意的数据类型可以采用任意的格式进行存档。其头文件主要有两个目录：<code>&lt;boost/archive&gt;</code>主要包含存档格式的头文件；<code>&lt;boost/serialization&gt;</code>中的头文件提供了对各种数据类型进行序列化的能力。</p>
+<h3 id="1-1-存档"><a href="#1-1-存档" class="headerlink" title="1.1 存档"></a>1.1 存档</h3><p>Boost.Serialization 提供了多个归档类，它们可以持久化保存并在某个时刻恢复成C++对象。<br>|归档类|功能|<br>|:–:|:–|<br>|<code>boost::archive::text_oarchive</code>|用来把数据序列化成文本流|<br>|<code>boost::archive::text_iarchive</code>|用来从文本流恢复数据|<br>|<code>boost::archive::xml_oarchive</code>|用来把数据序列化成xml|<br>|<code>boost::archive::xml_iarchive</code>|用来从xml恢复数据|<br>|<code>boost::archive::binary_oarchive</code>|用来把数据序列化成二进制文件|<br>|<code>boost::archive::binary_iarchive</code>|用来从二进制文件恢复数据|</p>
+<p>只有可序列化的C++类型才能被序列化为字节流，进行存档或恢复。</p>
+<ul>
+<li>C++的基本类型都可进行序列化，如bool、int、double、enum。</li>
+<li>字符串可进行序列化。</li>
+<li>可序列化类型的数组也可以序列化。</li>
+<li>可序列化类型的指针和引用也可序列化。在序列化指针和引用时，并不会序列化指针中存储的地址，而是对象被自动地序列化。</li>
+<li>标准库定义的<code>complex</code>、<code>bitset</code>、<code>valarray</code>、<code>pair</code>等可进行序列化，支持标准容器<code>vector</code>、<code>deque</code>、<code>list</code>、<code>set</code>、<code>map</code>，不支持<code>stack</code>、<code>queue</code>、<code>priority_queue</code>。</li>
+<li>可序列化包含序列化函数的自定义数据类型。</li>
+</ul>
+<h3 id="1-2-自定义数据类型的序列化"><a href="#1-2-自定义数据类型的序列化" class="headerlink" title="1.2 自定义数据类型的序列化"></a>1.2 自定义数据类型的序列化</h3><h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
 <li><a href="https://cloud.tencent.com/developer/article/1342748" target="_blank" rel="noopener">最常用的两种C++序列化方案的使用心得</a></li>
+<li><a href="http://zh.highscore.de/cpp/boost/serialization.html#serialization_archive" target="_blank" rel="noopener">Boost C++库—序列化</a></li>
 </ul>
 ]]></content>
       <categories>
@@ -167,240 +597,6 @@
       <tags>
         <tag>C/C++</tag>
         <tag>序列化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Intel MKL简介</title>
-    <url>/2019/10/15/math-mkl-introduction/</url>
-    <content><![CDATA[<p><a href="https://software.intel.com/en-us/mkl" target="_blank" rel="noopener"><strong>MKL</strong></a>是Intel公司出品的数学函数计算库，提供经过高度优化和大量线程化处理的计算函数，有C和Fortran接口。</p>
-<a id="more"></a>
-
-<p>MKL主要包含的内容如下：</p>
-<ul>
-<li>基本线性代数子系统</li>
-<li>稀疏基本线性代数子系统</li>
-<li>线性代数库</li>
-<li>可扩展线性代数库</li>
-<li>稀疏求解器</li>
-<li>矢量数学库</li>
-<li>矢量统计库</li>
-<li>傅里叶变换库</li>
-<li>集群傅里叶变换库</li>
-</ul>
-<h2 id="1-BLAS"><a href="#1-BLAS" class="headerlink" title="1. BLAS"></a>1. BLAS</h2><p>BLAS是基本线性代数子系统，提供向量与向量、向量与矩阵以及矩阵与矩阵的运算。BLAS Level1提供向量数据的加减、点乘等；BLAS Level2提供向量与举证的运算，如乘法运算；BLAS Level3提供矩阵与矩阵的运算，比如矩阵乘法。<br>BLAS函数命名规范：<code>&lt;character&gt;&lt;name&gt;&lt;mod&gt;()</code><br>其中<strong><code>&lt;character&gt;</code></strong>表示代表数据类型：</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">s</td>
-<td align="center">real,    single precision</td>
-</tr>
-<tr>
-<td align="center">c</td>
-<td align="center">complex, single precision</td>
-</tr>
-<tr>
-<td align="center">d</td>
-<td align="center">real,    double precision</td>
-</tr>
-<tr>
-<td align="center">x</td>
-<td align="center">complex, double precision</td>
-</tr>
-</tbody></table>
-<p>在BLAS Level1中，<strong><code>&lt;name&gt;</code></strong>表示的是运算的方式，如<code>dot</code>表示向量点乘，<code>swap</code>表示向量交换。在BLAS Level2和BLAS Level3中，<strong><code>&lt;name&gt;</code></strong>表示矩阵的类型。</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">ge</td>
-<td align="center">一般矩阵(general matrix)</td>
-</tr>
-<tr>
-<td align="center">sb</td>
-<td align="center">(general band matrix)</td>
-</tr>
-<tr>
-<td align="center">sy</td>
-<td align="center">(symmetric matrix)</td>
-</tr>
-<tr>
-<td align="center">sp</td>
-<td align="center">(symmetric matrix package storage)</td>
-</tr>
-<tr>
-<td align="center">sb</td>
-<td align="center">(symmetric band matrix)</td>
-</tr>
-<tr>
-<td align="center">he</td>
-<td align="center">(Hermitian matrix)</td>
-</tr>
-<tr>
-<td align="center">hp</td>
-<td align="center">(Hermitian matrix package storage)</td>
-</tr>
-<tr>
-<td align="center">hb</td>
-<td align="center">(Hermitian band matrix)</td>
-</tr>
-<tr>
-<td align="center">tr</td>
-<td align="center">(triangular matrix)</td>
-</tr>
-<tr>
-<td align="center">tp</td>
-<td align="center">(triangular matrix package storage)</td>
-</tr>
-<tr>
-<td align="center">tb</td>
-<td align="center">(triangular band matrix)</td>
-</tr>
-</tbody></table>
-<p><strong><code>&lt;mod&gt;</code></strong>提供了计算的其他描述信息。</p>
-<table>
-<thead>
-<tr>
-<th align="center">level</th>
-<th align="center">参数</th>
-<th align="center">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">level1</td>
-<td align="center">c</td>
-<td align="center">conjugated vector</td>
-</tr>
-<tr>
-<td align="center">level1</td>
-<td align="center">u</td>
-<td align="center">unconjugated vector</td>
-</tr>
-<tr>
-<td align="center">level1</td>
-<td align="center">g</td>
-<td align="center">Givens rotation construction</td>
-</tr>
-<tr>
-<td align="center">level1</td>
-<td align="center">m</td>
-<td align="center">modified Givens rotation</td>
-</tr>
-<tr>
-<td align="center">level1</td>
-<td align="center">mg</td>
-<td align="center">modified Givens rotation construction</td>
-</tr>
-<tr>
-<td align="center">level2</td>
-<td align="center">mv</td>
-<td align="center">matrix-vector product</td>
-</tr>
-<tr>
-<td align="center">level2</td>
-<td align="center">sv</td>
-<td align="center">solving a system of linear equations with a single unknown vector</td>
-</tr>
-<tr>
-<td align="center">level2</td>
-<td align="center">r</td>
-<td align="center">rank-1 update of a matrix</td>
-</tr>
-<tr>
-<td align="center">level2</td>
-<td align="center">r2</td>
-<td align="center">rank-2 update of a matrix</td>
-</tr>
-<tr>
-<td align="center">level3</td>
-<td align="center">mm</td>
-<td align="center">matrix-matrix product</td>
-</tr>
-<tr>
-<td align="center">level3</td>
-<td align="center">sm</td>
-<td align="center">solving a system of linear equations with multiple unknown vectors</td>
-</tr>
-<tr>
-<td align="center">level3</td>
-<td align="center">rk</td>
-<td align="center">rank-k update of a matrix</td>
-</tr>
-<tr>
-<td align="center">level3</td>
-<td align="center">r2k</td>
-<td align="center">rank-2k update of a matrix</td>
-</tr>
-</tbody></table>
-<h2 id="2-Spare-BLAS"><a href="#2-Spare-BLAS" class="headerlink" title="2. Spare BLAS"></a>2. Spare BLAS</h2><p>与BLAS类似，分为Level 1，2，3级，分别对应稀疏向量或矩阵的运算。只不过利用过了稀疏向量和稀疏矩阵的特点：只存储向量或者矩阵中的非零元素。</p>
-<h2 id="3-LAPACK"><a href="#3-LAPACK" class="headerlink" title="3. LAPACK"></a>3. LAPACK</h2><p>根据操作主要分为两种功能：</p>
-<ul>
-<li>解线性方程组，矩阵分解，矩阵求逆等</li>
-<li>解决最小二乘问题，特征值和奇异值计算等</li>
-</ul>
-<h2 id="4-FFT"><a href="#4-FFT" class="headerlink" title="4. FFT"></a>4. FFT</h2><p>提供了多维快速傅里叶变换函数，支持离散傅里叶变换的一致性。</p>
-<h2 id="4-PDE"><a href="#4-PDE" class="headerlink" title="4. PDE"></a>4. PDE</h2><p>提供了解偏微分方程的工具。</p>
-<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
-<li><a href="https://blog.csdn.net/zb1165048017/article/details/70156844" target="_blank" rel="noopener">MKL学习——向量操作</a></li>
-<li><a href="https://blog.csdn.net/zb1165048017/article/details/70207812" target="_blank" rel="noopener">MKL学习——矩阵矩阵操作</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>数学计算</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>常用数学计算库介绍</title>
-    <url>/2019/10/15/math-library-introduction/</url>
-    <content><![CDATA[<p>对于机器学习的很多问题来说，计算的瓶颈在于大规模以及频繁的矩阵预算。为了使机器学习算法运行得更高效，需要在代码中采用比较成熟的矩阵运算数学库。本文主要总结常见的矩阵运算库。</p>
-<a id="more"></a>
-
-<h2 id="1-基本数学库"><a href="#1-基本数学库" class="headerlink" title="1. 基本数学库"></a>1. 基本数学库</h2><h3 id="1-1-BLAS-Basic-Linear-Algebra-Subprograms"><a href="#1-1-BLAS-Basic-Linear-Algebra-Subprograms" class="headerlink" title="1.1 BLAS(Basic Linear Algebra Subprograms)"></a>1.1 BLAS(Basic Linear Algebra Subprograms)</h3><p><a href="http://www.netlib.org/blas/" target="_blank" rel="noopener"><strong>BLAS</strong></a>是一个API标准，用以规范发布基础线性代数操作的数值库。Netlib用Fortran实现了BLAS的API接口，得到的库就叫BLAS。</p>
-<h3 id="1-2-LAPACK-Linear-Algebra-PACKage"><a href="#1-2-LAPACK-Linear-Algebra-PACKage" class="headerlink" title="1.2 LAPACK(Linear Algebra PACKage)"></a>1.2 LAPACK(Linear Algebra PACKage)</h3><p><a href="http://www.netlib.org/lapack/" target="_blank" rel="noopener"><strong>LAPACK</strong></a>也是由Netlib用Fortran语言编写的，底层是BLAS，但是LAPACK的运行效率更高。LAPACK提供了丰富的工具函数用于矩阵运算，如解多元线性方程、线性方程组的最小平方解、计算特征向量、奇异值分解等。</p>
-<h2 id="2-高级数学库"><a href="#2-高级数学库" class="headerlink" title="2. 高级数学库"></a>2. 高级数学库</h2><h3 id="2-1-EIGEN"><a href="#2-1-EIGEN" class="headerlink" title="2.1 EIGEN"></a>2.1 EIGEN</h3><p><a href="http://eigen.tuxfamily.org/index.php?title=Main_Page" target="_blank" rel="noopener"><strong>Eigen</strong></a>是一个线性算术的C++模板库，支持多平台，直接包含头文件就可以使用。TensorFlow就是基于Eigen的。<br><strong>底层</strong>：</p>
-<ul>
-<li>BLAS/LAPACK：支持所有基于F77的BLAS或LAPACK作为底层(<code>EIGEN_USE_BLAS</code>、<code>EIGEN_USE_LAPACK</code>)</li>
-<li>MKL：支持MKL作为底层(<code>EIGEN_USE_MKL_ALL</code>)</li>
-<li>CUDA：支持在CUDA kernels里使用CUDA</li>
-<li>OpenMP：多线程优化</li>
-</ul>
-<h3 id="2-2-Intel-MKL-Math-Kernel-Library"><a href="#2-2-Intel-MKL-Math-Kernel-Library" class="headerlink" title="2.2 Intel MKL(Math Kernel Library)"></a>2.2 Intel MKL(Math Kernel Library)</h3><p><a href="https://software.intel.com/en-us/mkl" target="_blank" rel="noopener"><strong>MKL</strong></a>基于Intel C++和Fortran编译器构建而成，并利用OpenMP实现了线程化。MKL的算法能够平均分配数据和任务，充分利用多个核心和处理器，支持Windows/Linux。<br><strong>底层</strong>：</p>
-<ul>
-<li>BLAS/LAPACK</li>
-<li>BLACS：Basic Linear Algebra Communication Subprograms</li>
-<li>ScaLAPACK：面向集群的LAPACK分布式内存并行版本</li>
-<li>DFTs：离散傅里叶变换</li>
-<li>VML：矢量数学库</li>
-<li>VSL：矢量统计学库</li>
-<li>PDF：偏微分方程</li>
-<li>BRNGs：Basic Random Number Generators</li>
-</ul>
-<h3 id="2-3-ACML-AMD-Core-Math-Library"><a href="#2-3-ACML-AMD-Core-Math-Library" class="headerlink" title="2.3 ACML(AMD Core Math Library)"></a>2.3 ACML(AMD Core Math Library)</h3><p>对于Intel CPU，使用MKL能获得较好的运算性能，而对于AMD CPU，使用的是<a href="https://developer.amd.com/amd-aocl/amd-math-library-libm/" target="_blank" rel="noopener"><strong>ACML</strong></a>。在矩阵运算方面，ACML底层使用的也是BLAS,LAPACK等。<br><strong>底层</strong>：</p>
-<ul>
-<li>BLAS/LAPACK：针对AMD进行了优化</li>
-<li>FFTs：快速傅里叶变化</li>
-<li>RNG：随机数生成器</li>
-</ul>
-<h3 id="2-4-OpenBLAS"><a href="#2-4-OpenBLAS" class="headerlink" title="2.4 OpenBLAS"></a>2.4 OpenBLAS</h3><p><a href="https://www.openblas.net/" target="_blank" rel="noopener"><strong>OpenBLAS</strong></a>是一个高性能多核 BLAS 库</p>
-<h3 id="2-5-CUDA-Math-Library"><a href="#2-5-CUDA-Math-Library" class="headerlink" title="2.5 CUDA Math Library"></a>2.5 CUDA Math Library</h3><p><a href="https://developer.nvidia.com/cuda-math-library" target="_blank" rel="noopener"><strong>CUDA Math Library</strong></a>是在GPU上的数学计算库，其计算性能远高于CPU上的数学计算库。<br><strong>底层</strong>：</p>
-<ul>
-<li>CUBLAS：是一个基于GPU的BLAS库，提供的计算函数都在GPU上执行。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>数学计算</category>
-      </categories>
-      <tags>
-        <tag>CUDA</tag>
-        <tag>MKL</tag>
       </tags>
   </entry>
   <entry>
@@ -559,6 +755,10 @@
 </ul>
 <p>  <strong>NOTE:</strong> 在进行一些开源项目的编译时，属性菜单中没有<em>链接器</em> 的属性，但是有<em>库管理器</em> 属性，可以在该属性下配置目标计算机和命令行的值。</p>
 </li>
+<li><p><strong>error C2338: <hash_map> is deprecated and will be REMOVED</hash_map></strong><br>  出现此问题最直接的解决办法是：<br>  项目右键-&gt;<em>属性</em>-&gt;<em>C/C++</em>-&gt;<em>预处理器</em>-&gt;<em>预处理器定义</em>：添加<code>_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS</code></p>
+</li>
+<li><p><strong>OpenBLAS对大矩阵进行运算时会出现崩溃</strong></p>
+</li>
 </ul>
 ]]></content>
       <categories>
@@ -568,7 +768,7 @@
   <entry>
     <title>Redis简介</title>
     <url>/2019/10/12/redis-introduction/</url>
-    <content><![CDATA[<p>Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型以及基本操作。</p>
+    <content><![CDATA[<p>Redis 是一个key-value存储系统，本文主要记录Redis的安装、配置、数据类型、基本操作以及相关概念。</p>
 <a id="more"></a>
 <p>Redis(Remote Dictionary Server)是一个开源的高性能key-value数据库，它以字典结构存储数据，并允许其他应用通过TCP协议进行读取。Redis的数据都存储在内存中，因此在性能上相比较于硬盘存储的数据库有非常明显的优势。</p>
 <h2 id="1-Redis的安装"><a href="#1-Redis的安装" class="headerlink" title="1. Redis的安装"></a>1. Redis的安装</h2><h3 id="1-1-Windows平台"><a href="#1-1-Windows平台" class="headerlink" title="1.1 Windows平台"></a>1.1 Windows平台</h3><p>官网的Redis只有Linux版本的，但是Github上有Windows版的Redis<a href="https://github.com/microsoftarchive/redis/releases" target="_blank" rel="noopener">【下载地址】</a>。Windows的Redis有msi安装版，压缩包版和源码编译三种使用方式。</p>
@@ -576,36 +776,36 @@
 <table>
 <thead>
 <tr>
-<th align="left">文件名</th>
+<th align="center">文件名</th>
 <th align="left">文件功能</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">redis-server</td>
+<td align="center">redis-server</td>
 <td align="left">服务端应用，提供Redis服务</td>
 </tr>
 <tr>
-<td align="left">redis-cli</td>
+<td align="center">redis-cli</td>
 <td align="left">客户端程序，通过连接Redis服务并进行操作</td>
 </tr>
 <tr>
-<td align="left">redis-benchmark</td>
+<td align="center">redis-benchmark</td>
 <td align="left">性能测试，用来模拟同时由N个客户端发送M个SETs/GETs操作</td>
 </tr>
 <tr>
-<td align="left">redis-check-aof</td>
+<td align="center">redis-check-aof</td>
 <td align="left">更新日志检查</td>
 </tr>
 <tr>
-<td align="left">redis-check-dump</td>
+<td align="center">redis-check-dump</td>
 <td align="left">本地数据库检查</td>
 </tr>
 <tr>
-<td align="left">redis.windows.conf</td>
+<td align="center">redis.windows.conf</td>
 <td align="left">配置文件，将Redis作为普通软件使用，命令行关闭则Redis关闭</td>
 </tr>
 <tr>
-<td align="left">redis.windows-service.conf</td>
+<td align="center">redis.windows-service.conf</td>
 <td align="left">配置文件，将Redis作为系统服务进行配置</td>
 </tr>
 </tbody></table>
@@ -631,6 +831,7 @@
 <li><a href="https://blog.csdn.net/gqtcgq/article/category/5992975/1" target="_blank" rel="noopener">Redis源码解析</a></li>
 <li><a href="https://shiningdan.github.io/2017/05/26/Redis%E5%85%A5%E9%97%A8/" target="_blank" rel="noopener">redis入门</a></li>
 <li><a href="https://blog.csdn.net/calmreason/article/details/54881014" target="_blank" rel="noopener">Windows C++ Redis客户端 cpp_redis</a></li>
+<li><a href="http://redisdoc.com/persistence/index.html" target="_blank" rel="noopener">Redis 命令参考</a></li>
 </ul>
 ]]></content>
       <categories>
@@ -638,172 +839,6 @@
       </categories>
       <tags>
         <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis内存模型</title>
-    <url>/2019/10/11/redis-memory-model/</url>
-    <content><![CDATA[<p>本文主要记录Redis的内存模型，包括内存的使用情况、内存分配器、简单动态字符串以及不同对象类型在内存中的编码方式等。</p>
-<a id="more"></a>
-<h2 id="1-内存统计"><a href="#1-内存统计" class="headerlink" title="1. 内存统计"></a>1. 内存统计</h2><p>在客户端可以通过<code>info</code>命令查看内存的使用情况。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info memory</span><br><span class="line"># Memory</span><br><span class="line">used_memory:13293448 #Redis分配器分配的内存总量</span><br><span class="line">used_memory_human:12.68M #</span><br><span class="line">used_memory_rss:13256520 #Redis进程占据操作系统的内存，除了used_memory之外还有本身运行内存以及内存碎片等</span><br><span class="line">used_memory_rss_human:12.64M</span><br><span class="line">used_memory_peak:25839504</span><br><span class="line">used_memory_peak_human:24.64M</span><br><span class="line">total_system_memory:0</span><br><span class="line">total_system_memory_human:0B</span><br><span class="line">used_memory_lua:37888</span><br><span class="line">used_memory_lua_human:37.00K</span><br><span class="line">maxmemory:0</span><br><span class="line">maxmemory_human:0B</span><br><span class="line">maxmemory_policy:noeviction</span><br><span class="line">mem_fragmentation_ratio:1.00 #内存碎片比率</span><br><span class="line">mem_allocator:jemalloc-3.6.0 #Redis使用的内存分配器</span><br></pre></td></tr></table></figure>
-
-<p>Redis的内存占用主要分为以下几个部分：</p>
-<ul>
-<li>数据：即使用键值对存储的数据，这部分内存统计在<code>used_memory</code>中</li>
-<li>进程运行内存：Redis主进程本身运行需要的内存</li>
-<li>缓冲内存：包括客户端缓冲内存、复制积压缓冲区、AOF缓冲区等。客户端缓冲内存存储客户端连接的输入输出缓冲；复制积压缓冲内存用于部分复制功能；AOF缓冲区用于进行AOF重写时保存最近的写入命令。</li>
-<li>内存碎片：Redis再分配和回收物理内存过程中产生的无法有效利用的内存。</li>
-</ul>
-<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
-<li><a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="noopener">如何阅读Redis源码</a></li>
-<li><a href="http://redisbook.com/" target="_blank" rel="noopener">Redis设计与实现</a></li>
-<li><a href="https://www.cnblogs.com/kismetv/p/8654978.html#t21" target="_blank" rel="noopener">Redis内存模型</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PyTorch模型</title>
-    <url>/2019/10/09/pytorch-model-introduction/</url>
-    <content><![CDATA[<p>本文主要记录PyTorch模型搭建，参数初始化,模型的保存和加载以及模型Fintune的相关内容。</p>
-<a id="more"></a>
-
-<h2 id="1-模型的搭建"><a href="#1-模型的搭建" class="headerlink" title="1. 模型的搭建"></a>1. 模型的搭建</h2><h3 id="1-1-模型的定义"><a href="#1-1-模型的定义" class="headerlink" title="1.1 模型的定义"></a>1.1 模型的定义</h3><p>PyTorch中进行模型定义需要注意的主要有三个部分：</p>
-<ul>
-<li>模型类要继承<code>nn.Module</code>，让PyTorch知道这个类是模型类</li>
-<li>在<code>__init__()</code>函数中定义模型需要用到的组件(如conv,pool,fc等)</li>
-<li>在<code>forward()</code>函数中将定义的组件组装成需要的模型</li>
-</ul>
-<h3 id="1-2-nn-Sequetial"><a href="#1-2-nn-Sequetial" class="headerlink" title="1.2 nn.Sequetial"></a>1.2 <code>nn.Sequetial</code></h3><p><code>torch.nn.Sequetial</code>是一个序列容器，能够将一系列的操作按照先后顺序封装起来，方便重复使用。</p>
-<h2 id="2-模型权值的初始化"><a href="#2-模型权值的初始化" class="headerlink" title="2. 模型权值的初始化"></a>2. 模型权值的初始化</h2><p>模型定义完成后，通常还需要对模型的权值进行初始化之后才能开始训练。初始化的方法会直接影响到模型是否收敛。</p>
-<h3 id="2-1-权值初始化的流程"><a href="#2-1-权值初始化的流程" class="headerlink" title="2.1 权值初始化的流程"></a>2.1 权值初始化的流程</h3><p>权值的初始化分为两步：</p>
-<ul>
-<li>定义一个初始化函数，在函数中设定什么层使用什么初始化方法，初始化方法在<code>torch.nn.init</code>中给出</li>
-<li>实例化一个模型，执行该函数，即可完成初始化</li>
-</ul>
-<h3 id="2-2-常用的初始化方法"><a href="#2-2-常用的初始化方法" class="headerlink" title="2.2 常用的初始化方法"></a>2.2 常用的初始化方法</h3><p>PyTorch在<code>torch.nn.init</code>中提供了常用的初始化方法函数，主要分为两部分：<strong>Xavier,Kaiming系列</strong>和<strong>其他分布方法</strong>。</p>
-<h2 id="3-模型Fintune"><a href="#3-模型Fintune" class="headerlink" title="3. 模型Fintune"></a>3. 模型Fintune</h2><p>一个良好的初始化权值可以加快模型的收敛，甚至可以提高模型的精度。在实际的应用中，我们通常用一个已经训练过的模型的权值作为模型的初始化参数，称之为模型Fintune，更广泛的叫做迁移学习。</p>
-<p>Fintune的目的是让我们的新模型有一个较好的权重初始值，其流程主要分为三步：</p>
-<ul>
-<li>训练并保存模型，得到一个预训练模型</li>
-<li>加载模型，得到预训练模型的权值</li>
-<li>初始化，将得到的权值对应放到新模型的不同层中</li>
-</ul>
-<h3 id="3-1-模型的保存和加载"><a href="#3-1-模型的保存和加载" class="headerlink" title="3.1 模型的保存和加载"></a>3.1 模型的保存和加载</h3><h3 id="3-2-权值初始化"><a href="#3-2-权值初始化" class="headerlink" title="3.2 权值初始化"></a>3.2 权值初始化</h3>]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CVPR2019医学图像处理论文集</title>
-    <url>/2019/10/09/paper-reading-medical-image-analysis-at-cvpr2019/</url>
-    <content><![CDATA[<h2 id="参考文献-amp-资源链接"><a href="#参考文献-amp-资源链接" class="headerlink" title="参考文献 &amp; 资源链接"></a>参考文献 &amp; 资源链接</h2><ul>
-<li><a href="https://mp.weixin.qq.com/s/3-YpBL02QY8PmlTiCVmJiQ" target="_blank" rel="noopener">CVPR2019医学影像分析文集</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>论文阅读</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CUDA—内存模型</title>
-    <url>/2019/10/09/cuda-memory-model/</url>
-    <content><![CDATA[<p>现代计算机的内存结构主要有：寄存器(Registers)、缓存(Caches)、主存(Main Memory)和硬盘存储(Disk Memory)。速度最快的是寄存器，接着是缓存，然后是主存储器，常见的就是内存条，最后是硬盘。GPU和CPU的内存设计有着相似的准则和模型，CUDA编程模型将内存层次结构很好的呈现给开发者，让我们能显式的控制其行为。</p>
-<a id="more"></a>
-
-<p>GPU中内存设备有<strong>寄存器</strong>、<strong>共享内存</strong>、<strong>本地内存</strong>、<strong>常量内存</strong>、<strong>纹理内存</strong>、<strong>全局内存</strong>，各种内存都有自己的作用域、生命周期和缓存行为。</p>
-<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
-<li><a href="https://face2ai.com/CUDA-F-4-1-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0/" target="_blank" rel="noopener">CUDA内存模型概述</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>GPU编程</category>
-      </categories>
-      <tags>
-        <tag>CUDA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CUDA—编程模型</title>
-    <url>/2019/10/08/cuda-programming-model/</url>
-    <content><![CDATA[<p>本文主要记录CUDA的内存分配、释放，主机与设备的数据传输，固定内存等内容</p>
-<a id="more"></a>
-<p>在标准的CUDA应用程序中，通常有以下几个步骤：</p>
-<ul>
-<li>在Device上分配内存</li>
-<li>将数据从Host复制到Device</li>
-<li>在GPU上通过核函数对数据进行计算</li>
-<li>将数据从Device复制到Host</li>
-<li>释放分配的设备内存</li>
-</ul>
-<p>其中，Device即GPU，Host即CPU，核函数即Kernel (the function that runs on GPU)。</p>
-<h2 id="1-内存管理"><a href="#1-内存管理" class="headerlink" title="1. 内存管理"></a>1. 内存管理</h2><p>内存管理在串行程序中非常常见，寄存器和栈的内存由机器自己管理，堆空间由用户控制分配和释放。CUDA提供API可以分配管理Device上的内存，也可以管理Host上的内存。</p>
-<table>
-<thead>
-<tr>
-<th align="center">标准C函数</th>
-<th align="center">CUDA C函数</th>
-<th align="center">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">malloc</td>
-<td align="center">cudaMalloc</td>
-<td align="center">内存分配</td>
-</tr>
-<tr>
-<td align="center">memcpy</td>
-<td align="center">cudaMemcpy</td>
-<td align="center">内存复制</td>
-</tr>
-<tr>
-<td align="center">memset</td>
-<td align="center">cudaMemset</td>
-<td align="center">内存设置</td>
-</tr>
-<tr>
-<td align="center">free</td>
-<td align="center">cudaFree</td>
-<td align="center">内存释放</td>
-</tr>
-</tbody></table>
-<p>通常来讲，对于一维数组，在GPU中进行内存分配和数据拷贝使用的是<code>cudaMalloc</code>和<code>cudaMemcpy</code>函数，但是对于二维或者三维矩而言，使用<code>cudaMalloc</code>并不能得到最佳性能。原因是对于2D和3D内存，<strong>对齐</strong>是一个很重要的性质。<code>cudaMallocPitch</code>和<code>cudaMalloc3D</code>这两个函数能够保证分配的内存是合理对齐的，满足物理上的内存访问，可以确保对行进行访问的时候具有最优的效率。除此之外，对于数组内存的复制应当使用<code>cudaMemcpy2D</code>和<code>cudaMemcpy3D</code>来实现。</p>
-<p><strong>NOTE:</strong> <code>cudaMallocPitch</code>在分配行空间的时候会进行内存补齐，使得每一行的总的大小为128的整数倍，分配的总内存要大于实际所需的内存，我们在访问某一行的某个元素时，按照<code>a[pitch*row+col]</code>来访问。因此，在使用<code>cudaMallocPitch</code>的时候一定要返回pitch，只有这样才能访问二维数组的元素。当需要将这个二维数组从Device复制到Host的时候，如果使用<code>cudaMemcpy</code>不仅复制了数组的元素，也复制了补齐的内存，<code>cudaMemcpy2D</code>会跳过补齐的内存，只复制有效的数组元素。</p>
-<h2 id="2-Host-Device数据传输"><a href="#2-Host-Device数据传输" class="headerlink" title="2. Host/Device数据传输"></a>2. Host/Device数据传输</h2><p>在CUDA应用的步骤中，数据的传输是必须的同时也是算法性能的瓶颈，相对于计算过程而言，数据的传输过程十分的耗费时间。优化数据传输的方式主要有三种：</p>
-<ul>
-<li>尽量减少Host和Device之间数据的传输</li>
-<li>使用CUDA内存优化技巧。比如Pinned Memory，Shared Memory，Constant Memory，使用流来掩盖内存延迟等【使用固定内存获得更高的数据传输带宽】</li>
-<li>将多个小的数据传输合并为一次大的数据传输，这样可以消除每次传输的大部分开销</li>
-</ul>
-<h3 id="2-1-固定内存-Pinned-Memory"><a href="#2-1-固定内存-Pinned-Memory" class="headerlink" title="2.1 固定内存(Pinned Memory)"></a>2.1 固定内存(Pinned Memory)</h3><p>在CPU与GPU协同计算过程中，主机内存默认时分页(pageable)内存，分页内存需要先转换为固定(Pinned)内存，然后进行主机与设备之间的内存拷贝。在CUDA C/C++中可以通过<code>cudaMallocHost()</code>或<code>cudaHostAlloc()</code>函数开辟固定内存并进行直接访问，从而提高Device和Host之间数据传输的效率。CUDA开辟的固定内存通过<code>cudaFreeHost</code>函数进行释放。</p>
-<p><strong>NOTE:</strong> 固定内存的分配有可能会失败，所以要进行错误检查。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cudaError_t status = cudaMallocHost((<span class="keyword">void</span>**)&amp;h_PinnedMem, size);</span><br><span class="line"><span class="keyword">if</span>(status != cudaSuccess)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Error in allocating pinned host memory"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-2-合并小规模的数据传输"><a href="#2-2-合并小规模的数据传输" class="headerlink" title="2.2 合并小规模的数据传输"></a>2.2 合并小规模的数据传输</h3><p>因为每次传输都会产生额外的开销，所以最好将多个小规模的数据传输合并为单独的一次数据传输。可以使用临时的数组，然后将要传输的数据填充该数组，数组最好为固定内存的数组。</p>
-<h2 id="3-核函数"><a href="#3-核函数" class="headerlink" title="3. 核函数"></a>3. 核函数</h2><p>//TODO</p>
-<h2 id="4-CUDA内核运行时间测量"><a href="#4-CUDA内核运行时间测量" class="headerlink" title="4. CUDA内核运行时间测量"></a>4. CUDA内核运行时间测量</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cudaEvent_t start1;</span><br><span class="line">cudaEventCreate(&amp;start1);</span><br><span class="line">cudaEvent_t stop1;</span><br><span class="line">cudaEventCreate(&amp;stop1);</span><br><span class="line">cudaEventRecord(start1, <span class="literal">NULL</span>);</span><br><span class="line"><span class="comment">// 需要测时间的核函数</span></span><br><span class="line">cudaEventRecord(stop1, <span class="literal">NULL</span>);</span><br><span class="line">cudaEventSynchronize(stop1);</span><br><span class="line"><span class="keyword">float</span> msecTotal1 = <span class="number">0.0f</span>;</span><br><span class="line">cudaEventElapsedTime(&amp;msecTotal1,start1,stop1);</span><br></pre></td></tr></table></figure>
-
-<p>CPU运行时间测量</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">long</span> start_time = GetTickCount();</span><br><span class="line"><span class="comment">// 需要测试时间的代码</span></span><br><span class="line"><span class="keyword">long</span> end_time = GetTickCount();</span><br><span class="line"><span class="keyword">long</span> duration = end_time-start_time;</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
-<li><a href="https://www.cnblogs.com/skyfsm/p/9673960.html" target="_blank" rel="noopener">CUDA编程之快速入门</a></li>
-<li><a href="https://face2ai.com/cuda-f-2-0-cuda%e7%bc%96%e7%a8%8b%e6%a8%a1%e5%9e%8b%e6%a6%82%e8%bf%b01/" target="_blank" rel="noopener">CUDA编程模型概述</a></li>
-<li><a href="https://github.com/PacktPublishing/Hands-On-GPU-Accelerated-Computer-Vision-with-OpenCV-and-CUDA" target="_blank" rel="noopener">Hands-On-GPU-Accelerated-Computer-Vision-with-OpenCV-and-CUDA</a></li>
-<li><a href="https://devblogs.nvidia.com/how-optimize-data-transfers-cuda-cc/" target="_blank" rel="noopener">How to Optimize Data Transfers in CUDA C/C++</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>GPU编程</category>
-      </categories>
-      <tags>
-        <tag>CUDA</tag>
       </tags>
   </entry>
   <entry>
@@ -837,96 +872,116 @@
       </categories>
   </entry>
   <entry>
-    <title>PyTorch简介</title>
-    <url>/2019/10/03/pytorch-introduction/</url>
-    <content><![CDATA[<p>PyTorch是基于torch的Python开源机器学习库，本文主要记录PyTorch的基本数据类型以及自动求导机制。</p>
-<a id="more"></a>
-<p>PyTorch是一个基于Python的科学计算包，主要提供以下两种服务：</p>
+    <title>PyTorch—Tensor及其操作</title>
+    <url>/2019/10/03/pytorch-tensor-introduction/</url>
+    <content><![CDATA[<p>PyTorch是基于torch的Python开源机器学习库，主要提供以下两种服务：</p>
 <ul>
 <li>作为NumPy的替代品，使用GPU的强大计算力（通过张量实现）</li>
-<li>提供最大的灵活性和高速的深度学习研究平台（包含自动求导系统的深度神经网络）</li>
+<li>提供最大的灵活性和高速的深度学习研究平台（包含自动求导系统的深度神经网络）<br>本文主要记录PyTorch的基本运算单元Tensor及其相关的操作。<a id="more"></a></li>
 </ul>
-<h2 id="1-张量"><a href="#1-张量" class="headerlink" title="1. 张量"></a>1. 张量</h2><p><strong>张量</strong>(Tensor)是PyTorch里面基础的运算单元，与NumPy的ndarry相同，都表示的是一个数据类型相同的多维矩阵。与ndarry的最大区别就是，Tensor可以在GPU上运行，ndarry只能在CPU上运行。<br>张量本质上是一个矩阵，就存在着创建、索引、算数操作、逻辑操作以及维度操作等方法以及数据类型等属性。</p>
-<h3 id="1-1-基本类型"><a href="#1-1-基本类型" class="headerlink" title="1.1 基本类型"></a>1.1 基本类型</h3><p>Tensor的基本数据类型有五种：</p>
+<p><strong>张量</strong>(Tensor)是PyTorch里面基础的运算单元，与NumPy的ndarry相同，都表示的是一个数据类型相同的多维矩阵。与ndarry的最大区别就是，Tensor可以在GPU上运行，ndarry只能在CPU上运行。张量本质上是一个矩阵，就存在着创建、索引、算数操作、逻辑操作以及维度操作等方法以及数据类型等属性。</p>
+<h2 id="1-Tensor的数据结构"><a href="#1-Tensor的数据结构" class="headerlink" title="1. Tensor的数据结构"></a>1. Tensor的数据结构</h2><ul>
+<li>信息区：形状，步长，数据类型等</li>
+<li>存储区(Storage)：用一个连续数组存储真正的数据，通过size, stride,offset进行元素访问。<br><img src="/resources/images/python_tensor_struct.png" alt></li>
+</ul>
+<h3 id="1-1-Tensor的数据类型"><a href="#1-1-Tensor的数据类型" class="headerlink" title="1.1  Tensor的数据类型"></a>1.1  Tensor的数据类型</h3><p>Tensor的基本数据类型有八种：</p>
 <ul>
-<li>32位浮点型</li>
-<li>64位浮点型</li>
-<li>16位整型</li>
-<li>32位整型</li>
-<li>64位整型<br>除了数值类型外，还有byte型和char型。</li>
+<li>16位浮点型(Half)</li>
+<li>32位浮点型(Float)</li>
+<li>64位浮点型(Double)</li>
+<li>8位无符号整型(Byte)</li>
+<li>8位有符号整型(Char)</li>
+<li>16位整型(Short)</li>
+<li>32位整型(Int)</li>
+<li>64位整型(Long)<br>默认类型为<code>torch.FloatTensor</code>。</li>
 </ul>
-<h2 id="2-自动求导-Autograd"><a href="#2-自动求导-Autograd" class="headerlink" title="2. 自动求导(Autograd)"></a>2. 自动求导(Autograd)</h2><p>深度学习的算法本质是通过反向传播求导数，PyTorch的autograd的模块则实现了此功能。在Tensor上的所有操作，autograd都能为其自动提供微分，避免手动计算导数的复杂过程。<br>在张量创建时，通过设置<code>requires_grad</code>为<code>True</code>来标识该张量需要进行自动求导，PyTorch会记录该张量的每一步操作并自动计算。</p>
-<h3 id="2-1-扩展Autograd"><a href="#2-1-扩展Autograd" class="headerlink" title="2.1 扩展Autograd"></a>2.1 扩展Autograd</h3><p>如果需要自定义扩展autograd的功能，就需要扩展Function类。Function使用autograd来计算结果和梯度，并对操作历史进行编码。在Function类中，最重要的方法就是<code>forward()</code>和<code>backward()</code>，它们分别代表前向传播和后向传播。<br>一个自定义的Function需要以下三个方法：</p>
+<h3 id="1-2-Tensor的属性"><a href="#1-2-Tensor的属性" class="headerlink" title="1.2 Tensor的属性"></a>1.2 Tensor的属性</h3><ul>
+<li><code>torch.dtype</code>：标识了张量的数据类型</li>
+<li><code>torch.device</code>：标识了张量创建以后所存储的设备的名称。<code>torch.device</code>包含了两种设备类型(‘cpu’或’gpu’)，分别标识将Tensor对象存储于CPU或者GPU中，同时指定设备号，比如多张GPU，可以通过’cuda:X’来指定编号为X的GPU。<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.device(<span class="string">'cpu'</span>)</span><br><span class="line">torch.device(<span class="string">'gpu'</span>)</span><br><span class="line">torch.device(<span class="string">'gpu:1'</span>)</span><br></pre></td></tr></table></figure></li>
+<li><code>torch.layout</code>：标识了张量在内存中的布局模式。目前支持两种内存布局模式<code>torch.strided</code>(dense Tensors)和<code>torch.sparse_coo</code>(稀疏矩阵存储方式)</li>
+</ul>
+<h2 id="2-创建Tensor"><a href="#2-创建Tensor" class="headerlink" title="2. 创建Tensor"></a>2. 创建Tensor</h2><h3 id="2-1-从已经存在的数据生成Tensor"><a href="#2-1-从已经存在的数据生成Tensor" class="headerlink" title="2.1 从已经存在的数据生成Tensor"></a>2.1 从已经存在的数据生成Tensor</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.tensor(data,dtype=<span class="literal">None</span>,device=<span class="literal">None</span>,requires_grad=<span class="literal">False</span>)</span><br><span class="line">data：张量的数据，可以是list, tuple, ndarry或其他类型</span><br><span class="line">dtype：指定张量的类型</span><br><span class="line">device：指定张量存储的设备</span><br><span class="line">requires_grad：指定是否进行记录图的操作</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-创建特殊类型的Tensor"><a href="#2-2-创建特殊类型的Tensor" class="headerlink" title="2.2 创建特殊类型的Tensor"></a>2.2 创建特殊类型的Tensor</h3><h4 id="创建指定数值的Tensor"><a href="#创建指定数值的Tensor" class="headerlink" title="创建指定数值的Tensor"></a>创建指定数值的Tensor</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.ones(*sizes,out=<span class="literal">None</span>) <span class="comment"># 返回全1的Tensor，其形状有可变参数sizes定义</span></span><br><span class="line">torch.ones_like(input,out=<span class="literal">None</span>) <span class="comment"># 返回全1的Tensor，其形状与输入张量input相同</span></span><br><span class="line"></span><br><span class="line">torch.zeros(*sizes,out=<span class="literal">None</span>) <span class="comment"># 返回全0的Tensor</span></span><br><span class="line">torch.zeros_like(input,out=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">torch.full(*sizes,fill_value,out=<span class="literal">None</span>) <span class="comment"># 返回值为的Tensor</span></span><br><span class="line">torch.full_like(input,fill_value,out=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">torch.arange(start=<span class="number">0</span>,end,step=<span class="number">1</span>) <span class="comment"># 返回[start, end)，步长为step的一维张量</span></span><br><span class="line">torch.linspace(start,end,steps=<span class="number">100</span>,out=<span class="literal">None</span>) <span class="comment"># 返回[start, end]，中间插值数目为steps的一维张量</span></span><br><span class="line">torch.logspace(start,end,steps=<span class="number">100</span>,out=<span class="literal">None</span>) <span class="comment"># 返回[10^start, 10^end]间的对数间隔steps的一维张量</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="创建指定矩阵类型的Tensor"><a href="#创建指定矩阵类型的Tensor" class="headerlink" title="创建指定矩阵类型的Tensor"></a>创建指定矩阵类型的Tensor</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.eye(n,m=<span class="literal">None</span>,out=<span class="literal">None</span>) <span class="comment"># 返回对角线位置为1，其他位置为0的二维张量，参数`m`默认等于`n`</span></span><br><span class="line"></span><br><span class="line">torch.empty(*sizes,out=<span class="literal">None</span>) <span class="comment"># 返回未被初始化，大小为sizes的Tensor</span></span><br><span class="line">torch.empty_like(input,out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建随机数类型的Tensor"><a href="#创建随机数类型的Tensor" class="headerlink" title="创建随机数类型的Tensor"></a>创建随机数类型的Tensor</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 均匀分布</span></span><br><span class="line">torch.rand(*sizes,out=<span class="literal">None</span>) <span class="comment"># 返回[0, 1]之间均匀分布的随机数值</span></span><br><span class="line">torch.rand_like(input,out=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">torch.randint(low=<span class="number">0</span>,high,size,out=<span class="literal">None</span>) <span class="comment"># 返回[low,high]之间均匀分布的随机数值</span></span><br><span class="line">torch.randint_like(input,low=<span class="number">0</span>,high,out=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准正态分布</span></span><br><span class="line">torch.randn(*sizes,out=<span class="literal">None</span>) <span class="comment"># 返回均值为0，方差为1的标准正态分布的随机数值</span></span><br><span class="line">torch.randn_like(input,out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 离散正态分布</span></span><br><span class="line">torch.normal(mean,std,out=<span class="literal">None</span>) <span class="comment"># 返回均值为mean，标准差为std的一维张量，std是一个张量，包含每个输出元素相关的正态分布标准差</span></span><br><span class="line"><span class="comment"># 随机排列数</span></span><br><span class="line">torch.randperm(n,out=<span class="literal">None</span>) <span class="comment"># 返回[0, n)的数列的随机排列</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-操作Tensor"><a href="#3-操作Tensor" class="headerlink" title="3. 操作Tensor"></a>3. 操作Tensor</h2><p>从接口的角度讲，对Tensor的操作分为两类：</p>
 <ul>
-<li><code>__init__</code>：Function的构造函数，其中定义操作需要的额外参数</li>
-<li><code>forward()</code>：执行前向传播的计算代码</li>
-<li><code>backward()</code>：执行后向传播的计算代码</li>
+<li><code>torch.function</code></li>
+<li><code>tensor.function</code></li>
 </ul>
-<p><strong>NOTE:</strong> 方法必须是静态方法，所以在函数前面啊要加上<code>@staticmethod</code>。</p>
+<p>从存储的角度讲，对Tensor的操作又可分为两类：</p>
+<ul>
+<li>不会修改自身数据的操作，如<code>add()</code></li>
+<li>会修改自身数据的操作，如<code>add_()</code></li>
+</ul>
+<h3 id="3-1-基本操作"><a href="#3-1-基本操作" class="headerlink" title="3.1 基本操作"></a>3.1 基本操作</h3><ul>
+<li><p><strong>索引</strong><br>Tensor支持与Numpy类似的索引操作，其语法上也类似，通过索引可以对Tensor中的数据进行修改。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.randn(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">a[:] <span class="comment"># 索引全部元素</span></span><br><span class="line">a[:<span class="number">2</span>] <span class="comment"># 索引前两行的元素，索引左闭右开</span></span><br><span class="line">a[<span class="number">0</span>:<span class="number">2</span>,<span class="number">1</span>] <span class="comment"># 索引前两行第二列的元素</span></span><br></pre></td></tr></table></figure>
+<p>除了索引操作符外，还有一些其他常用的选择函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.take(input,index) <span class="comment"># 输入张量被看作一维张量，返回给定索引位置元素组成的张量</span></span><br><span class="line">torch.index_select(input,dim,index,out=<span class="literal">None</span>) <span class="comment"># 返回在指定维度dim上索引为index张量，index必须是一个张量</span></span><br><span class="line">torch.masked_select(input,mask,out=<span class="literal">None</span>) <span class="comment"># 根据mask来返回一个一维张量</span></span><br><span class="line">torch.nonzero(input)  <span class="comment"># 返回非0元素的下标</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>拼接</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.cat(seq,dim=<span class="number">0</span>,out=<span class="literal">None</span>) <span class="comment"># 沿着指定维度dim拼接seq中的张量，张量除被拼接维度外，其他维度必须相同或者张量为empty</span></span><br><span class="line">torch.stack(seq,dim=<span class="number">0</span>,out=<span class="literal">None</span>) <span class="comment"># 沿着指定维度堆叠张量，张量形状必须完全一致</span></span><br><span class="line">a = torch.randn(<span class="number">2</span>,<span class="number">4</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">c = torch.randn(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">torch.cat([a,b],dim=<span class="number">0</span>) <span class="comment"># 返回shape为[5,4]的张量</span></span><br><span class="line">torch.stack([b,c],dim=<span class="number">0</span>) <span class="comment"># 返回shape为[2,3,4]的张量</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>NOTE</strong>：<code>cat</code>会增加指定维度的长度，可以理解为续接；<code>stack</code>会增加一个新的维度，可以理解为堆叠。</p>
+<ul>
+<li><strong>分割</strong><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.split(input,split_size_or_sections,dim=<span class="number">0</span>) <span class="comment"># 在维度dim上将张量按照split_size进行分割,split_size_or_sections表示每一个子张量的大小</span></span><br><span class="line">torch.chunk(input,chunks,dim=<span class="number">0</span>) <span class="comment"># 在维度dim上将张量均匀分割为chunks个子张量</span></span><br><span class="line">a = torch.randn(<span class="number">5</span>,<span class="number">6</span>)</span><br><span class="line">torch.split(a,[<span class="number">2</span>,<span class="number">3</span>],dim=<span class="number">0</span>) <span class="comment"># 在行上进行分割，得到shape为[2,6]和[3,6]的两个张量</span></span><br><span class="line">torch.chunk(a,<span class="number">2</span>,dim=<span class="number">1</span>) <span class="comment"># 在列上进行均匀分割，得到shape为[5,3]的两个张量</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>NOTE</strong>：<code>chunk</code>相当于均匀分割的<code>split</code>，建议只在能被整除的情况下使用。</p>
+<ul>
+<li><strong>变换</strong><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.transpose(input,dim0,dim1,out=<span class="literal">None</span>)  <span class="comment"># 返回input的转置矩阵，交换给定维度dim0和dim1</span></span><br><span class="line">torch.t(input,out=<span class="literal">None</span>)  <span class="comment"># 返回input的转置矩阵，input是二维张量</span></span><br><span class="line">torch.squeeze(input,dim=<span class="literal">None</span>,out=<span class="literal">None</span>)  <span class="comment"># 移除指定size为1的维度，默认移除全部size为1的维度</span></span><br><span class="line">torch.unsqueeze(input,dim,out=<span class="literal">None</span>)  <span class="comment"># 在指定方向扩展张量的维度，新维度大小为1，如将[n,m]张量扩展为[n,1,m]张量</span></span><br><span class="line">torch.reshape(input,shape)  <span class="comment"># 指定张量的新shape，reshape之后不会改变数据的值和数据格式</span></span><br><span class="line">torch.unbind(input,dim=<span class="number">0</span>)  <span class="comment"># 移除张量的一个维度，返回一个元组，包含了沿着指定维度切片后的各个切片</span></span><br><span class="line">torch.where(condition,x,y)  <span class="comment"># 逐个位置判断元素是否满足条件condition，满足返回x中对应位置的值或者x的值，不满足返回y在对应位置的值或y的值</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>NOTE:</strong></p>
+<ul>
+<li><code>reshape</code>和<code>view</code>都可以改变张量的shape，不同在于<code>view</code>要保证张量是contiguous</li>
+</ul>
+<h3 id="3-2-数学操作"><a href="#3-2-数学操作" class="headerlink" title="3.2 数学操作"></a>3.2 数学操作</h3><ul>
+<li><p><strong>逐点操作</strong></p>
+<ul>
+<li>加减乘：<code>torch.add(input,value,out=None)</code> /<code>torch.div()</code> /<code>torch.mul()</code></li>
+<li>三角函数：<code>torch.sin(input,out=None)</code> /<code>torch.cos()</code> /<code>torch.tan()</code></li>
+<li>指数运算：<code>torch.exp(input,out=None)</code></li>
+<li>对数运算：<code>torch.log(input,out=None)</code> /<code>torch.log2(input,out=None)</code> /<code>torch.log10(input,out=None)</code></li>
+<li>幂运算：<code>torch.pow(input,exponent,out=None)</code></li>
+<li>截断函数：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.ceil(input,out=<span class="literal">None</span>)</span><br><span class="line">torch.floor(input,out=<span class="literal">None</span>)</span><br><span class="line">torch.round(input,out=<span class="literal">None</span>)</span><br><span class="line">torch.clamp(input, min, max out=<span class="literal">None</span>) <span class="comment"># input &lt; min，返回min，input &gt; max，返回max</span></span><br><span class="line"></span><br><span class="line">torch.trunc(input,out=<span class="literal">None</span>) <span class="comment"># 返回整数部分数值</span></span><br><span class="line">torch.frac(input,out=<span class="literal">None</span>)  <span class="comment"># 返回小数部分数值</span></span><br><span class="line"></span><br><span class="line">torch.ceil(input,divisor,out=<span class="literal">None</span>) <span class="comment"># 返回input/divisor的余数</span></span><br></pre></td></tr></table></figure></li>
+<li>其他：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.neg(input,out=<span class="literal">None</span>) <span class="comment"># 取反</span></span><br><span class="line">torch.reciprocal(input,out=<span class="literal">None</span>) <span class="comment"># 取倒数</span></span><br><span class="line">torch.sqrt(input,out=<span class="literal">None</span>) <span class="comment"># 开方</span></span><br><span class="line">torch.sigmod(input,out=<span class="literal">None</span>) <span class="comment"># 激活函数</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>降维</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.argmax(input,dim=<span class="literal">None</span>,out=<span class="literal">None</span>) <span class="comment"># 返回指定维度上最大值的索引</span></span><br><span class="line">torch.argmax(input,dim=<span class="literal">None</span>,out=<span class="literal">None</span>) <span class="comment"># 返回指定维度上最小值的索引</span></span><br><span class="line"></span><br><span class="line">torch.mean(input, dim, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>)</span><br><span class="line">torch.median(input, dim=<span class="number">-1</span>, keepdim=<span class="literal">False</span>)</span><br><span class="line">torch.mode(input, dim=<span class="number">-1</span>, keepdim=<span class="literal">False</span>, values=<span class="literal">None</span>) <span class="comment"># 众数</span></span><br><span class="line">torch.sum(input, dim, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>)</span><br><span class="line">torch.prod(input, dim, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>) <span class="comment"># 乘积</span></span><br><span class="line"></span><br><span class="line">torch.unique(input,sorted=<span class="literal">False</span>) <span class="comment"># 去除重复值</span></span><br><span class="line"></span><br><span class="line">torch.mean(input, dim, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>)</span><br><span class="line">torch.std(input, dim, keepdim=<span class="literal">False</span>, unbiased=<span class="literal">True</span>, out=<span class="literal">None</span>) <span class="comment"># unbiased是否使用无偏估计</span></span><br><span class="line">torch.var(input, dim, keepdim=<span class="literal">False</span>, unbiased=<span class="literal">True</span>, out=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">torch.norm(input, p, dim, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>) <span class="comment"># 返回指定维度的p-范数</span></span><br><span class="line">torch.dist(input, other, p=<span class="number">2</span>) <span class="comment"># 返回(input-other)的p-范数</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>比较运算</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.eq(input, other, out=<span class="literal">None</span>) <span class="comment"># 比较元素是否相等</span></span><br><span class="line">torch.equal(tensor1, tensor2)    <span class="comment"># 比较是否有相同的size和元素</span></span><br><span class="line"></span><br><span class="line">torch.ge(input, other, out=<span class="literal">None</span>)   <span class="comment"># input&gt;= other</span></span><br><span class="line">torch.gt(input, other, out=<span class="literal">None</span>)   <span class="comment"># input&gt;other</span></span><br><span class="line">torch.le(input, other, out=<span class="literal">None</span>)    <span class="comment"># input=&lt;other</span></span><br><span class="line">torch.lt(input, other, out=<span class="literal">None</span>)    <span class="comment"># input&lt;other</span></span><br><span class="line">torch.ne(input, other, out=<span class="literal">None</span>)  <span class="comment"># input != other 不等于</span></span><br><span class="line"></span><br><span class="line">torch.max(input, dim, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>)</span><br><span class="line">torch.min(input, dim, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">torch.isnan(input) <span class="comment"># 判断是否有NaN</span></span><br><span class="line">torch.sort(input, dim=<span class="literal">None</span>, descending=<span class="literal">False</span>, out=<span class="literal">None</span>) <span class="comment"># 指定维度进行排序</span></span><br><span class="line">torch.topk(input, k, dim=<span class="literal">None</span>, largest=<span class="literal">True</span>, sorted=<span class="literal">True</span>, out=<span class="literal">None</span>) <span class="comment"># 指定维度的k个最值及其索引，largest确定最大还是最小</span></span><br><span class="line">torch.kthvalue(input, k, dim=<span class="literal">None</span>, keepdim=<span class="literal">False</span>, out=<span class="literal">None</span>) <span class="comment"># 指定维度k个最小值及其索引</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>频谱运算</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.fft(input, signal_ndim, normalized=<span class="literal">False</span>)</span><br><span class="line">torch.ifft(input, signal_ndim, normalized=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>其他运算</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.cross(input, other, dim=<span class="number">-1</span>, out=<span class="literal">None</span>) <span class="comment"># 两个张量的向量积(叉积)</span></span><br><span class="line">torch.dot(tensor1, tensor2) <span class="comment"># 点积</span></span><br><span class="line"></span><br><span class="line">torch.trace(input) <span class="comment"># 对角线元素的和，即迹</span></span><br><span class="line">torch.eig(a, eigenvectors=<span class="literal">False</span>, out=<span class="literal">None</span>) <span class="comment"># 计算矩阵的特征值和特征向量</span></span><br><span class="line">torch.mm(mat1, mat2, out=<span class="literal">None</span>) <span class="comment"># 矩阵乘法</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-3-序列化操作"><a href="#3-3-序列化操作" class="headerlink" title="3.3 序列化操作"></a>3.3 序列化操作</h3><ul>
+<li><p>Pytorch使用<code>pickle</code>来进行张量的序列化操作，使用方法如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.save(tensor,<span class="string">'./tensor_file.t'</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'./tensor_file.t'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    torch.save(tensor,f)</span><br><span class="line"></span><br><span class="line">torch.load(<span class="string">'./tensor_file.t'</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'./tensor_file.t'</span>,<span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    tensor = torch.load(f)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>也可以通过<code>h5py</code>进行序列化</p>
+</li>
+</ul>
+<h3 id="3-4-并行操作"><a href="#3-4-并行操作" class="headerlink" title="3.4 并行操作"></a>3.4 并行操作</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.get_num_threads() <span class="comment"># 获得 OpenMP 并行化操作的线程数目</span></span><br><span class="line">torch.set_num_threads(int) <span class="comment"># 设置 OpenMP 并行化操作的线程数目</span></span><br></pre></td></tr></table></figure>
+
 <h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<li><a href="https://pytorch.org/assets/deep-learning/Deep-Learning-with-PyTorch.pdf" target="_blank" rel="noopener">Deep Learning with PyTorch</a></li>
 <li><a href="https://heary.cn/posts/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_blank" rel="noopener">PyTorch学习笔记</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>PyTorch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PyTorch数据的加载和预处理</title>
-    <url>/2019/10/02/pytorch-data-loader-and-preprocess/</url>
-    <content><![CDATA[<p>PyTorch通过<code>torch.utils.data</code>对一般常用的数据加载进行了封装，可以很容易地实现多线程数据预读和批量加载。<code>torchvision</code>中包含了常用的图像数据集，可以通过<code>torchvision.datasets</code>进行调用。</p>
-<a id="more"></a>
-<p>Pytorch读取图片的基本流程：</p>
-<ul>
-<li>通过定义<code>Dataset</code>的子类定义如何通过索引读取图片及其标签；</li>
-<li>通过<code>DataLoder</code>触发<code>Dataset</code>的子类去读取图片及其标签。</li>
-</ul>
-<h2 id="1-Dataset"><a href="#1-Dataset" class="headerlink" title="1. Dataset"></a>1. Dataset</h2><p>PyTorch读取图片，主要是通过<code>Dataset</code>类。<code>Dataset</code>作为所有datasets的基类存在，所有的datasets子类都需要继承它，并且实现<code>__len__</code>和<code>__getitem__</code>这两个成员函数，前者返回数据集的大小，后者支持对数据集进行整数索引。<br>构建一个Dataset子类的基本流程：<br>    1. <code>__init__</code>:初始化，在初始化函数中将准备好的获取图片的路径和标签存储到list中，其一个元素对应一个样本的路径和标签。初始化中还会初始化<code>transform</code>，<code>transform</code>是一个Compose类型，里面有一个list，其中定义了各种对图像进行处理的操作。<br>    2. <code>__getitem__</code>:从list中获取图片的路径和标签，然后对图片进行读取，对图像进行预处理之后返回。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.utils.data <span class="keyword">as</span> Dataset</span><br><span class="line"><span class="keyword">import</span> pandas</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDataset</span><span class="params">(Datasets)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,csv_file,transform,target_transform)</span>:</span></span><br><span class="line">        self.files = pandas.read_cvs(csv_file) <span class="comment"># 获取图片数据的索引</span></span><br><span class="line">        self.transform = transform</span><br><span class="line">        self.target_transform = target_transform</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self,idx)</span>:</span></span><br><span class="line">        <span class="comment"># get a sample: img, label 获取图像和标签</span></span><br><span class="line">        <span class="keyword">if</span> self.transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            img = self.transform(img)</span><br><span class="line">        <span class="keyword">return</span> img,label</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.files)</span><br></pre></td></tr></table></figure>
-<h2 id="2-DataLoder"><a href="#2-DataLoder" class="headerlink" title="2. DataLoder"></a>2. DataLoder</h2><p><code>Dataset</code>的子类主要定义了如何通过索引读取图片及其标签，以及对图片的预处理操作。但是，触发<code>Dataset</code>的读取操作是通过<code>DataLoder</code>实现的。<code>DataLoder</code>的参数有：</p>
-<ul>
-<li>dataset(Dataset)：加载的数据集</li>
-<li>batch_size(int,optional’)：每个batch加载多少个样本</li>
-<li>shuffel(bool,optional)：设置为<code>True</code>时每个epoch会打乱数据</li>
-<li>sampler(Sampler,optional)：定义从数据集中提取样本的策略</li>
-<li>num_workers(int,optional)：用多少个子进程加载数据</li>
-<li>collate_fn(callable,optional)</li>
-<li>pin_memory(bool,optional)</li>
-<li>drop_last(bool,optional)：如果数据集不能被batch_size整除，，设置为<code>True</code>会删除最后一个不完整的batch。</li>
-</ul>
-<h2 id="3-torchvision"><a href="#3-torchvision" class="headerlink" title="3. torchvision"></a>3. torchvision</h2><p><code>torchvision</code>是PyTorch中专门处理图像的库，其中包含了目前流行的图像数据集、模型结构和常用的图片转换工具。  </p>
-<h3 id="3-1-torchvision-datasets"><a href="#3-1-torchvision-datasets" class="headerlink" title="3.1 torchvision.datasets"></a>3.1 torchvision.datasets</h3><p><code>torchvision.datasets</code>中包含了以下数据集：<code>MNIST</code>,<code>COCO</code>,<code>LSUN Classification</code>,<code>ImageFolder</code>,<code>Imagenet-12</code>,<code>CIFAR10 and CIFAR100</code>以及<code>STL10</code>。<br>我们可以直接使用其中的数据集，示例如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torchvision.datasets <span class="keyword">as</span> datasets</span><br><span class="line">trainset = datasets.MNIST(root=<span class="string">'./data'</span>, <span class="comment"># 表示MNIST数据的加载目录</span></span><br><span class="line">                        train=<span class="literal">True</span>,      <span class="comment"># 表示是否加载数据库的训练集，false的时候加载测试集</span></span><br><span class="line">                        tranform=<span class="literal">None</span>，  <span class="comment"># 是否对数据进行预处理</span></span><br><span class="line">                        target_transform=<span class="literal">None</span>,</span><br><span class="line">                        download=<span class="literal">True</span>)   <span class="comment"># 表示是否自动下载MNIST数据集，并把数据集放在root下  </span></span><br></pre></td></tr></table></figure>  
-<h3 id="3-2-torchvision-models"><a href="#3-2-torchvision-models" class="headerlink" title="3.2 torchvision.models"></a>3.2 torchvision.models</h3><p>torchvision中不仅提供了常用的图片数据集，还提供了训练好的模型，可以在加载之后直接使用。<code>torchvision.models</code>中包含的模型结构有<code>AlexNet</code>,<code>VGG</code>,<code>ResNet</code>,<code>SqueezeNet</code>及<code>DenseNet</code>。<br>可以使用随机初始化的权重来创建这些模型，也可以使用预训练的模型。示例如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torchvision.models <span class="keyword">as</span> models</span><br><span class="line"><span class="comment"># 随机初始化权重创建模型</span></span><br><span class="line">alexnet = models.AlexNet()</span><br><span class="line"><span class="comment"># 使用预训练模型</span></span><br><span class="line">resnet18 = models.ResNet18(pretrained=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-torchvision-transforms"><a href="#3-3-torchvision-transforms" class="headerlink" title="3.3 torchvision.transforms"></a>3.3 torchvision.transforms</h3><p><code>torchvision.transforms</code>中提供了一般的图像转换操作，用于数据处理和数据增强。transform的方法主要分为四大类：</p>
-<ul>
-<li><strong>裁剪(Crop)</strong><ul>
-<li>中心裁剪：transforms.CenterCrop(size)</li>
-<li>随机裁剪：transforms.RandomCrop(size,padding=0)</li>
-<li>随机裁剪再Resize：transforms.RandomResizedCrop(size,interpolation=2)</li>
-</ul>
-</li>
-<li><strong>翻转和旋转(Flip and Rotation)</strong><ul>
-<li>随机水平翻转：transforms.RandomHorizontalFlip</li>
-</ul>
-</li>
-<li><strong>图像变换</strong><ul>
-<li>标准化：transforms.Normalize(mean,std)</li>
-<li>填充：transforms.Pad(padding,fill=0)</li>
-</ul>
-</li>
-<li><strong>对transform操作</strong><ul>
-<li>组合多个<code>transform</code>：transforms.Compose(transforms)</li>
-</ul>
-</li>
-</ul>
-<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
-<li><a href="https://pytorch-cn.readthedocs.io/zh/latest/torchvision/torchvision/" target="_blank" rel="noopener">PyTorch中文文档</a></li>
-<li><a href="https://github.com/zergtant/pytorch-handbook" target="_blank" rel="noopener">PyTorch Handbook</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/36233589" target="_blank" rel="noopener">pytorch入坑—Tensor及其基本操作</a></li>
+<li><a href="https://pytorch.apachecn.org/docs/1.2/tensors.html" target="_blank" rel="noopener">torch.Tensor</a></li>
+<li><a href="https://panxiaoxie.cn/2018/12/01/pytorch-book-1-Tensor/" target="_blank" rel="noopener">pytorch-Tensor</a></li>
+<li><a href="https://pytorch.apachecn.org/docs/1.2/torch.html" target="_blank" rel="noopener">** Pytorch张量及其操作</a></li>
 </ul>
 ]]></content>
       <categories>
@@ -952,6 +1007,8 @@
 <h2 id="论文及书籍资源"><a href="#论文及书籍资源" class="headerlink" title="论文及书籍资源"></a>论文及书籍资源</h2><ul>
 <li><a href="https://karpathy.github.io/2019/04/25/recipe/" target="_blank" rel="noopener">A Recipe for Training Neural Networks</a></li>
 <li><a href="https://github.com/huaxz1986/deep_learning_notes" target="_blank" rel="noopener">deeplearningbook学习笔记</a></li>
+<li><a href="http://www.huaxiaozhuan.com/" target="_blank" rel="noopener">AI算法工程师手册</a></li>
+<li><a href="https://github.com/tangming/DeepLearning-500-questions" target="_blank" rel="noopener">DeepLearning-500-questions</a></li>
 </ul>
 <h2 id="数据资源"><a href="#数据资源" class="headerlink" title="数据资源"></a>数据资源</h2><h2 id="代码资源"><a href="#代码资源" class="headerlink" title="代码资源"></a>代码资源</h2>]]></content>
       <categories>
@@ -959,17 +1016,18 @@
       </categories>
   </entry>
   <entry>
-    <title>C/C++编程—内存布局与内存管理</title>
-    <url>/2019/10/01/cpp-memory-layout-and-management/</url>
-    <content><![CDATA[<p>C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——<strong>栈区、堆区、数据区和代码区</strong>(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。</p>
+    <title>C/C++编程—内存管理和智能指针</title>
+    <url>/2019/10/01/cpp-memory-management-and-smart-pointer/</url>
+    <content><![CDATA[<p>C++中最常使用的资源就是内存，其他常见的还包括文件句柄、互斥锁(mutex lock)、数据库连接、以及网络socket等。在计算机系统中，这些系统资源是有限的，所以要进行有效的管理。本文主要记录C++中的内存布局、内存管理、资源管理的机制RAII(Resource Acquisition Is Initialization)以及智能指针。</p>
 <a id="more"></a>
+<p>C语言编写的程序经过编译、链接后，会形成一个格式统一的可执行文件，可执行文件只有放在计算机内存中才能够运行。程序的几个阶段最终会转化为内存中的几个区域，通常表示为“内存四区”——<strong>栈区、堆区、数据区和代码区</strong>(内存地址从高到低)。对于内存布局也有其他类型的描述，本质上是对数据区和代码区的子项按其他标准进行分类。</p>
 <p>一个可执行文件分为<strong>映像</strong>和<strong>运行</strong>两种状态。在编译链接后形成的映像中，只包含<code>代码段(Code)</code>、<code>只读数据段(RO data)</code>和<code>读写数据段(RW data)</code>。在程序运行前的加载过程中，将动态生成<code>未初始化数据段(BSS)</code>，在程序运行时将动态生成<code>堆(Heap)</code>和<code>栈(Stack)</code>区域。</p>
 <h2 id="1-内存布局"><a href="#1-内存布局" class="headerlink" title="1. 内存布局"></a>1. 内存布局</h2><h3 id="1-1-静态区域-全局区域"><a href="#1-1-静态区域-全局区域" class="headerlink" title="1.1 静态区域(全局区域)"></a>1.1 静态区域(全局区域)</h3><h4 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h4><p>代码段由程序中执行的机器代码组成。在C语言中，程序语言进行编译后，形成机器代码。在程序执行过程中，CPU的程序计数器指向代码段的每一条机器代码，并由处理器依次运行。</p>
 <h4 id="只读数据段-RO-data，即常量区"><a href="#只读数据段-RO-data，即常量区" class="headerlink" title="只读数据段(RO data，即常量区)"></a>只读数据段(RO data，即常量区)</h4><p>只读数据区存储的是程序中使用的一些不会被更改的数据，如字符串常量。程序运行结束后由系统进行释放。</p>
 <h4 id="读写数据段-RW-data"><a href="#读写数据段-RW-data" class="headerlink" title="读写数据段(RW data)"></a>读写数据段(RW data)</h4><p>存放已初始化的全局变量和静态变量（在程序生命周期中地址不变），这些变量占用存储器的空间，在程序执行时要位于可读写区域且被初始化。</p>
 <h4 id="未初始化数据段-BSS-Block-Started-by-Symbol"><a href="#未初始化数据段-BSS-Block-Started-by-Symbol" class="headerlink" title="未初始化数据段(BSS-Block Started by Symbol)"></a>未初始化数据段(BSS-Block Started by Symbol)</h4><p>未初始化数据是在程序声明，但是没有初始化的变量，这些变量在程序运行之前不需要占用存储器的空间。BSS段的变量只有名称和大小，没有值。</p>
 <h3 id="1-2-动态区域"><a href="#1-2-动态区域" class="headerlink" title="1.2 动态区域"></a>1.2 动态区域</h3><h4 id="堆-Heap"><a href="#堆-Heap" class="headerlink" title="堆(Heap)"></a>堆(Heap)</h4><ul>
-<li>堆内存只在程序运行时出现，一般由程序员分配和释放（C语言中使用malloc/free，C++中使用new/delete），区别于数据结构中的堆。  </li>
+<li>堆内存只在程序运行时出现，一般由程序员分配和释放（C语言中使用malloc/free，C++中使用malloc/free或new/delete），区别于数据结构中的堆。  </li>
 <li>操作系统中有一个记录内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请的空间的堆结点，然后将该结点从链表中移除，并将该结点的内存分配给程序，多余的部分重新放回空闲链表中。  </li>
 <li>在windows下，堆是由低地址向高地址扩展的结构，是不连续的内存区域。  </li>
 </ul>
@@ -977,9 +1035,60 @@
 <li>栈内存只在程序运行时出现，由系统编译器自动分配和释放，存放函数的参数值、内部的局部变量以及返回值等。  </li>
 <li>只要栈的剩余空间大于所申请的空间，系统将为程序提供内存。在windows下，栈是由高地址向低地址扩展的结构，是一块连续的内存区域。</li>
 </ul>
-<h2 id="2-内存管理"><a href="#2-内存管理" class="headerlink" title="2. 内存管理"></a>2. 内存管理</h2><h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<h2 id="2-常见的内存错误"><a href="#2-常见的内存错误" class="headerlink" title="2. 常见的内存错误"></a>2. 常见的内存错误</h2><p>C/C++强大的原因之一在于能够掌握对内存的处理，什么时候使用内存，用多少，什么时候释放这些都在程序员的掌握之中。但是，不恰当的内存操作会引起难以定位的灾难性问题。</p>
+<ul>
+<li><strong>没有初始化堆栈中的数据</strong><ul>
+<li>初始化是指对数据对象或变量赋予初始值，初始化可以避免使用变量的<strong>脏值</strong></li>
+<li>静态变量和全局变量会被默认初始化，int初始化为0</li>
+</ul>
+</li>
+<li><strong>缓冲区溢出</strong><ul>
+<li>通常指的是向缓冲区写入了超过缓冲区所能保存的最大数据量的数据</li>
+<li>库函数中一些函数可能造成缓冲区溢出，应该尽量避免使用</li>
+</ul>
+</li>
+<li><strong>将指针当作数据对象</strong>，如数组名是指向该数组第一个元素的指针常量，不是整个数组对象</li>
+<li><strong>指针运算出现错误</strong>，指针运算是以指向对象大小为单位进行的<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">int</span>* ptr1 = arr;          <span class="comment">// ptr1+1会移动sizeof(int)个字节</span></span><br><span class="line"><span class="keyword">char</span>* ptr2 = (<span class="keyword">char</span>*)ptr1; <span class="comment">// ptr2+1会移动sizeof(char)个字节</span></span><br><span class="line"><span class="keyword">int</span>* ptr3 = &amp;arr;         <span class="comment">// ptr3+1会移动sizeof(arr)=3*sizeof(int)个字节</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>引用已经释放的内存</strong><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">getStr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[] = <span class="string">"hello"</span>;</span><br><span class="line">    <span class="keyword">return</span> str; <span class="comment">//函数运行完成，str指向的内存已经被释放</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> * a = (<span class="keyword">int</span>*)<span class="built_in">malloc</span>(<span class="number">10</span>);</span><br><span class="line"><span class="comment">// do sth</span></span><br><span class="line"><span class="built_in">free</span>(a); <span class="comment">// 此处指针指向的内存已经被释放，不能再引用，但是指针变量还存在</span></span><br><span class="line">a=<span class="literal">NULL</span>;  <span class="comment">// 建议显式的将其置为NULL</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>对NULL解引用</strong>，对于指针类型的参数，我们需要经常对其进行检查，避免对NULL解引用<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">calc</span><span class="params">(<span class="keyword">int</span>* a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="literal">NULL</span>!=a) <span class="comment">//C++中可以传引用，从而避免重复性检查代码</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// do sth</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>没有释放内存</strong>，在编程中，我们常说的内存管理是针对动态内存中的堆，内存的使用都必须遵循一个步骤：<code>申请内存</code>-&gt;<code>使用内存</code>-&gt;<code>释放内存</code>。内存只有申请后才能使用，使用完成后必须要释放，否则会造成内存泄漏。在C++中，我们使用<code>malloc/new</code>开辟的内存资源，通过<code>free/delete</code>进行释放。</li>
+</ul>
+<blockquote><p><strong>NOTE:</strong> new/delete和malloc/free的区别</p>
+<ul>
+<li>malloc/free是C/C++的标准库函数，包含在头文件<code>stdlib.h</code>中。new/delete是C++的运算符，需要编译器的支持。</li>
+<li>malloc在分配内存时必须显式的指定内存的大小，new无需指定大小，编译器会根据类型信息自动计算内存的大小。</li>
+<li>new返回的指针带有类型信息，而malloc返回的指针是<code>void*</code>类型，需要做类型转换。</li>
+<li>C++允许重载new/delete运算符，malloc/free不允许重载。</li>
+<li>由于malloc/free是库函数不是运算符，不在编译器控制权限制内，不能够调用构造函数和析构函数。</li>
+</ul>
+</blockquote>
+
+<h2 id="3-智能指针"><a href="#3-智能指针" class="headerlink" title="3. 智能指针"></a>3. 智能指针</h2><p>智能指针是RAII的实现范例，主要用于管理在堆上分配的内存。在C++中，我们创建一个指向某个对象的普通指针，在使用完这个指针之后需要进行删除，否则会造成一个悬挂指针，导致内存泄漏。智能指针将普通的指针封装为一个栈对象，当栈兑现过的生命周期结束以后，会在析构函数中释放掉申请的内存，防止内存泄漏。</p>
+<p>智能指针和普通指针的区别在于智能指针实际上是对普通指针加了一层封装机制，这样的一层封装机制的目的是为了使得智能指针可以方便的管理一个对象的生命期。</p>
+<p><strong>NOTE:</strong> C++11的智能指针的构造函数都有<code>explicit</code>关键词修饰，表明它<strong>不能被隐式的进行类型转换</strong>。</p>
+<p>C++11中有三个智能指针：<code>unique_ptr</code>、<code>shared_ptr</code>和<code>weak_ptr</code>。C98中有一个智能指针<code>auto_ptr</code>，已被<code>unique_ptr</code>取代。</p>
+<h3 id="3-1-unique-ptr"><a href="#3-1-unique-ptr" class="headerlink" title="3.1 unique_ptr"></a>3.1 unique_ptr</h3><p><code>unique_ptr</code>是一个独享所有权的智能指针，其功能是保证同一时间内只有一个智能指针指向该对象。相较于<code>auto_ptr</code>，<code>unique_prt</code>禁用了拷贝，从而避免了潜在的内存崩溃问题。</p>
+<h3 id="3-2-shared-ptr"><a href="#3-2-shared-ptr" class="headerlink" title="3.2 shared_ptr"></a>3.2 shared_ptr</h3><p><code>shared_ptr</code>实现了共享式拥有概念，即多个智能指针指向同一个对象，该对象和其资源会在<strong>最后一个引用被销毁</strong>时进行释放。<code>shared_ptr</code>使用了计数机制来表明资源被几个指针共享，调用<code>release()</code>可以释放当前指针的所有权。可以通过<code>use_count()</code>函数来查看资源被引用的个数，当新增一个引用时，引用计数加1，当过期时引用计数减1，当引用计数为0时，智能指针会自动释放引用的内存资源。</p>
+<p><strong>NOTE:</strong>智能指针依然存在这内存泄漏的可能性，当两个对象互相使用一个<code>shared_ptr</code>成员变量指向对方，会造成循环引用，使得引用计数失效，从而导致内存泄漏。</p>
+<h3 id="3-3-weak-ptr"><a href="#3-3-weak-ptr" class="headerlink" title="3.3 weak_ptr"></a>3.3 weak_ptr</h3><p>为了解决<code>shared_ptr</code>循环引用导致的内存泄漏问题，C++引入了<code>weak_ptr</code>。<code>weak_ptr</code>的构造函数不会修改引用计数的值，从而不会对对象的内存进行管理，类似于一个普通指针，但不指向引用计数的共享内存。其功能时检测到所管理的对象是否已经释放，从而避免非法访问。<br><code>weak_ptr</code>相当于<code>shared_ptr</code>的辅助指针，所以主要的智能指针只有<code>shared_ptr</code>和<code>unique_ptr</code>。</p>
+<h2 id="4-资源管理和RAII机制"><a href="#4-资源管理和RAII机制" class="headerlink" title="4. 资源管理和RAII机制"></a>4. 资源管理和RAII机制</h2><h3 id="4-1-C-资源管理"><a href="#4-1-C-资源管理" class="headerlink" title="4.1 C++资源管理"></a>4.1 C++资源管理</h3><p>我们在使用系统资源时，都必须遵循一个步骤：<code>申请资源</code>-&gt;<code>使用资源</code>-&gt;<code>释放资源</code>。资源只有申请后才能使用，使用完成后必须要释放，如果不释放就会造成资源泄露。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">FILE* file = fopen(fn,<span class="string">'r'</span>); <span class="comment">// 申请文件句柄资源</span></span><br><span class="line"><span class="comment">// 使用资源</span></span><br><span class="line"><span class="keyword">if</span>(!f()) <span class="keyword">return</span>; <span class="comment">// f()失败，返回</span></span><br><span class="line"><span class="comment">// ... </span></span><br><span class="line"><span class="keyword">if</span>(!g()) <span class="keyword">return</span>; <span class="comment">// g()失败，返回</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">fclose(file); <span class="comment">// 释放资源</span></span><br></pre></td></tr></table></figure>
+<p>在上述代码中，存在着因某些操作失败而提前返回的现象，这时就会跳过资源释放的操作，造成<strong>资源泄露</strong>。对于简单的代码可以在不同的位置重复书写释放资源的代码，如果项目中有异常处理或者需要管理的资源有多个，重复书写资源释放的代码会造成代码冗余且后期难以维护。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">FILE* file = fopen(fn,<span class="string">'r'</span>); <span class="comment">// 申请资源</span></span><br><span class="line"><span class="comment">// 使用资源</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!f()) &#123;fclose(file); <span class="keyword">return</span>;&#125; <span class="comment">// f()失败，返回</span></span><br><span class="line">    <span class="comment">// ... </span></span><br><span class="line">    <span class="keyword">if</span>(!g()) &#123;fclose(file); <span class="keyword">return</span>;&#125; <span class="comment">// g()失败，返回</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(...)</span><br><span class="line">&#123;</span><br><span class="line">    fclose(file);</span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fclose(file); <span class="comment">// 释放资源</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-RAII机制"><a href="#4-2-RAII机制" class="headerlink" title="4.2 RAII机制"></a>4.2 RAII机制</h3><p>在C++中，定义在栈上的局部对象的创建和销毁是由系统自动完成的。我们在某个作用域中定义和使用局部对象，当控制流程超出作用域的控制范围时，系统会自动调用析构函数来销毁该对象。</p>
+<p>RAII是C++语言中一种资源管理的常用规范，其基本思路是<strong>用类来封装资源，在类的构造函数中获取资源，在类的析构函数中释放资源</strong>。使用的时候，把资源管理类实例化为一个对象，当类超出作用域的时候，就会调用类的析构函数对资源进行释放。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandle</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    FileHandle(<span class="keyword">char</span> <span class="keyword">const</span>* fn, <span class="keyword">char</span> <span class="keyword">const</span>* t)&#123; f = fopen(fn,t);&#125;</span><br><span class="line">    ~FileHandle()&#123;fclose(f);&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    FileHandle(FileHandle <span class="keyword">const</span>&amp;); <span class="comment">//复制构造函数</span></span><br><span class="line">    FileHandle&amp; operate= (FileHandle <span class="keyword">const</span>&amp;);<span class="comment">//赋值运算符</span></span><br><span class="line">    FILE* f;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>FileHandle类的构造函数调用fopen()获取资源；FileHandle类的析构函数调用fclose()释放资源。FileHandle对象代表的是资源，不具有拷贝语义，因此需要<strong>将复制构造函数和赋值运算符声明为私有成员</strong>，这样可以避免在进行资源对象作为参数传递时发生值的复制，造成访问冲突。</p>
+<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
 <li><a href="https://blog.csdn.net/gatieme/article/details/43567433" target="_blank" rel="noopener">C程序的内存布局</a></li>
 <li><a href="https://blog.csdn.net/yanbober/article/details/8713250" target="_blank" rel="noopener">C语言内存分布图</a></li>
+<li><a href="https://www.cnblogs.com/Braveliu/p/3287966.html" target="_blank" rel="noopener">RAII用法详解</a></li>
+<li><a href="https://docs.microsoft.com/zh-cn/cpp/cpp/smart-pointers-modern-cpp?view=vs-2015" target="_blank" rel="noopener">智能指针</a></li>
+<li><a href="https://www.cnblogs.com/lanxuezaipiao/p/4132096.html" target="_blank" rel="noopener">C++智能指针简单剖析</a></li>
+<li><a href="https://blog.csdn.net/i_chaoren/article/details/82586456" target="_blank" rel="noopener">C++11–智能指针详解及实现</a></li>
+<li><a href="http://c.biancheng.net/view/430.html" target="_blank" rel="noopener">C++11 shared_ptr（智能指针）详解</a></li>
+<li><a href="https://mp.weixin.qq.com/s/K0XmpllRNKZHL3t8S_Y0EA" target="_blank" rel="noopener">善用shared_ptr，远离内存泄漏</a></li>
 </ul>
 ]]></content>
       <categories>
@@ -987,40 +1096,9 @@
       </categories>
       <tags>
         <tag>C/C++</tag>
+        <tag>RAII</tag>
+        <tag>内存管理</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>计算机视觉资源汇总</title>
-    <url>/2019/09/30/awsome-computer-vision/</url>
-    <content><![CDATA[<p>汇总分类计算机视觉相关的数据、论文以及学习资源。</p>
-<a id="more"></a>
-<h2 id="图像和视频数据资源"><a href="#图像和视频数据资源" class="headerlink" title="图像和视频数据资源"></a>图像和视频数据资源</h2><ul>
-<li><a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/Imagedbase.htm" target="_blank" rel="noopener">CVonline:Image Datebase</a></li>
-</ul>
-<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><ul>
-<li><a href="https://www.kancloud.cn/aollo/aolloopencv/269602" target="_blank" rel="noopener">OpenCV-Python中文教程</a></li>
-</ul>
-<h2 id="论文及书籍资源"><a href="#论文及书籍资源" class="headerlink" title="论文及书籍资源"></a>论文及书籍资源</h2><ul>
-<li><a href="https://github.com/ArcherFMY/Paper_Reading_List" target="_blank" rel="noopener">Paper_Reading_List</a>：关于图像处理论文的总结</li>
-</ul>
-]]></content>
-      <categories>
-        <category>计算机视觉</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>机器学习资源汇总</title>
-    <url>/2019/09/30/awsome-machine-learning/</url>
-    <content><![CDATA[<p>汇总分类机器学习相关的数据、论文以及学习资源。</p>
-<a id="more"></a>
-
-<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><ul>
-<li><a href="https://createmomo.github.io/" target="_blank" rel="noopener">机器学习笔记</a> 主要分为六个部分：激活函数、梯度下降、参数、正则化、模型介绍和使用技巧。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
   </entry>
   <entry>
     <title>C/C++资源汇总</title>
@@ -1039,6 +1117,43 @@
       <tags>
         <tag>C/C++</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>机器学习资源汇总</title>
+    <url>/2019/09/30/awsome-machine-learning/</url>
+    <content><![CDATA[<p>汇总分类机器学习相关的数据、论文以及学习资源。</p>
+<a id="more"></a>
+
+<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><ul>
+<li><a href="https://createmomo.github.io/" target="_blank" rel="noopener">机器学习笔记</a> 主要分为六个部分：激活函数、梯度下降、参数、正则化、模型介绍和使用技巧。</li>
+</ul>
+<h2 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h2><ul>
+<li><strong>机器学习——原理，算法与应用</strong></li>
+</ul>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>计算机视觉资源汇总</title>
+    <url>/2019/09/30/awsome-computer-vision/</url>
+    <content><![CDATA[<p>汇总分类计算机视觉相关的数据、论文以及学习资源。</p>
+<a id="more"></a>
+<h2 id="图像和视频数据资源"><a href="#图像和视频数据资源" class="headerlink" title="图像和视频数据资源"></a>图像和视频数据资源</h2><ul>
+<li><a href="http://homepages.inf.ed.ac.uk/rbf/CVonline/Imagedbase.htm" target="_blank" rel="noopener">CVonline:Image Datebase</a></li>
+<li><a href="http://robotics.pkusz.edu.cn/resources/dataset/" target="_blank" rel="noopener">印刷电路板（PCB）瑕疵数据集</a></li>
+</ul>
+<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><ul>
+<li><a href="https://www.kancloud.cn/aollo/aolloopencv/269602" target="_blank" rel="noopener">OpenCV-Python中文教程</a></li>
+</ul>
+<h2 id="论文及书籍资源"><a href="#论文及书籍资源" class="headerlink" title="论文及书籍资源"></a>论文及书籍资源</h2><ul>
+<li><a href="https://github.com/ArcherFMY/Paper_Reading_List" target="_blank" rel="noopener">Paper_Reading_List</a>：关于图像处理论文的总结</li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
   </entry>
   <entry>
     <title>Github+Hexo搭建个人网站</title>

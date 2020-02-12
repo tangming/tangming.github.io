@@ -17,7 +17,7 @@
 
 <link rel="stylesheet" href="/css/main.css?v=7.4.0">
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Helvetica:300,300italic,400,400italic,700,700italic|Brush Script MT:300,300italic,400,400italic,700,700italic|Input Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
 
 
@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为序列化，它的逆过程称为反序列化。">
+  <meta name="description" content="在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为序列化，它的逆过程称为反序列化。本文主要记录通过Boost.Serialization进行序列化的相关内容。">
 <meta name="keywords" content="C&#x2F;C++,序列化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C&#x2F;C++编程—序列化">
 <meta property="og:url" content="http://yoursite.com/2019/10/16/cpp-serialization-introduction/index.html">
 <meta property="og:site_name" content="Tangming&#39;s Blog">
-<meta property="og:description" content="在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为序列化，它的逆过程称为反序列化。">
+<meta property="og:description" content="在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为序列化，它的逆过程称为反序列化。本文主要记录通过Boost.Serialization进行序列化的相关内容。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-18T07:54:18.576Z">
+<meta property="og:updated_time" content="2019-12-09T01:16:29.690Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C&#x2F;C++编程—序列化">
-<meta name="twitter:description" content="在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为序列化，它的逆过程称为反序列化。">
+<meta name="twitter:description" content="在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为序列化，它的逆过程称为反序列化。本文主要记录通过Boost.Serialization进行序列化的相关内容。">
   <link rel="canonical" href="http://yoursite.com/2019/10/16/cpp-serialization-introduction/">
 
 
@@ -309,7 +309,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-18 15:54:18" itemprop="dateModified" datetime="2019-10-18T15:54:18+08:00">2019-10-18</time>
+                <time title="Modified: 2019-12-09 09:16:29" itemprop="dateModified" datetime="2019-12-09T09:16:29+08:00">2019-12-09</time>
               </span>
             
           
@@ -338,13 +338,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为<strong>序列化</strong>，它的逆过程称为<strong>反序列化</strong>。</p>
+        <p>在程序中往往需要将程序中的某些数据存储在内存中，然后将其写入本地文件或者进行网络传输。将程序数据转化成能被存储和传输的格式的过程称为<strong>序列化</strong>，它的逆过程称为<strong>反序列化</strong>。本文主要记录通过Boost.Serialization进行序列化的相关内容。</p>
 <a id="more"></a>
 <p>以下为一个简单的C++序列化程序：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Serialize</span><span class="params">(<span class="keyword">const</span> Student &amp;stu, <span class="keyword">char</span> out[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">memcpy</span>(out, stu.name.c_str(), stu.name.length());</span><br><span class="line">    count += stu.name.length();</span><br><span class="line">    <span class="built_in">memcpy</span>(out + count, &amp;stu.age, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    count += <span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Deserialize</span><span class="params">(Student &amp;stu, <span class="keyword">const</span> <span class="keyword">char</span>* in, <span class="keyword">int</span> count)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> offset = <span class="number">0</span>;</span><br><span class="line">    stu.name.append(in, count - <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    offset += stu.name.length();</span><br><span class="line">    <span class="built_in">memcpy</span>(&amp;stu.age, in + offset, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">128</span>];</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    Student stu1;</span><br><span class="line">    stu1.name = <span class="string">"tangming"</span>;</span><br><span class="line">    stu1.age = <span class="number">1024</span>;</span><br><span class="line">    count = Serialize(stu1, buf);</span><br><span class="line"></span><br><span class="line">    Student stu2;</span><br><span class="line">    Deserialize(stu2, buf, count);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"name: "</span> &lt;&lt; stu2.name &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"age: "</span> &lt;&lt; stu2.age &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>C++中常用的序列化方法主要有<code>protobuf</code>和<code>Boost.Serialization</code>。<a href="https://developers.google.com/protocol-buffers/docs/overview?csw=1" target="_blank" rel="noopener"><strong>Google Protocol Buffers(protobuf)</strong></a>是Google内部使用的数据编码方式，用来替代XML进行数据交换。<code>protobuf</code>效率较高，但是数据对象必须预先定义，并使用protoc编译，适合要求效率，允许自定义类型的内部场合使用。<a href="https://www.boost.org/doc/libs/1_68_0/libs/serialization/doc/index.html" target="_blank" rel="noopener"><strong>Boost.Serialization</strong></a>可以创建或重建程序中的等效结构，并保存为二进制数据、文本数据、XML或者有用户自定义的其他文件。<code>Boost.Serialization</code>使用灵活简单，而且支持标准C++容器。</p>
-<h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
+<h2 id="1-Boost-Serialization"><a href="#1-Boost-Serialization" class="headerlink" title="1. Boost.Serialization"></a>1. Boost.Serialization</h2><p>Boost.Serialization来自标准Boost安装包，具有轻量、代码可移植、可以序列化STL容器和其他常用模板库的优点。与其他Boost库不同的是，Serialization并不是一个只包含头文件的库，因此需要对其进行编译。<br>Serialization库把存档和类型的序列化进行了分离，意味着任意的数据类型可以采用任意的格式进行存档。其头文件主要有两个目录：<code>&lt;boost/archive&gt;</code>主要包含存档格式的头文件；<code>&lt;boost/serialization&gt;</code>中的头文件提供了对各种数据类型进行序列化的能力。</p>
+<h3 id="1-1-存档"><a href="#1-1-存档" class="headerlink" title="1.1 存档"></a>1.1 存档</h3><p>Boost.Serialization 提供了多个归档类，它们可以持久化保存并在某个时刻恢复成C++对象。<br>|归档类|功能|<br>|:–:|:–|<br>|<code>boost::archive::text_oarchive</code>|用来把数据序列化成文本流|<br>|<code>boost::archive::text_iarchive</code>|用来从文本流恢复数据|<br>|<code>boost::archive::xml_oarchive</code>|用来把数据序列化成xml|<br>|<code>boost::archive::xml_iarchive</code>|用来从xml恢复数据|<br>|<code>boost::archive::binary_oarchive</code>|用来把数据序列化成二进制文件|<br>|<code>boost::archive::binary_iarchive</code>|用来从二进制文件恢复数据|</p>
+<p>只有可序列化的C++类型才能被序列化为字节流，进行存档或恢复。</p>
+<ul>
+<li>C++的基本类型都可进行序列化，如bool、int、double、enum。</li>
+<li>字符串可进行序列化。</li>
+<li>可序列化类型的数组也可以序列化。</li>
+<li>可序列化类型的指针和引用也可序列化。在序列化指针和引用时，并不会序列化指针中存储的地址，而是对象被自动地序列化。</li>
+<li>标准库定义的<code>complex</code>、<code>bitset</code>、<code>valarray</code>、<code>pair</code>等可进行序列化，支持标准容器<code>vector</code>、<code>deque</code>、<code>list</code>、<code>set</code>、<code>map</code>，不支持<code>stack</code>、<code>queue</code>、<code>priority_queue</code>。</li>
+<li>可序列化包含序列化函数的自定义数据类型。</li>
+</ul>
+<h3 id="1-2-自定义数据类型的序列化"><a href="#1-2-自定义数据类型的序列化" class="headerlink" title="1.2 自定义数据类型的序列化"></a>1.2 自定义数据类型的序列化</h3><h2 id="参考文章-amp-资源链接"><a href="#参考文章-amp-资源链接" class="headerlink" title="参考文章 &amp; 资源链接"></a>参考文章 &amp; 资源链接</h2><ul>
 <li><a href="https://cloud.tencent.com/developer/article/1342748" target="_blank" rel="noopener">最常用的两种C++序列化方案的使用心得</a></li>
+<li><a href="http://zh.highscore.de/cpp/boost/serialization.html#serialization_archive" target="_blank" rel="noopener">Boost C++库—序列化</a></li>
 </ul>
 
     </div>
@@ -373,8 +385,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/10/15/math-mkl-introduction/" rel="next" title="Intel MKL简介">
-                  <i class="fa fa-chevron-left"></i> Intel MKL简介
+                <a href="/2019/10/15/cpp-assert/" rel="next" title="C/C++编程—断言(Assert)">
+                  <i class="fa fa-chevron-left"></i> C/C++编程—断言(Assert)
                 </a>
               
             </div>
@@ -437,7 +449,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章-amp-资源链接"><span class="nav-text">参考文章 &amp; 资源链接</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Boost-Serialization"><span class="nav-text">1. Boost.Serialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-存档"><span class="nav-text">1.1 存档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-自定义数据类型的序列化"><span class="nav-text">1.2 自定义数据类型的序列化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章-amp-资源链接"><span class="nav-text">参考文章 &amp; 资源链接</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -456,7 +468,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -469,7 +481,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -482,7 +494,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>

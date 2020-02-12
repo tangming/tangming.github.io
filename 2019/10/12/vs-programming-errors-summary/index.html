@@ -17,7 +17,7 @@
 
 <link rel="stylesheet" href="/css/main.css?v=7.4.0">
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Helvetica:300,300italic,400,400italic,700,700italic|Brush Script MT:300,300italic,400,400italic,700,700italic|Input Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
 
 
@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="Tangming&#39;s Blog">
 <meta property="og:description" content="本文主要记录Visual Studio使用过程中出现的问题以及相应的解决方法。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-16T08:20:38.869Z">
+<meta property="og:updated_time" content="2019-11-01T13:51:37.207Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Visual Studio编程问题集锦">
 <meta name="twitter:description" content="本文主要记录Visual Studio使用过程中出现的问题以及相应的解决方法。">
@@ -308,7 +308,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-16 16:20:38" itemprop="dateModified" datetime="2019-10-16T16:20:38+08:00">2019-10-16</time>
+                <time title="Modified: 2019-11-01 21:51:37" itemprop="dateModified" datetime="2019-11-01T21:51:37+08:00">2019-11-01</time>
               </span>
             
           
@@ -348,6 +348,10 @@
 <li>VS菜单栏-&gt;<em>生成</em>-&gt;<em>配置管理器</em>-&gt;<em>活动解决方案平台</em>：设置为<code>x64</code></li>
 </ul>
 <p>  <strong>NOTE:</strong> 在进行一些开源项目的编译时，属性菜单中没有<em>链接器</em> 的属性，但是有<em>库管理器</em> 属性，可以在该属性下配置目标计算机和命令行的值。</p>
+</li>
+<li><p><strong>error C2338: <hash_map> is deprecated and will be REMOVED</hash_map></strong><br>  出现此问题最直接的解决办法是：<br>  项目右键-&gt;<em>属性</em>-&gt;<em>C/C++</em>-&gt;<em>预处理器</em>-&gt;<em>预处理器定义</em>：添加<code>_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS</code></p>
+</li>
+<li><p><strong>OpenBLAS对大矩阵进行运算时会出现崩溃</strong></p>
 </li>
 </ul>
 
@@ -449,7 +453,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -462,7 +466,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -475,7 +479,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>
